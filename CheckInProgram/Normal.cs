@@ -149,36 +149,11 @@ namespace CheckInProgram
             }
         }
 
-        private void leaveButton_Click(object sender, EventArgs e)
-        {
-            
-            try
-            {
-                if (MessageBox.Show("提前下线会导致本次上课记录被标注为早退，确定要提前下线么？","确认",MessageBoxButtons.YesNo,MessageBoxIcon.Question)==DialogResult.Yes)
-                {
-                    SqlCommand cmd = new SqlCommand("",Program.conn);
-                    cmd.CommandText = "UPDATE dbo.[CheckIn.StudentDetails] SET [State]='旷课', [Note]='早退' WHERE lesson=" + Program.sLesson + " AND id=" + Program.sID + " AND [State]='在线'";
-                    Program.conn.Open();
-                    cmd.ExecuteScalar();
-                    Program.conn.Close();
-                    Application.Exit();
-                }
-            }
-            catch(Exception ex)
-            {
-                Program.Error(ex.Message);
-            }
-            finally
-            {
-                Program.conn.Close();
-            }
-        }
-
         private void changeButton_Click(object sender, EventArgs e)
         {
             try
             {
-                if (MessageBox.Show("更换机器将导致本机下线，且规定时间内若没有在新的机器上线，你将被视为旷课，确定要更换机器么？", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("更换机器将导致本机下线，且规定时间内若没有在新的机器上线，你将被视为旷课，确定要更换机器么？\n\r注意：不能在同一台机器上使用换机功能上下机！", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     SqlCommand cmd = new SqlCommand("dbo.CheckInChange", Program.conn);
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -251,6 +226,12 @@ namespace CheckInProgram
             coldDownTimer.Enabled = false;
             signOutButton.Enabled = true;
             signOutButton.Text = "注销";
+        }
+
+        private void queryButton_Click(object sender, EventArgs e)
+        {
+            QueryForm query = new QueryForm();
+            query.Show();
         }
     }
 }

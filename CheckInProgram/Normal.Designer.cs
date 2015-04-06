@@ -32,7 +32,7 @@
             this.nameLabel = new System.Windows.Forms.Label();
             this.IDLabel = new System.Windows.Forms.Label();
             this.stateLabel = new System.Windows.Forms.Label();
-            this.leaveButton = new System.Windows.Forms.Button();
+            this.queryButton = new System.Windows.Forms.Button();
             this.signOutButton = new System.Windows.Forms.Button();
             this.changeButton = new System.Windows.Forms.Button();
             this.keepTimer = new System.Windows.Forms.Timer(this.components);
@@ -80,16 +80,16 @@
             this.stateLabel.Text = "State";
             this.stateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // leaveButton
+            // queryButton
             // 
-            this.leaveButton.Location = new System.Drawing.Point(129, 162);
-            this.leaveButton.Margin = new System.Windows.Forms.Padding(2);
-            this.leaveButton.Name = "leaveButton";
-            this.leaveButton.Size = new System.Drawing.Size(115, 28);
-            this.leaveButton.TabIndex = 3;
-            this.leaveButton.Text = "提前下线";
-            this.leaveButton.UseVisualStyleBackColor = true;
-            this.leaveButton.Click += new System.EventHandler(this.leaveButton_Click);
+            this.queryButton.Location = new System.Drawing.Point(129, 162);
+            this.queryButton.Margin = new System.Windows.Forms.Padding(2);
+            this.queryButton.Name = "queryButton";
+            this.queryButton.Size = new System.Drawing.Size(115, 28);
+            this.queryButton.TabIndex = 3;
+            this.queryButton.Text = "查询记录";
+            this.queryButton.UseVisualStyleBackColor = true;
+            this.queryButton.Click += new System.EventHandler(this.queryButton_Click);
             // 
             // signOutButton
             // 
@@ -187,7 +187,7 @@
             this.Controls.Add(this.roomLabel);
             this.Controls.Add(this.changeButton);
             this.Controls.Add(this.signOutButton);
-            this.Controls.Add(this.leaveButton);
+            this.Controls.Add(this.queryButton);
             this.Controls.Add(this.stateLabel);
             this.Controls.Add(this.IDLabel);
             this.Controls.Add(this.nameLabel);
@@ -216,7 +216,7 @@
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Label IDLabel;
         private System.Windows.Forms.Label stateLabel;
-        private System.Windows.Forms.Button leaveButton;
+        private System.Windows.Forms.Button queryButton;
         private System.Windows.Forms.Button signOutButton;
         private System.Windows.Forms.Button changeButton;
         private System.Windows.Forms.Timer keepTimer;

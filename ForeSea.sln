@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageProgram", "Management
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckInProgram", "CheckInProgram\CheckInProgram.csproj", "{4D8CE339-68DB-41F1-9A83-77D850BE76D2}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ForeSea", "ForeSea\ForeSea.sqlproj", "{9A57456B-179A-4667-ACBA-D3B4DE77C77C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,12 @@ Global
 		{4D8CE339-68DB-41F1-9A83-77D850BE76D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D8CE339-68DB-41F1-9A83-77D850BE76D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D8CE339-68DB-41F1-9A83-77D850BE76D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

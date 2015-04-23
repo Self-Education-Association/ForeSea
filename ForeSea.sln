@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageProgram", "Management
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckInProgram", "CheckInProgram\CheckInProgram.csproj", "{4D8CE339-68DB-41F1-9A83-77D850BE76D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentData", "StudentData\StudentData.csproj", "{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{4D8CE339-68DB-41F1-9A83-77D850BE76D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D8CE339-68DB-41F1-9A83-77D850BE76D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D8CE339-68DB-41F1-9A83-77D850BE76D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

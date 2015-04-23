@@ -95,19 +95,36 @@ namespace CheckInProgram
                     return;
                 }
                 SqlCommand cmd = new SqlCommand("dbo.CheckInDoCheckIn", Program.conn);
+                SqlCommand query = new SqlCommand("dbo.CheckInQuery", Program.conn);
                 cmd.CommandType = CommandType.StoredProcedure;
+                query.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.VarChar, 50));
                 cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 50));
                 cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.VarChar, 50));
                 cmd.Parameters["@result"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@id"].Value = enterIDBox.Text;
                 cmd.Parameters["@ip"].Value = Program.GetLocalIp();
+                query.Parameters.Add(new SqlParameter("@id", SqlDbType.Char, 9));
+                query.Parameters.Add(new SqlParameter("@total", SqlDbType.SmallInt));
+                query.Parameters.Add(new SqlParameter("@normal", SqlDbType.SmallInt));
+                query.Parameters.Add(new SqlParameter("@late", SqlDbType.SmallInt));
+                query.Parameters.Add(new SqlParameter("@truancy", SqlDbType.SmallInt));
+                query.Parameters["@total"].Direction = ParameterDirection.Output;
+                query.Parameters["@normal"].Direction = ParameterDirection.Output;
+                query.Parameters["@late"].Direction = ParameterDirection.Output;
+                query.Parameters["@truancy"].Direction = ParameterDirection.Output;
+                query.Parameters["@id"].Value = enterIDBox.Text;
                 Program.conn.Open();
                 cmd.ExecuteScalar();
                 if ((string)cmd.Parameters["@result"].Value == "正常" || (string)cmd.Parameters["@result"].Value == "迟到" || (string)cmd.Parameters["@result"].Value == "换机成功")
                 {
                     Program.sState = (string)cmd.Parameters["@result"].Value;
-                    MessageBox.Show("你已经签到！你的状态是：" + Program.sState + "，可以开始你的学习了！", "签到成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    query.ExecuteNonQuery();
+                    MessageBox.Show("你已经签到！你过去的签到记录为：\n\r总计" + query.Parameters["@total"].Value +
+                                                           "次，其中正常" + query.Parameters["@normal"].Value +
+                                                           "次，迟到" + query.Parameters["@late"].Value +
+                                                           "次，旷课" + query.Parameters["@truancy"].Value +
+                                                           "次。\n\r本节课你的状态是：" + Program.sState + "，可以开始你的学习了！", "签到成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Form normal = new Normal(Program.sID, Program.sName, Program.sState, Program.sRoom);
                     normal.Show();
                     this.Hide();

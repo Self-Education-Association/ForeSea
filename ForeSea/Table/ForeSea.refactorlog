@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="8b770135-1c3b-43bd-a76b-cbefb5c5faee" ChangeDateTime="04/08/2015 14:36:55">
+    <Property Name="ElementName" Value="[dbo].[Che_Tim].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Che_Tim]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Lesson" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="23af01aa-add9-4853-bde6-2e955be21c31" ChangeDateTime="04/08/2015 14:49:08">
+    <Property Name="ElementName" Value="[dbo].[FS_Term].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FS_Term]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Term" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="91c63a31-a035-4788-a4f0-986d307c382b" ChangeDateTime="04/08/2015 14:50:06">
+    <Property Name="ElementName" Value="[dbo].[FS_Term].[StaDat]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FS_Term]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="StaDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e12c43ce-b8d7-4114-bd9b-1c11323bdcde" ChangeDateTime="04/08/2015 14:53:47">
+    <Property Name="ElementName" Value="[dbo].[Che_Rom].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Che_Rom]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IP" />
+  </Operation>
+</Operations>

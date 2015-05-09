@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.IO;
-using Microsoft.Office.Interop.Excel;
 
 namespace StudentData
 {
@@ -17,7 +16,7 @@ namespace StudentData
             string[] files;
             int filesCount;
             System.Data.DataTable dt = new System.Data.DataTable();
-            Console.WriteLine("请输入TXT文件内容中需要忽略的行数\n");
+            Console.WriteLine("请输入TXT文件内容中需要忽略的行数(一般默认值为5)\n");
             ignoreLine = int.Parse(Console.ReadLine());
             files = Directory.GetFiles(System.Environment.CurrentDirectory, "*.txt", SearchOption.AllDirectories);
             filesCount = files.Count();
@@ -25,7 +24,14 @@ namespace StudentData
             {
                 dt = DataTableUnion(dt, txtToDataTable(files[i], ignoreLine));
             }
-            DataTabletoExcel(dt, System.Environment.CurrentDirectory + "\\output.xlsx");
+            if (datatableToCSV(dt,"output.csv")==true)
+            {
+                Console.WriteLine("Done!");
+            }
+            else
+            {
+                Console.WriteLine("Failed!");
+            }
         }
 
         public static System.Data.DataTable txtToDataTable(string filepath,int ignoreLine)
@@ -75,48 +81,6 @@ namespace StudentData
             }
         }
 
-        public static void DataTabletoExcel(System.Data.DataTable tmpDataTable, string strFileName)
-        {
-            if (tmpDataTable == null)
-                return;
-            int rowNum = tmpDataTable.Rows.Count;
-            int columnNum = tmpDataTable.Columns.Count;
-            int rowIndex = 1;
-            int columnIndex = 0;
-
-            Microsoft.Office.Interop.Excel.Application xlApp = new ApplicationClass();
-            xlApp.DefaultFilePath = "";
-            xlApp.DisplayAlerts = true;
-            xlApp.SheetsInNewWorkbook = 1;
-            Workbook xlBook = xlApp.Workbooks.Add(true);
-
-            //将DataTable的列名导入Excel表第一行
-            foreach (DataColumn dc in tmpDataTable.Columns)
-            {
-                columnIndex++;
-                xlApp.Cells[rowIndex, columnIndex] = dc.ColumnName;
-            }
-
-            //将DataTable中的数据导入Excel中
-            for (int i = 0; i < rowNum; i++)
-            {
-                rowIndex++;
-                columnIndex = 0;
-                for (int j = 0; j < columnNum; j++)
-                {
-                    columnIndex++;
-                    xlApp.Cells[rowIndex, columnIndex] = tmpDataTable.Rows[i][j].ToString();
-                }
-            }
-            xlBook.SaveCopyAs(strFileName);
-            xlBook.Close();
-            xlApp.Quit();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(xlBook);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
-            GC.Collect();
-            GC.WaitForPendingFinalizers();  
-        }
-
         public static System.Data.DataTable DataTableUnion(System.Data.DataTable dataTable1, System.Data.DataTable dataTable2)
         {
             if (dataTable2==null)
@@ -135,6 +99,47 @@ namespace StudentData
                 dataTable1.Rows.Add(obj);
             }
             return dataTable1;
+        }
+
+        public static bool datatableToCSV(DataTable dt, string fileName)
+        {
+            try
+            {
+                FileStream fs = new FileStream(fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.Default);
+                string data = "";
+                //写出列名称
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    data += dt.Columns[i].ColumnName.ToString();
+                    if (i < dt.Columns.Count - 1)
+                    {
+                        data += ",";
+                    }
+                }
+                sw.WriteLine(data);
+                //写出各行数据
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    data = "";
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        data += dt.Rows[i][j].ToString();
+                        if (j < dt.Columns.Count - 1)
+                        {
+                            data += ",";
+                        }
+                    }
+                    sw.WriteLine(data);
+                }
+                sw.Close();
+                fs.Close();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

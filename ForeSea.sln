@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckInProgram", "CheckInPr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentData", "StudentData\StudentData.csproj", "{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ForeSea", "ForeSea\ForeSea.sqlproj", "{9A57456B-179A-4667-ACBA-D3B4DE77C77C}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ForeSea", "ForeSea\ForeSea.sqlproj", "{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +35,12 @@ Global
 		{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A57456B-179A-4667-ACBA-D3B4DE77C77C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

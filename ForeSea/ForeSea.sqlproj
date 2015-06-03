@@ -7,7 +7,7 @@
     <Name>ForeSea</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{9a57456b-179a-4667-acba-d3b4de77c77c}</ProjectGuid>
+    <ProjectGuid>{80ba8e87-eeff-4d7a-80dc-aa09c82db596}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
@@ -57,18 +57,18 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="Table" />
-    <Folder Include="StoredProcedure" />
+    <Folder Include="存储过程" />
+    <Folder Include="表" />
+    <Folder Include="视图" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Table\Che_Rom.sql" />
-    <Build Include="Table\Che_Stu_Dtl.sql" />
+    <Build Include="表\Table_Student_Data.sql" />
+    <Build Include="表\Table_Student_More.sql" />
+    <Build Include="表\Table_College.sql" />
+    <Build Include="表\Table_Checkin_Details.sql" />
+    <Build Include="表\Table_Manage_Checkin.sql" />
   </ItemGroup>
   <ItemGroup>
-    <RefactorLog Include="Table\ForeSea.refactorlog" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="Table\Che_Tim.sql" />
-    <Build Include="Table\FS_Term.sql" />
+    <RefactorLog Include="ForeSea.refactorlog" />
   </ItemGroup>
 </Project>

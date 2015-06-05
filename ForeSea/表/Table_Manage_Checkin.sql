@@ -1,9 +1,0 @@
-﻿CREATE TABLE [dbo].[Table_Manage_Checkin]
-(
-	[GUID] UNIQUEIDENTIFIER NOT NULL, 
-    [Type] NVARCHAR(MAX) NOT NULL, 
-    [Old] NVARCHAR(MAX) NULL, 
-    [New] NVARCHAR(MAX) NULL, 
-    [Manager] NVARCHAR(MAX) NOT NULL, 
-    [Time] TIME(0) NOT NULL DEFAULT CONVERT(TIME,GETDATE()) 
-)

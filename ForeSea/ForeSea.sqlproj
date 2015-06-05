@@ -23,6 +23,7 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <AutoShrink>True</AutoShrink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -66,7 +67,15 @@
     <Build Include="表\Table_Student_More.sql" />
     <Build Include="表\Table_College.sql" />
     <Build Include="表\Table_Checkin_Details.sql" />
-    <Build Include="表\Table_Manage_Checkin.sql" />
+    <Build Include="表\Table_Checkin_State.sql" />
+    <Build Include="表\Table_Checkin_Certificate.sql" />
+    <Build Include="表\Table_Checkin_History.sql" />
+    <Build Include="表\Table_Term.sql" />
+    <Build Include="表\Table_Course_Details.sql" />
+    <Build Include="表\Table_Course_Certificate.sql" />
+    <Build Include="表\Table_Course_History.sql" />
+    <Build Include="表\Table_Disobey_Details.sql" />
+    <Build Include="表\Table_Disobey_Certificate.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ForeSea.refactorlog" />

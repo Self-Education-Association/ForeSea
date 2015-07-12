@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[Certificate_Details]
+(
+	[GUID] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(), 
+    [Term] SMALLINT NOT NULL, 
+    [School] SMALLINT NOT NULL, 
+    [Staff] SMALLINT NOT NULL, 
+    [Date] DATE NOT NULL DEFAULT GETDATE(), 
+    [Type] SMALLINT NOT NULL, 
+    [Detail] NTEXT NULL, 
+    [State] NVARCHAR(10) NOT NULL, 
+    [Note] NTEXT NULL
+)

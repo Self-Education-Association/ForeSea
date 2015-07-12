@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[Staff]
+(
+	[ID] INT NOT NULL PRIMARY KEY, 
+    [Name] NVARCHAR(50) NOT NULL, 
+    [Time] DATETIME2(0) NOT NULL DEFAULT GETDATE(), 
+    [State] NVARCHAR(50) NOT NULL
+)

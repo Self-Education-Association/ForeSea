@@ -61,6 +61,7 @@
     <Folder Include="存储过程" />
     <Folder Include="表" />
     <Folder Include="视图" />
+    <Folder Include="函数" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ForeSea.refactorlog" />
@@ -77,5 +78,24 @@
     <Build Include="表\Certificate_Details.sql" />
     <Build Include="表\Certificate_Relations.sql" />
     <Build Include="表\Certificate_Type.sql" />
+    <Build Include="视图\View_All_Tables.sql" />
+    <Build Include="表\Settings.sql" />
+    <Build Include="视图\View_List_CheckIn.sql" />
+    <Build Include="视图\View_List_Course.sql" />
+    <Build Include="视图\View_List_Disobey.sql" />
+    <Build Include="视图\View_List_Certificate_School.sql" />
+    <Build Include="视图\View_List_Certificate_Student.sql" />
+    <Build Include="表\CheckIn_Time.sql" />
+    <Build Include="表\CheckIn_Room.sql" />
+    <Build Include="存储过程\SP_CheckIn_Run.sql" />
+    <Build Include="存储过程\SP_CheckIn_Check.sql" />
+    <Build Include="表\CheckIn_Block.sql" />
+    <Build Include="函数\F_Term.sql" />
+    <Build Include="存储过程\SP_CheckIn_DoCheckIn.sql" />
+    <Build Include="函数\F_ChangeOvertime.sql" />
+    <Build Include="函数\F_KeepOvertime.sql" />
+    <Build Include="存储过程\SP_CheckIn_Keep.sql" />
+    <Build Include="存储过程\SP_CheckIn_Leave.sql" />
+    <Build Include="存储过程\SP_CheckIn_DoCheckOut.sql" />
   </ItemGroup>
 </Project>

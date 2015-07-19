@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[CheckIn_Room]
+(
+	[IP] VARCHAR(10) NOT NULL PRIMARY KEY, 
+    [Room] NVARCHAR(10) NOT NULL, 
+    [Block] NVARCHAR(10) NOT NULL, 
+    [Enable] BIT NOT NULL DEFAULT 1
+)

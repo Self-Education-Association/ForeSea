@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Disobey_Type]
 (
-	[Type] SMALLINT NOT NULL PRIMARY KEY, 
+	[Type] TINYINT NOT NULL PRIMARY KEY, 
     [Name] NVARCHAR(50) NOT NULL, 
     [Class] SMALLINT NOT NULL
 )

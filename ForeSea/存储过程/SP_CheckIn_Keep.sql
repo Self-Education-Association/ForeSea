@@ -1,0 +1,17 @@
+﻿CREATE PROCEDURE [dbo].[SP_CheckIn_Keep]
+	@id INT,
+	@result SMALLINT=400
+AS
+	IF (SELECT ID FROM CheckIn_Details WHERE ID=@id AND State=0) IS NOT NULL
+	BEGIN
+		UPDATE CheckIn_Details SET Keep=CONVERT(TIME(0),GETDATE()) WHERE ID=@id AND State=0 AND DATEDIFF(MINUTE,Keep,CONVERT(TIME(0),GETDATE()))<=F_KeepOvertime()
+		SET @result=401
+		RETURN 1
+	END
+	ELSE
+	BEGIN
+		SET @result=402
+		RETURN 1
+	END
+		
+RETURN 0

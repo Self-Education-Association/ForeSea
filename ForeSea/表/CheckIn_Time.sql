@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[CheckIn_Time]
+(
+	[Lesson] TINYINT NOT NULL PRIMARY KEY, 
+    [StartIn] DATETIME2(0) NOT NULL, 
+    [LateIn] DATETIME2(0) NOT NULL, 
+    [EndIn] DATETIME2(0) NOT NULL, 
+    [StartOut] DATETIME2(0) NOT NULL, 
+    [EndOut] DATETIME2(0) NOT NULL
+)

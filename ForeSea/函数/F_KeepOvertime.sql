@@ -1,0 +1,7 @@
+﻿CREATE FUNCTION [dbo].[F_KeepOvertime]
+()
+RETURNS TINYINT
+AS
+BEGIN
+	RETURN (SELECT TOP 1 KeepOvertime FROM Settings)
+END

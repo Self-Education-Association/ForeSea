@@ -6,9 +6,10 @@
 	@room VARCHAR(10)='' OUTPUT,
 	@result SMALLINT=300 OUTPUT
 AS
-	DECLARE @time TIME(0)=CONVERT(TIME,GETDATE())
-	DECLARE @date DATE=CONVERT(DATE,GETDATE())
-	DECLARE @lesson TINYINT=(SELECT Lesson FROM CheckIn_Time WHERE @time BETWEEN StartIn AND EndIn)
+	DECLARE @datetime DATETIME2(0)=GETDATE()
+	DECLARE @time TIME(0)=CONVERT(TIME,@datetime)
+	DECLARE @date DATE=CONVERT(DATE,@datetime)
+	DECLARE @lesson TINYINT=(SELECT Lesson FROM CheckIn_Time WHERE @datetime BETWEEN StartIn AND EndIn)
 	IF @lesson IS NULL
 	BEGIN
 		SET @result=302
@@ -16,7 +17,7 @@ AS
 	END
 	IF (SELECT ID FROM CheckIn_Details WHERE ID=@id AND State=4) IS NOT NULL
 	BEGIN
-		IF DATEDIFF(MINUTE,(SELECT Change FROM CheckIn_Details WHERE ID=@id AND State=4),@time)>F_ChangeOvertime()
+		IF DATEDIFF(MINUTE,(SELECT Change FROM CheckIn_Details WHERE ID=@id AND State=4),@time)>dbo.F_ChangeOvertime()
 		BEGIN
 			SET @result=312
 			RETURN 1
@@ -30,7 +31,7 @@ AS
 		BEGIN
 			DECLARE @LateState BIT=(SELECT LateState FROM CheckIn_Details WHERE ID=@id AND State=4)
 			UPDATE CheckIn_Details SET State=5,Change=@time WHERE ID=@id AND State=4
-			INSERT INTO CheckIn_Details(ID,Lesson,Date,Keep,IP,LateState,State)
+			INSERT INTO CheckIn_Details(ID,Lesson,Date,CheckIn,Keep,IP,LateState,State)
 				VALUES(@id,@lesson,@date,@time,@time,@ip,@LateState,0)
 			SET @result=311
 			RETURN 1
@@ -45,7 +46,7 @@ AS
 		SET @result=303
 		RETURN 1
 	END
-	IF (SELECT Lesson FROM CheckIn_Time WHERE Lesson=@lesson AND @time BETWEEN StartIn AND LateIn) IS NULL
+	IF (SELECT Lesson FROM CheckIn_Time WHERE Lesson=@lesson AND @datetime BETWEEN StartIn AND LateIn) IS NULL
 		SET @LateState=1
 	ELSE
 		SET @LateState=0

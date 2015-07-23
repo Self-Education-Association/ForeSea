@@ -12,7 +12,7 @@ AS
 		SET @result=102
 		RETURN 1
 	END
-	IF (SELECT IP FROM CheckIn_Details WHERE IP=@ip AND [State]=0 AND DATEDIFF(MINUTE,Keep,CONVERT(TIME(0),@time))<=F_KeepOvertime()) IS NOT NULL
+	IF (SELECT IP FROM CheckIn_Details WHERE IP=@ip AND [State]=0 AND DATEDIFF(MINUTE,Keep,CONVERT(TIME(0),@time))<=dbo.F_KeepOvertime()) IS NOT NULL
 	BEGIN
 		SELECT @id=A.ID,@name=B.Name,@state=A.[State],@room=C.Room,@result=103
 		FROM CheckIn_Details A

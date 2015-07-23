@@ -79,7 +79,7 @@ namespace CheckInProgram
         static public string Version = ConfigurationManager.AppSettings["Version"];
         static public string Name = ConfigurationManager.AppSettings["Name"];
         static public string Author = ConfigurationManager.AppSettings["Author"];
-        static public string ConnectString = System.Text.RegularExpressions.Regex.Unescape(ConfigurationManager.AppSettings["ConnectString"]);
+        static public string ConnectString = @"Data Source=(localdb)\ProjectsV12;Initial Catalog=ForeSea;Integrated Security=True;";
         static public string Powered = ConfigurationManager.AppSettings["Powered"];
         static public string LinkLabel = ConfigurationManager.AppSettings["LinkLabel"];
         static public string LinkUrl = ConfigurationManager.AppSettings["LinkUrl"];

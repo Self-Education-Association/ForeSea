@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Course_Details]
 (
 	[GUID] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(), 
-    [Term] SMALLINT NOT NULL DEFAULT F_Term(), 
+    [Term] SMALLINT NOT NULL DEFAULT dbo.F_Term(), 
     [ID] INT NOT NULL, 
     [Lesson] TINYINT NOT NULL, 
     CONSTRAINT [FK_Course_Details_Student] FOREIGN KEY ([ID]) REFERENCES [Student]([ID])

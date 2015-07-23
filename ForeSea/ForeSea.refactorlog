@@ -287,4 +287,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ChangeOvertime" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="0e1ae106-4ad8-4bf9-9a07-cda36dcbe8cb" ChangeDateTime="07/23/2015 12:29:34">
+    <Property Name="ElementName" Value="[dbo].[CheckIn_Error].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CheckIn_Error]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="GUID" />
+  </Operation>
 </Operations>

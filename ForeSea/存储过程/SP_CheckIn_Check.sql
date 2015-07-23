@@ -16,7 +16,7 @@ AS
 		SET @result=203
 		RETURN 1
 	END
-	IF (SELECT ID FROM Course_Details WHERE Term=F_TERM() AND Lesson=@lesson AND ID=@id) IS NULL
+	IF (SELECT ID FROM Course_Details WHERE Term=dbo.F_Term() AND Lesson=@lesson AND ID=@id) IS NULL
 	BEGIN
 		SET @result=204
 		RETURN 1

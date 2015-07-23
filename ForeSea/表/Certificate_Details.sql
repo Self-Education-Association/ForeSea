@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Certificate_Details]
 (
 	[GUID] UNIQUEIDENTIFIER NOT NULL  DEFAULT NEWID(), 
-    [Term] SMALLINT NOT NULL DEFAULT F_Term(), 
+    [Term] SMALLINT NOT NULL DEFAULT dbo.F_Term(), 
     [School] TINYINT NOT NULL, 
     [Staff] SMALLINT NOT NULL, 
     [Date] DATE NOT NULL DEFAULT GETDATE(), 

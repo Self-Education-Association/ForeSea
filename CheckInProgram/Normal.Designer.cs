@@ -89,7 +89,6 @@
             this.queryButton.TabIndex = 3;
             this.queryButton.Text = "查询记录";
             this.queryButton.UseVisualStyleBackColor = true;
-            this.queryButton.Click += new System.EventHandler(this.queryButton_Click);
             // 
             // signOutButton
             // 
@@ -161,9 +160,9 @@
             // 
             // checkIfThereButton
             // 
-            this.checkIfThereButton.Location = new System.Drawing.Point(11, 129);
+            this.checkIfThereButton.Location = new System.Drawing.Point(10, 71);
             this.checkIfThereButton.Name = "checkIfThereButton";
-            this.checkIfThereButton.Size = new System.Drawing.Size(232, 60);
+            this.checkIfThereButton.Size = new System.Drawing.Size(232, 52);
             this.checkIfThereButton.TabIndex = 9;
             this.checkIfThereButton.Text = "请点击本按钮确认在线";
             this.checkIfThereButton.UseVisualStyleBackColor = true;

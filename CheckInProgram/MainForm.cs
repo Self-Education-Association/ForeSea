@@ -48,33 +48,42 @@ namespace CheckInProgram
             {
                 if ( (enterIDBox.Text.Count() != 9) || !IsNumeric(enterIDBox.Text))
                 {
-                    return "认证失败：请输入正确的学号！\n\r错误代码501";
+                    Print.show("认证失败，请输入正确的学号。");
+                    return "";
                 }
-                SqlCommand cmd = new SqlCommand("dbo.CheckInCheckIsOK", Program.conn);
+                SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_Check", Program.conn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.NChar, 9));
-                cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 50));
-                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.NVarChar, 50));
-                cmd.Parameters.Add(new SqlParameter("@lesson", SqlDbType.SmallInt));
-                cmd.Parameters.Add(new SqlParameter("@room", SqlDbType.NVarChar, 50));
+                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 15));
+                cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar, 20));
+                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.SmallInt));
+                cmd.Parameters["@name"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@result"].Direction = ParameterDirection.Output;
-                cmd.Parameters["@lesson"].Direction = ParameterDirection.Output;
-                cmd.Parameters["@room"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@id"].Value = enterIDBox.Text;
                 cmd.Parameters["@ip"].Value = Program.GetLocalIp();
                 Program.conn.Open();
                 cmd.ExecuteScalar();
-                Program.sName = (string)cmd.Parameters["@result"].Value;
-                Program.sID = (string)cmd.Parameters["@id"].Value;
-                if (cmd.Parameters["@room"].Value != DBNull.Value)
-                    Program.sRoom = (string)cmd.Parameters["@room"].Value;
-                if (cmd.Parameters["@lesson"].Value != DBNull.Value)
-                    Program.sLesson = (short)cmd.Parameters["@lesson"].Value;
-                return cmd.Parameters["@result"].Value.ToString();
+                int result = (int)cmd.Parameters["@result"].Value;
+                switch (result)
+                {
+                    case 200:
+                    case 202:
+                    case 203:
+                    case 204:
+                        Print.show(result);
+                        break;
+                    case 201:
+                        return (string)cmd.Parameters["@name"].Value;
+                    default:
+                        Print.show("未知操作代码。");
+                        break;
+                }
+                return "";
             }
             catch(Exception ex)
             {
-                return "认证失败：" + ex.Message + "\n\r错误代码60X";
+                Print.show(ex.Message);
+                return "";
             }
             finally
             {
@@ -85,57 +94,49 @@ namespace CheckInProgram
         {
             try
             {
-                if (ifCheckIsOK.Length >= 15)
-                {
-                    Program.Error(ifCheckIsOK);
-                    return;
-                }
                 if (MessageBox.Show("你的姓名是："+ifCheckIsOK+"\n你确认要签到么？","确认签到",MessageBoxButtons.YesNo,MessageBoxIcon.Question)!=DialogResult.Yes)
                 {
                     return;
                 }
-                SqlCommand cmd = new SqlCommand("dbo.CheckInDoCheckIn", Program.conn);
-                SqlCommand query = new SqlCommand("dbo.CheckInQuery", Program.conn);
+                SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_DoCheckIn", Program.conn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                query.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.VarChar, 50));
-                cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 50));
-                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.VarChar, 50));
+                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 15));
+                cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.VarChar, 20));
+                cmd.Parameters.Add(new SqlParameter("@state", SqlDbType.TinyInt));
+                cmd.Parameters.Add(new SqlParameter("@room", SqlDbType.VarChar, 10));
+                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.SmallInt));
+                cmd.Parameters["@name"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@state"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@room"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@result"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@id"].Value = enterIDBox.Text;
                 cmd.Parameters["@ip"].Value = Program.GetLocalIp();
-                query.Parameters.Add(new SqlParameter("@id", SqlDbType.Char, 9));
-                query.Parameters.Add(new SqlParameter("@total", SqlDbType.SmallInt));
-                query.Parameters.Add(new SqlParameter("@normal", SqlDbType.SmallInt));
-                query.Parameters.Add(new SqlParameter("@late", SqlDbType.SmallInt));
-                query.Parameters.Add(new SqlParameter("@truancy", SqlDbType.SmallInt));
-                query.Parameters["@total"].Direction = ParameterDirection.Output;
-                query.Parameters["@normal"].Direction = ParameterDirection.Output;
-                query.Parameters["@late"].Direction = ParameterDirection.Output;
-                query.Parameters["@truancy"].Direction = ParameterDirection.Output;
-                query.Parameters["@id"].Value = enterIDBox.Text;
                 Program.conn.Open();
                 cmd.ExecuteScalar();
-                if ((string)cmd.Parameters["@result"].Value == "正常" || (string)cmd.Parameters["@result"].Value == "迟到" || (string)cmd.Parameters["@result"].Value == "换机成功")
+                int result = (int)cmd.Parameters["@result"].Value;
+                Program.student = new Student((int)cmd.Parameters["@id"].Value, (string)cmd.Parameters["@name"].Value, (int)cmd.Parameters["@state"].Value, (string)cmd.Parameters["@room"].Value);
+                switch (result)
                 {
-                    Program.sState = (string)cmd.Parameters["@result"].Value;
-                    query.ExecuteNonQuery();
-                    MessageBox.Show("你已经签到！你过去的签到记录为：\n\r总计" + query.Parameters["@total"].Value +
-                                                           "次，其中正常" + query.Parameters["@normal"].Value +
-                                                           "次，迟到" + query.Parameters["@late"].Value +
-                                                           "次，旷课" + query.Parameters["@truancy"].Value +
-                                                           "次。\n\r本节课你的状态是：" + Program.sState + "，可以开始你的学习了！", "签到成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Form normal = new Normal(Program.sID, Program.sName, Program.sState, Program.sRoom);
-                    normal.Show();
-                    this.Hide();
-                    return;
+                    case 300:
+                    case 302:
+                    case 303:
+                    case 312:
+                    case 313:
+                        Print.show(result);
+                        break;
+                    case 301:
+                    case 311:
+                        Print.infomsg("签到成功，你可以开始你的学习了！", "签到成功");
+                        Normal normal = new Normal(Program.student);
+                        normal.Show();
+                        this.Hide();
+                        return;
                 }
-                Program.Error((string)cmd.Parameters["@result"].Value);
-                return;
             }
             catch(Exception ex)
             {
-                Program.Error(ex.Message);
+                Print.show(ex.Message);
             }
             finally
             {
@@ -148,42 +149,41 @@ namespace CheckInProgram
         {
             try
             {
-                SqlCommand cmd = new SqlCommand("dbo.CheckInRun", Program.conn);
+                SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_Run", Program.conn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.NVarChar, 50));
-                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.NVarChar, 9));
-                cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar, 50));
-                cmd.Parameters.Add(new SqlParameter("@state", SqlDbType.NVarChar, 50));
-                cmd.Parameters.Add(new SqlParameter("@room", SqlDbType.NVarChar, 50));
-                cmd.Parameters.Add(new SqlParameter("@lesson", SqlDbType.NVarChar, 50));
+                cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 15));
+                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar, 20));
+                cmd.Parameters.Add(new SqlParameter("@state", SqlDbType.TinyInt));
+                cmd.Parameters.Add(new SqlParameter("@room", SqlDbType.NVarChar, 10));
+                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.SmallInt));
                 cmd.Parameters["@id"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@name"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@state"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@room"].Direction = ParameterDirection.Output;
-                cmd.Parameters["@lesson"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@result"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@ip"].Value = Program.GetLocalIp();
                 Program.conn.Open();
                 cmd.ExecuteScalar();
-                if (cmd.Parameters["@id"].Value.ToString() != "0")
+                int result = (int)cmd.Parameters["@result"].Value;
+                Program.student=new Student((int)cmd.Parameters["@id"].Value,(string)cmd.Parameters["@name"].Value,(int)cmd.Parameters["@state"].Value,(string)cmd.Parameters["@room"].Value);
+                switch (result)
                 {
-                    Program.sID = (string)cmd.Parameters["@id"].Value;
-                    Program.sName = (string)cmd.Parameters["@name"].Value;
-                    Program.sState = (string)cmd.Parameters["@state"].Value;
-                    Program.sRoom = (string)cmd.Parameters["@room"].Value;
-                    Form normal = new Normal(Program.sID, Program.sName, Program.sState, Program.sRoom);
-                    this.Hide();
-                    normal.Show();
+                    case 100:
+                    case 102:
+                        Print.show(result);
+                        break;
+                    case 103:
+                        Normal normal = new Normal(Program.student);
+                        normal.Show();
+                        this.Hide();
+                        return;
                 }
-                if (cmd.Parameters["@room"].Value == DBNull.Value)
-                {
-                    Program.Error("启动失败:本机不是签到机器！\n\r错误代码101");
-                    Application.Exit();
-                }
-                    enterIDBox.Focus();
+                enterIDBox.Focus();
             }
             catch (Exception ex)
             {
-                Program.Error("启动失败：" + ex.Message + "\n\r错误代码60X");
+                Print.show(ex.Message);
                 Application.Exit();
             }
             finally

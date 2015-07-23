@@ -15,13 +15,13 @@ namespace CheckInProgram
 {
     public partial class Normal : Form
     {
-        public Normal(string id,string name,string state,string room)
+        public Normal(Student student)
         {
             InitializeComponent();
-            IDLabel.Text = id;
-            nameLabel.Text = name;
-            stateLabel.Text = state;
-            roomLabel.Text = room;
+            IDLabel.Text = student.id.ToString();
+            nameLabel.Text = student.name;
+            stateLabel.Text = student.state.ToString();
+            roomLabel.Text = student.room;
             keepTimer.Interval = int.Parse(Program.KP) * 60 * 1000;
             checkTimer.Interval = int.Parse(Program.Overtime) * 60 * 1000;
         }
@@ -58,20 +58,20 @@ namespace CheckInProgram
                     checkIfThere();
                     return;
                 }
-                SqlCommand cmd = new SqlCommand("dbo.CheckInKeep",Program.conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.NChar, 9));
-                cmd.Parameters["@id"].Value = Program.sID;
-                Program.conn.Open();
-                cmd.ExecuteScalar();
+                int result = databaseTransport("dbo.SP_CheckIn_Keep");
+                switch(result)
+                {
+                    case 400:
+                    case 402:
+                        Print.show(result);
+                        break;
+                    case 401:
+                        break;
+                }
             }
             catch(Exception ex)
             {
-                Program.Error(ex.Message);
-            }
-            finally
-            {
-                Program.conn.Close();
+                Print.show(ex.Message);
             }
         }
 
@@ -85,19 +85,21 @@ namespace CheckInProgram
                 checkIfThereButton.Visible = false;
                 this.BackColor = Color.Red;
                 stateLabel.Text = "确认操作超时";
-                Program.sState = "旷课";
-                SqlCommand cmd = new SqlCommand("",Program.conn);
-                cmd.CommandText = "UPDATE dbo.[CheckIn.StudentDetails] SET [State]='旷课', [Note]='规定时间内未选择确认对话框' WHERE lesson=" + Program.sLesson + " AND id=" + Program.sID + " AND [State]='在线'";
-                Program.conn.Open();
-                cmd.ExecuteScalar();
+                Program.student.state = 3;
+                int result = databaseTransport("dbo.SP_CheckIn_NotHere");
+                switch (result)
+                {
+                    case 600:
+                    case 602:
+                        Print.show(result);
+                        break;
+                    case 601:
+                        break;
+                }
             }
             catch(Exception ex)
             {
-                Program.Error(ex.Message);
-            }
-            finally
-            {
-                Program.conn.Close();
+                Print.show(ex.Message);
             }
         }
 
@@ -108,44 +110,23 @@ namespace CheckInProgram
                 coldDownTimer.Enabled = true;
                 signOutButton.Enabled = false;
                 signOutButton.Text = "两分钟后可以点击";
-                SqlCommand cmd = new SqlCommand("dbo.CheckInCheckOut", Program.conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.NChar, 9));
-                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.NVarChar, 50));
-                cmd.Parameters.Add(new SqlParameter("@reason", SqlDbType.NVarChar, 50));
-                cmd.Parameters["@result"].Direction = ParameterDirection.Output;
-                cmd.Parameters["@reason"].Direction = ParameterDirection.Output;
-                cmd.Parameters["@id"].Value = Program.sID;
-                Program.conn.Open();
-                cmd.ExecuteScalar();
-                if(cmd.Parameters["@result"].Value == DBNull.Value)
+                int result = databaseTransport("dbo.SP_CheckIn_DoCheckOut");
+                switch (result)
                 {
-                    Program.Error("注销失败：无法找到你的记录，请立即联系值班员！\n\r错误代码502");
-                    Program.conn.Close();
-                    return;
-                }
-                if(cmd.Parameters["@reason"].Value != DBNull.Value)
-                {
-                    Program.Error("注销失败，因为" + cmd.Parameters["@reason"].Value + "，目前你的状态是" + cmd.Parameters["@result"].Value + "\n\r错误代码503");
-                    Program.conn.Close();
-                    if (ifExit(cmd.Parameters["@reason"].Value.ToString().Substring(0,4)))
-                    {
+                    case 700:
+                    case 702:
+                    case 703:
+                        Print.show(result);
+                        break;
+                    case 701:
+                        MessageBox.Show("注销成功，你已经完成了本堂课的学习！", "注销成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         Application.Exit();
-                    }
-                    return;
+                        break;
                 }
-                string show = "注销成功，本堂课你的状态是" + cmd.Parameters["@result"].Value;
-                MessageBox.Show(show, "注销成功",MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Program.conn.Close();
-                Application.Exit();
             }
             catch(Exception ex)
             {
-                Program.Error(ex.Message);
-            }
-            finally
-            {
-                Program.conn.Close();
+                Print.show(ex.Message);
             }
         }
 
@@ -155,19 +136,23 @@ namespace CheckInProgram
             {
                 if (MessageBox.Show("更换机器将导致本机下线，且规定时间内若没有在新的机器上线，你将被视为旷课，确定要更换机器么？\n\r注意：不能在同一台机器上使用换机功能上下机！", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    SqlCommand cmd = new SqlCommand("dbo.CheckInChange", Program.conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.NChar, 9));
-                    cmd.Parameters["@id"].Value = Program.sID;
-                    Program.conn.Open();
-                    cmd.ExecuteScalar();
-                    Program.conn.Close();
-                    Application.Exit();
+                    int result = databaseTransport("dbo.SP_CheckIn_Change");
+                    switch (result)
+                    {
+                        case 700:
+                        case 702:
+                            Print.show(result);
+                            break;
+                        case 701:
+                            Print.infomsg("换机成功，请在规定时间内在新的机器上线。", "换机成功");
+                            Application.Exit();
+                            break;
+                    }
                 }
             }
             catch(Exception ex)
             {
-                Program.Error(ex.Message);
+                Print.show(ex.Message);
             }
             finally
             {
@@ -183,12 +168,7 @@ namespace CheckInProgram
                 return;
             }
         }
-        private static bool ifExit(string reason)
-        {
-            if (reason == "现在不是")
-                return false;
-            return true;
-        }
+
         private void checkIfThere()
         {
             checkIfThereButton.Visible = true;
@@ -204,16 +184,20 @@ namespace CheckInProgram
             checkTimer.Enabled = false;
             try
             {
-                SqlCommand cmd = new SqlCommand("dbo.CheckInKeep", Program.conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.NChar, 9));
-                cmd.Parameters["@id"].Value = Program.sID;
-                Program.conn.Open();
-                cmd.ExecuteScalar();
+                int result = databaseTransport("dbo.SP_CheckIn_Keep");
+                switch (result)
+                {
+                    case 400:
+                    case 402:
+                        Print.show(result);
+                        break;
+                    case 401:
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                Program.Error(ex.Message);
+                Print.show(ex.Message);
             }
             finally
             {
@@ -228,10 +212,29 @@ namespace CheckInProgram
             signOutButton.Text = "注销";
         }
 
-        private void queryButton_Click(object sender, EventArgs e)
+        private int databaseTransport(string sp)
         {
-            QueryForm query = new QueryForm();
-            query.Show();
+            try
+            {
+                SqlCommand cmd = new SqlCommand(sp, Program.conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.SmallInt));
+                cmd.Parameters["@result"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@id"].Value = Program.student.id;
+                Program.conn.Open();
+                cmd.ExecuteNonQuery();
+                return (int)cmd.Parameters["@result"].Value;
+            }
+            catch (Exception ex)
+            {
+                Print.show(ex.Message);
+                return 0;
+            }
+            finally
+            {
+                Program.conn.Close();
+            }
         }
     }
 }

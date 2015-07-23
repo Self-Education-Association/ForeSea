@@ -98,5 +98,7 @@
     <Build Include="存储过程\SP_CheckIn_Leave.sql" />
     <Build Include="存储过程\SP_CheckIn_DoCheckOut.sql" />
     <Build Include="表\CheckIn_Error.sql" />
+    <Build Include="存储过程\SP_CheckIn_NotHere.sql" />
+    <Build Include="存储过程\SP_CheckIn_Change.sql" />
   </ItemGroup>
 </Project>

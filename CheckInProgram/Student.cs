@@ -14,6 +14,13 @@ namespace CheckInProgram
             this.state = state;
             this.room = room;
         }
+        public Student(object id,object name,object state,object room)
+        {
+            this.id = int.Parse(id.ToString());
+            this.name = name.ToString();
+            this.state = int.Parse(state.ToString());
+            this.room = room.ToString();
+        }
         public int id;
         public string name;
         public int state;

@@ -20,7 +20,7 @@ namespace CheckInProgram
             InitializeComponent();
             IDLabel.Text = student.id.ToString();
             nameLabel.Text = student.name;
-            stateLabel.Text = student.state.ToString();
+            stateLabel.Text = Print.state(student.state);
             roomLabel.Text = student.room;
             keepTimer.Interval = int.Parse(Program.KP) * 60 * 1000;
             checkTimer.Interval = int.Parse(Program.Overtime) * 60 * 1000;
@@ -224,7 +224,7 @@ namespace CheckInProgram
                 cmd.Parameters["@id"].Value = Program.student.id;
                 Program.conn.Open();
                 cmd.ExecuteNonQuery();
-                return (int)cmd.Parameters["@result"].Value;
+                return int.Parse(cmd.Parameters["@result"].Value.ToString());
             }
             catch (Exception ex)
             {

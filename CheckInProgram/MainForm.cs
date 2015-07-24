@@ -63,7 +63,7 @@ namespace CheckInProgram
                 cmd.Parameters["@ip"].Value = Program.GetLocalIp();
                 Program.conn.Open();
                 cmd.ExecuteScalar();
-                int result = (int)cmd.Parameters["@result"].Value;
+                int result = int.Parse(cmd.Parameters["@result"].Value.ToString());
                 switch (result)
                 {
                     case 200:
@@ -94,6 +94,8 @@ namespace CheckInProgram
         {
             try
             {
+                if (ifCheckIsOK == "")
+                    return;
                 if (MessageBox.Show("你的姓名是："+ifCheckIsOK+"\n你确认要签到么？","确认签到",MessageBoxButtons.YesNo,MessageBoxIcon.Question)!=DialogResult.Yes)
                 {
                     return;
@@ -102,9 +104,9 @@ namespace CheckInProgram
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 15));
-                cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.VarChar, 20));
+                cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar, 20));
                 cmd.Parameters.Add(new SqlParameter("@state", SqlDbType.TinyInt));
-                cmd.Parameters.Add(new SqlParameter("@room", SqlDbType.VarChar, 10));
+                cmd.Parameters.Add(new SqlParameter("@room", SqlDbType.NVarChar, 10));
                 cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.SmallInt));
                 cmd.Parameters["@name"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@state"].Direction = ParameterDirection.Output;
@@ -114,8 +116,7 @@ namespace CheckInProgram
                 cmd.Parameters["@ip"].Value = Program.GetLocalIp();
                 Program.conn.Open();
                 cmd.ExecuteScalar();
-                int result = (int)cmd.Parameters["@result"].Value;
-                Program.student = new Student((int)cmd.Parameters["@id"].Value, (string)cmd.Parameters["@name"].Value, (int)cmd.Parameters["@state"].Value, (string)cmd.Parameters["@room"].Value);
+                int result = int.Parse(cmd.Parameters["@result"].Value.ToString());
                 switch (result)
                 {
                     case 300:
@@ -127,6 +128,7 @@ namespace CheckInProgram
                         break;
                     case 301:
                     case 311:
+                        Program.student = new Student(cmd.Parameters["@id"].Value, cmd.Parameters["@name"].Value, cmd.Parameters["@state"].Value, cmd.Parameters["@room"].Value);
                         Print.infomsg("签到成功，你可以开始你的学习了！", "签到成功");
                         Normal normal = new Normal(Program.student);
                         normal.Show();
@@ -165,8 +167,7 @@ namespace CheckInProgram
                 cmd.Parameters["@ip"].Value = Program.GetLocalIp();
                 Program.conn.Open();
                 cmd.ExecuteScalar();
-                int result = (int)cmd.Parameters["@result"].Value;
-                Program.student=new Student((int)cmd.Parameters["@id"].Value,(string)cmd.Parameters["@name"].Value,(int)cmd.Parameters["@state"].Value,(string)cmd.Parameters["@room"].Value);
+                int result = int.Parse(cmd.Parameters["@result"].Value.ToString());
                 switch (result)
                 {
                     case 100:
@@ -174,6 +175,7 @@ namespace CheckInProgram
                         Print.show(result);
                         break;
                     case 103:
+                        Program.student = new Student(cmd.Parameters["@id"].Value, cmd.Parameters["@name"].Value, cmd.Parameters["@state"].Value, cmd.Parameters["@room"].Value);
                         Normal normal = new Normal(Program.student);
                         normal.Show();
                         this.Hide();

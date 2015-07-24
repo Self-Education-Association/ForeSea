@@ -46,7 +46,7 @@ namespace CheckInProgram
         static public string Version = ConfigurationManager.AppSettings["Version"];
         static public string Name = ConfigurationManager.AppSettings["Name"];
         static public string Author = ConfigurationManager.AppSettings["Author"];
-        static public string ConnectString = @"Data Source=(localdb)\ProjectsV12;Initial Catalog=ForeSea;Integrated Security=True;";
+        static public string ConnectString = @"Server=10.1.1.68\seasqlserver;Database=ForeSea;User ID=checkin;Password=seacheckin;Trusted_Connection=false;";
         static public string Powered = ConfigurationManager.AppSettings["Powered"];
         static public string LinkLabel = ConfigurationManager.AppSettings["LinkLabel"];
         static public string LinkUrl = ConfigurationManager.AppSettings["LinkUrl"];

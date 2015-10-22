@@ -17,7 +17,7 @@ AS
 		SET @state=(SELECT ID FROM CheckIn_Details WHERE ID=@id AND Date=@date AND State =0)
 		RETURN 1
 	END
-	UPDATE CheckIn_Details SET State=CASE LateState WHEN 1 THEN 2 ELSE 3 END,CheckOut=@time,CheckOutState=1
+	UPDATE CheckIn_Details SET State=CASE LateState WHEN 1 THEN 2 ELSE 1 END,CheckOut=@time,CheckOutState=1
 		WHERE ID=@id AND State=0
 	SET @result=701
 RETURN 0

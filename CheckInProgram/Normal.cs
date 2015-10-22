@@ -15,15 +15,17 @@ namespace CheckInProgram
 {
     public partial class Normal : Form
     {
-        public Normal(Student student)
+        Student student;
+        public Normal(Student studentInput)
         {
             InitializeComponent();
-            IDLabel.Text = student.id.ToString();
-            nameLabel.Text = student.name;
-            stateLabel.Text = Print.state(student.state);
-            roomLabel.Text = student.room;
+            IDLabel.Text = studentInput.id.ToString();
+            nameLabel.Text = studentInput.name;
+            stateLabel.Text = Print.state(studentInput.state);
+            roomLabel.Text = studentInput.room;
             keepTimer.Interval = int.Parse(Program.KP) * 60 * 1000;
             checkTimer.Interval = int.Parse(Program.Overtime) * 60 * 1000;
+            student = studentInput;
         }
 
         private void moreInfoLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -119,6 +121,7 @@ namespace CheckInProgram
                         Print.show(result);
                         break;
                     case 701:
+                        keepTimer.Enabled = false;
                         MessageBox.Show("注销成功，你已经完成了本堂课的学习！", "注销成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         Application.Exit();
                         break;
@@ -235,6 +238,15 @@ namespace CheckInProgram
             {
                 Program.conn.Close();
             }
+        }
+
+        private void queryButton_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = Program.conn;
+            cmd.CommandText = "SELECT Normal,Late,Truency FROM View_List_CheckIn WHERE ID=" + student.id;
+            SqlDataReader reader = cmd.ExecuteReader();
+            Print.infomsg(string.Format("除本次上课记录外，你还有{0}次正常记录,{1}迟到记录,{2}旷课记录，如有问题请联系值班员查询详细记录。", reader[0], reader[1], reader[2]), "查询结果");
         }
     }
 }

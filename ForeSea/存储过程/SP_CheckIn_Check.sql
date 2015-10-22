@@ -5,7 +5,7 @@
 	@result SMALLINT=200 OUTPUT
 AS
 	DECLARE @time DATETIME2(0)=GETDATE()
-	DECLARE @lesson TINYINT=(SELECT Lesson FROM CheckIn_Time WHERE @time BETWEEN StartIn AND EndIn)
+	DECLARE @lesson TINYINT=(SELECT Lesson FROM CheckIn_Time WHERE @time BETWEEN StartIn AND EndOut)
 	IF @lesson IS NULL
 	BEGIN
 		SET @result=202

@@ -62,6 +62,7 @@
     <Folder Include="表" />
     <Folder Include="视图" />
     <Folder Include="函数" />
+    <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ForeSea.refactorlog" />
@@ -100,5 +101,8 @@
     <Build Include="表\CheckIn_Error.sql" />
     <Build Include="存储过程\SP_CheckIn_NotHere.sql" />
     <Build Include="存储过程\SP_CheckIn_Change.sql" />
+    <Build Include="Security\learning.sql" />
+    <Build Include="Security\checkin.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
   </ItemGroup>
 </Project>

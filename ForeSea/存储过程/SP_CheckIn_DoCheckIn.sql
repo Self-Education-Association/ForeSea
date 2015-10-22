@@ -1,15 +1,16 @@
-﻿CREATE PROCEDURE [dbo].[SP_CheckIn_DoCheckIn]
+﻿
+CREATE PROCEDURE [dbo].[SP_CheckIn_DoCheckIn]
 	@id INT,
 	@ip VARCHAR(15),
-	@name VARCHAR(20)='' OUTPUT,
+	@name NVARCHAR(20)='' OUTPUT,
 	@state TINYINT=-1 OUTPUT,
-	@room VARCHAR(10)='' OUTPUT,
+	@room NVARCHAR(10)='' OUTPUT,
 	@result SMALLINT=300 OUTPUT
 AS
 	DECLARE @datetime DATETIME2(0)=GETDATE()
 	DECLARE @time TIME(0)=CONVERT(TIME,@datetime)
 	DECLARE @date DATE=CONVERT(DATE,@datetime)
-	DECLARE @lesson TINYINT=(SELECT Lesson FROM CheckIn_Time WHERE @datetime BETWEEN StartIn AND EndIn)
+	DECLARE @lesson TINYINT=(SELECT Lesson FROM CheckIn_Time WHERE @datetime BETWEEN StartIn AND EndOut)
 	IF @lesson IS NULL
 	BEGIN
 		SET @result=302
@@ -30,10 +31,13 @@ AS
 		IF (SELECT ID FROM CheckIn_Details WHERE ID=@id AND State=0) IS NULL
 		BEGIN
 			DECLARE @LateState BIT=(SELECT LateState FROM CheckIn_Details WHERE ID=@id AND State=4)
-			UPDATE CheckIn_Details SET State=5,Change=@time WHERE ID=@id AND State=4
+			UPDATE CheckIn_Details SET State=5,Change=@time,Note='换机完成' WHERE ID=@id AND State=4
 			INSERT INTO CheckIn_Details(ID,Lesson,Date,CheckIn,Keep,IP,LateState,State)
 				VALUES(@id,@lesson,@date,@time,@time,@ip,@LateState,0)
 			SET @result=311
+			SET @state=0
+			SELECT @name=Name FROM dbo.Student WHERE ID=@id
+			SELECT @room=Room FROM dbo.CheckIn_Room WHERE IP=LEFT(@ip,7)
 			RETURN 1
 		END
 		ELSE
@@ -46,6 +50,11 @@ AS
 		SET @result=303
 		RETURN 1
 	END
+	IF (SELECT Lesson FROM CheckIn_Time WHERE @datetime BETWEEN StartIn AND EndIn) IS NULL
+	BEGIN
+		SET @result=304
+		RETURN 1
+	END
 	IF (SELECT Lesson FROM CheckIn_Time WHERE Lesson=@lesson AND @datetime BETWEEN StartIn AND LateIn) IS NULL
 		SET @LateState=1
 	ELSE
@@ -55,6 +64,9 @@ AS
 		INSERT INTO CheckIn_Details(ID,IP,Lesson,Date,CheckIn,LateState,State)
 			VALUES(@id,@ip,@lesson,@date,@time,@LateState,0)
 		SET @result=301
+		SET @state=0
+		SELECT @name=Name FROM dbo.Student WHERE ID=@id
+		SELECT @room=Room FROM dbo.CheckIn_Room WHERE IP=LEFT(@ip,7)
 		RETURN 1
 	END
 RETURN 0

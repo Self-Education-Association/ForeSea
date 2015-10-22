@@ -51,7 +51,7 @@
             this.nameLabel.Location = new System.Drawing.Point(12, 12);
             this.nameLabel.Margin = new System.Windows.Forms.Padding(5);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(68, 25);
+            this.nameLabel.Size = new System.Drawing.Size(53, 20);
             this.nameLabel.TabIndex = 0;
             this.nameLabel.Text = "Name";
             this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -63,7 +63,7 @@
             this.IDLabel.Location = new System.Drawing.Point(12, 42);
             this.IDLabel.Margin = new System.Windows.Forms.Padding(5);
             this.IDLabel.Name = "IDLabel";
-            this.IDLabel.Size = new System.Drawing.Size(40, 25);
+            this.IDLabel.Size = new System.Drawing.Size(31, 20);
             this.IDLabel.TabIndex = 1;
             this.IDLabel.Text = "ID";
             this.IDLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -75,7 +75,7 @@
             this.stateLabel.Location = new System.Drawing.Point(12, 71);
             this.stateLabel.Margin = new System.Windows.Forms.Padding(5);
             this.stateLabel.Name = "stateLabel";
-            this.stateLabel.Size = new System.Drawing.Size(82, 25);
+            this.stateLabel.Size = new System.Drawing.Size(64, 20);
             this.stateLabel.TabIndex = 2;
             this.stateLabel.Text = "State";
             this.stateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -89,6 +89,7 @@
             this.queryButton.TabIndex = 3;
             this.queryButton.Text = "查询记录";
             this.queryButton.UseVisualStyleBackColor = true;
+            this.queryButton.Click += new System.EventHandler(this.queryButton_Click);
             // 
             // signOutButton
             // 
@@ -129,7 +130,7 @@
             this.roomLabel.Location = new System.Drawing.Point(12, 101);
             this.roomLabel.Margin = new System.Windows.Forms.Padding(5);
             this.roomLabel.Name = "roomLabel";
-            this.roomLabel.Size = new System.Drawing.Size(53, 20);
+            this.roomLabel.Size = new System.Drawing.Size(44, 16);
             this.roomLabel.TabIndex = 6;
             this.roomLabel.Text = "Room";
             // 
@@ -140,7 +141,7 @@
             this.moreInfoLinkLabel.Location = new System.Drawing.Point(8, 208);
             this.moreInfoLinkLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.moreInfoLinkLabel.Name = "moreInfoLinkLabel";
-            this.moreInfoLinkLabel.Size = new System.Drawing.Size(71, 20);
+            this.moreInfoLinkLabel.Size = new System.Drawing.Size(56, 16);
             this.moreInfoLinkLabel.TabIndex = 8;
             this.moreInfoLinkLabel.TabStop = true;
             this.moreInfoLinkLabel.Text = "moreInfo";
@@ -154,7 +155,7 @@
             this.poweredLabel.Location = new System.Drawing.Point(10, 192);
             this.poweredLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.poweredLabel.Name = "poweredLabel";
-            this.poweredLabel.Size = new System.Drawing.Size(68, 20);
+            this.poweredLabel.Size = new System.Drawing.Size(54, 16);
             this.poweredLabel.TabIndex = 7;
             this.poweredLabel.Text = "Powered";
             // 
@@ -176,7 +177,7 @@
             // 
             // Normal
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(254, 233);

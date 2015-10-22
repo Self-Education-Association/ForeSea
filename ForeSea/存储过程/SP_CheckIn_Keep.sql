@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[SP_CheckIn_Keep]
 	@id INT,
-	@result SMALLINT=400
+	@result SMALLINT=400 OUTPUT
 AS
 	IF (SELECT ID FROM CheckIn_Details WHERE ID=@id AND State=0) IS NOT NULL
 	BEGIN

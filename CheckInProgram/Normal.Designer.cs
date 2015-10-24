@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.nameLabel = new System.Windows.Forms.Label();
+            this.NameLabel = new System.Windows.Forms.Label();
             this.IDLabel = new System.Windows.Forms.Label();
-            this.stateLabel = new System.Windows.Forms.Label();
-            this.queryButton = new System.Windows.Forms.Button();
-            this.signOutButton = new System.Windows.Forms.Button();
-            this.changeButton = new System.Windows.Forms.Button();
-            this.keepTimer = new System.Windows.Forms.Timer(this.components);
-            this.checkTimer = new System.Windows.Forms.Timer(this.components);
-            this.roomLabel = new System.Windows.Forms.Label();
-            this.moreInfoLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.poweredLabel = new System.Windows.Forms.Label();
-            this.checkIfThereButton = new System.Windows.Forms.Button();
-            this.coldDownTimer = new System.Windows.Forms.Timer(this.components);
+            this.StateLabel = new System.Windows.Forms.Label();
+            this.QueryButton = new System.Windows.Forms.Button();
+            this.SignOutButton = new System.Windows.Forms.Button();
+            this.ChangeButton = new System.Windows.Forms.Button();
+            this.KeepTimer = new System.Windows.Forms.Timer(this.components);
+            this.CheckTimer = new System.Windows.Forms.Timer(this.components);
+            this.RoomLabel = new System.Windows.Forms.Label();
+            this.MoreInfoLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.PoweredLabel = new System.Windows.Forms.Label();
+            this.CheckIfThereButton = new System.Windows.Forms.Button();
+            this.ColdDownTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // nameLabel
+            // NameLabel
             // 
-            this.nameLabel.AutoSize = true;
-            this.nameLabel.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.nameLabel.Location = new System.Drawing.Point(12, 12);
-            this.nameLabel.Margin = new System.Windows.Forms.Padding(5);
-            this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(53, 20);
-            this.nameLabel.TabIndex = 0;
-            this.nameLabel.Text = "Name";
-            this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.NameLabel.AutoSize = true;
+            this.NameLabel.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.NameLabel.Location = new System.Drawing.Point(12, 12);
+            this.NameLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.NameLabel.Name = "NameLabel";
+            this.NameLabel.Size = new System.Drawing.Size(53, 20);
+            this.NameLabel.TabIndex = 0;
+            this.NameLabel.Text = "Name";
+            this.NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // IDLabel
             // 
@@ -68,112 +68,112 @@
             this.IDLabel.Text = "ID";
             this.IDLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // stateLabel
+            // StateLabel
             // 
-            this.stateLabel.AutoSize = true;
-            this.stateLabel.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.stateLabel.Location = new System.Drawing.Point(12, 71);
-            this.stateLabel.Margin = new System.Windows.Forms.Padding(5);
-            this.stateLabel.Name = "stateLabel";
-            this.stateLabel.Size = new System.Drawing.Size(64, 20);
-            this.stateLabel.TabIndex = 2;
-            this.stateLabel.Text = "State";
-            this.stateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.StateLabel.AutoSize = true;
+            this.StateLabel.Font = new System.Drawing.Font("幼圆", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.StateLabel.Location = new System.Drawing.Point(12, 71);
+            this.StateLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.StateLabel.Name = "StateLabel";
+            this.StateLabel.Size = new System.Drawing.Size(64, 20);
+            this.StateLabel.TabIndex = 2;
+            this.StateLabel.Text = "State";
+            this.StateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // queryButton
+            // QueryButton
             // 
-            this.queryButton.Location = new System.Drawing.Point(129, 162);
-            this.queryButton.Margin = new System.Windows.Forms.Padding(2);
-            this.queryButton.Name = "queryButton";
-            this.queryButton.Size = new System.Drawing.Size(115, 28);
-            this.queryButton.TabIndex = 3;
-            this.queryButton.Text = "查询记录";
-            this.queryButton.UseVisualStyleBackColor = true;
-            this.queryButton.Click += new System.EventHandler(this.queryButton_Click);
+            this.QueryButton.Location = new System.Drawing.Point(129, 162);
+            this.QueryButton.Margin = new System.Windows.Forms.Padding(2);
+            this.QueryButton.Name = "QueryButton";
+            this.QueryButton.Size = new System.Drawing.Size(115, 28);
+            this.QueryButton.TabIndex = 3;
+            this.QueryButton.Text = "查询记录";
+            this.QueryButton.UseVisualStyleBackColor = true;
+            this.QueryButton.Click += new System.EventHandler(this.queryButton_Click);
             // 
-            // signOutButton
+            // SignOutButton
             // 
-            this.signOutButton.Location = new System.Drawing.Point(10, 128);
-            this.signOutButton.Margin = new System.Windows.Forms.Padding(2);
-            this.signOutButton.Name = "signOutButton";
-            this.signOutButton.Size = new System.Drawing.Size(115, 62);
-            this.signOutButton.TabIndex = 4;
-            this.signOutButton.Text = "注销";
-            this.signOutButton.UseVisualStyleBackColor = true;
-            this.signOutButton.Click += new System.EventHandler(this.signOutButton_Click);
+            this.SignOutButton.Location = new System.Drawing.Point(10, 128);
+            this.SignOutButton.Margin = new System.Windows.Forms.Padding(2);
+            this.SignOutButton.Name = "SignOutButton";
+            this.SignOutButton.Size = new System.Drawing.Size(115, 62);
+            this.SignOutButton.TabIndex = 4;
+            this.SignOutButton.Text = "注销";
+            this.SignOutButton.UseVisualStyleBackColor = true;
+            this.SignOutButton.Click += new System.EventHandler(this.signOutButton_Click);
             // 
-            // changeButton
+            // ChangeButton
             // 
-            this.changeButton.Location = new System.Drawing.Point(129, 128);
-            this.changeButton.Margin = new System.Windows.Forms.Padding(2);
-            this.changeButton.Name = "changeButton";
-            this.changeButton.Size = new System.Drawing.Size(115, 29);
-            this.changeButton.TabIndex = 5;
-            this.changeButton.Text = "更换机器";
-            this.changeButton.UseVisualStyleBackColor = true;
-            this.changeButton.Click += new System.EventHandler(this.changeButton_Click);
+            this.ChangeButton.Location = new System.Drawing.Point(129, 128);
+            this.ChangeButton.Margin = new System.Windows.Forms.Padding(2);
+            this.ChangeButton.Name = "ChangeButton";
+            this.ChangeButton.Size = new System.Drawing.Size(115, 29);
+            this.ChangeButton.TabIndex = 5;
+            this.ChangeButton.Text = "更换机器";
+            this.ChangeButton.UseVisualStyleBackColor = true;
+            this.ChangeButton.Click += new System.EventHandler(this.changeButton_Click);
             // 
-            // keepTimer
+            // KeepTimer
             // 
-            this.keepTimer.Enabled = true;
-            this.keepTimer.Interval = 600000;
-            this.keepTimer.Tick += new System.EventHandler(this.keepTimer_Tick);
+            this.KeepTimer.Enabled = true;
+            this.KeepTimer.Interval = 600000;
+            this.KeepTimer.Tick += new System.EventHandler(this.keepTimer_Tick);
             // 
-            // checkTimer
+            // CheckTimer
             // 
-            this.checkTimer.Interval = 300000;
-            this.checkTimer.Tick += new System.EventHandler(this.checkTimer_Tick);
+            this.CheckTimer.Interval = 300000;
+            this.CheckTimer.Tick += new System.EventHandler(this.checkTimer_Tick);
             // 
-            // roomLabel
+            // RoomLabel
             // 
-            this.roomLabel.AutoSize = true;
-            this.roomLabel.Location = new System.Drawing.Point(12, 101);
-            this.roomLabel.Margin = new System.Windows.Forms.Padding(5);
-            this.roomLabel.Name = "roomLabel";
-            this.roomLabel.Size = new System.Drawing.Size(44, 16);
-            this.roomLabel.TabIndex = 6;
-            this.roomLabel.Text = "Room";
+            this.RoomLabel.AutoSize = true;
+            this.RoomLabel.Location = new System.Drawing.Point(12, 101);
+            this.RoomLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.RoomLabel.Name = "RoomLabel";
+            this.RoomLabel.Size = new System.Drawing.Size(44, 16);
+            this.RoomLabel.TabIndex = 6;
+            this.RoomLabel.Text = "Room";
             // 
-            // moreInfoLinkLabel
+            // MoreInfoLinkLabel
             // 
-            this.moreInfoLinkLabel.AutoSize = true;
-            this.moreInfoLinkLabel.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.moreInfoLinkLabel.Location = new System.Drawing.Point(8, 208);
-            this.moreInfoLinkLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.moreInfoLinkLabel.Name = "moreInfoLinkLabel";
-            this.moreInfoLinkLabel.Size = new System.Drawing.Size(56, 16);
-            this.moreInfoLinkLabel.TabIndex = 8;
-            this.moreInfoLinkLabel.TabStop = true;
-            this.moreInfoLinkLabel.Text = "moreInfo";
-            this.moreInfoLinkLabel.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.moreInfoLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.moreInfoLinkLabel_LinkClicked);
+            this.MoreInfoLinkLabel.AutoSize = true;
+            this.MoreInfoLinkLabel.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.MoreInfoLinkLabel.Location = new System.Drawing.Point(8, 208);
+            this.MoreInfoLinkLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.MoreInfoLinkLabel.Name = "MoreInfoLinkLabel";
+            this.MoreInfoLinkLabel.Size = new System.Drawing.Size(56, 16);
+            this.MoreInfoLinkLabel.TabIndex = 8;
+            this.MoreInfoLinkLabel.TabStop = true;
+            this.MoreInfoLinkLabel.Text = "moreInfo";
+            this.MoreInfoLinkLabel.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.MoreInfoLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.moreInfoLinkLabel_LinkClicked);
             // 
-            // poweredLabel
+            // PoweredLabel
             // 
-            this.poweredLabel.AutoSize = true;
-            this.poweredLabel.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.poweredLabel.Location = new System.Drawing.Point(10, 192);
-            this.poweredLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.poweredLabel.Name = "poweredLabel";
-            this.poweredLabel.Size = new System.Drawing.Size(54, 16);
-            this.poweredLabel.TabIndex = 7;
-            this.poweredLabel.Text = "Powered";
+            this.PoweredLabel.AutoSize = true;
+            this.PoweredLabel.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.PoweredLabel.Location = new System.Drawing.Point(10, 192);
+            this.PoweredLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.PoweredLabel.Name = "PoweredLabel";
+            this.PoweredLabel.Size = new System.Drawing.Size(54, 16);
+            this.PoweredLabel.TabIndex = 7;
+            this.PoweredLabel.Text = "Powered";
             // 
-            // checkIfThereButton
+            // CheckIfThereButton
             // 
-            this.checkIfThereButton.Location = new System.Drawing.Point(10, 71);
-            this.checkIfThereButton.Name = "checkIfThereButton";
-            this.checkIfThereButton.Size = new System.Drawing.Size(232, 52);
-            this.checkIfThereButton.TabIndex = 9;
-            this.checkIfThereButton.Text = "请点击本按钮确认在线";
-            this.checkIfThereButton.UseVisualStyleBackColor = true;
-            this.checkIfThereButton.Visible = false;
-            this.checkIfThereButton.Click += new System.EventHandler(this.checkIfThereButton_Click);
+            this.CheckIfThereButton.Location = new System.Drawing.Point(10, 71);
+            this.CheckIfThereButton.Name = "CheckIfThereButton";
+            this.CheckIfThereButton.Size = new System.Drawing.Size(234, 52);
+            this.CheckIfThereButton.TabIndex = 9;
+            this.CheckIfThereButton.Text = "请点击本按钮确认在线";
+            this.CheckIfThereButton.UseVisualStyleBackColor = true;
+            this.CheckIfThereButton.Visible = false;
+            this.CheckIfThereButton.Click += new System.EventHandler(this.checkIfThereButton_Click);
             // 
-            // coldDownTimer
+            // ColdDownTimer
             // 
-            this.coldDownTimer.Interval = 120000;
-            this.coldDownTimer.Tick += new System.EventHandler(this.coldDownTimer_Tick);
+            this.ColdDownTimer.Interval = 120000;
+            this.ColdDownTimer.Tick += new System.EventHandler(this.coldDownTimer_Tick);
             // 
             // Normal
             // 
@@ -181,16 +181,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(254, 233);
-            this.Controls.Add(this.checkIfThereButton);
-            this.Controls.Add(this.moreInfoLinkLabel);
-            this.Controls.Add(this.poweredLabel);
-            this.Controls.Add(this.roomLabel);
-            this.Controls.Add(this.changeButton);
-            this.Controls.Add(this.signOutButton);
-            this.Controls.Add(this.queryButton);
-            this.Controls.Add(this.stateLabel);
+            this.Controls.Add(this.CheckIfThereButton);
+            this.Controls.Add(this.MoreInfoLinkLabel);
+            this.Controls.Add(this.PoweredLabel);
+            this.Controls.Add(this.RoomLabel);
+            this.Controls.Add(this.ChangeButton);
+            this.Controls.Add(this.SignOutButton);
+            this.Controls.Add(this.QueryButton);
+            this.Controls.Add(this.StateLabel);
             this.Controls.Add(this.IDLabel);
-            this.Controls.Add(this.nameLabel);
+            this.Controls.Add(this.NameLabel);
             this.Font = new System.Drawing.Font("幼圆", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
@@ -213,18 +213,18 @@
 
         #endregion
 
-        private System.Windows.Forms.Label nameLabel;
+        private System.Windows.Forms.Label NameLabel;
         private System.Windows.Forms.Label IDLabel;
-        private System.Windows.Forms.Label stateLabel;
-        private System.Windows.Forms.Button queryButton;
-        private System.Windows.Forms.Button signOutButton;
-        private System.Windows.Forms.Button changeButton;
-        private System.Windows.Forms.Timer keepTimer;
-        private System.Windows.Forms.Timer checkTimer;
-        private System.Windows.Forms.Label roomLabel;
-        private System.Windows.Forms.LinkLabel moreInfoLinkLabel;
-        private System.Windows.Forms.Label poweredLabel;
-        private System.Windows.Forms.Button checkIfThereButton;
-        private System.Windows.Forms.Timer coldDownTimer;
+        private System.Windows.Forms.Label StateLabel;
+        private System.Windows.Forms.Button QueryButton;
+        private System.Windows.Forms.Button SignOutButton;
+        private System.Windows.Forms.Button ChangeButton;
+        private System.Windows.Forms.Timer KeepTimer;
+        private System.Windows.Forms.Timer CheckTimer;
+        private System.Windows.Forms.Label RoomLabel;
+        private System.Windows.Forms.LinkLabel MoreInfoLinkLabel;
+        private System.Windows.Forms.Label PoweredLabel;
+        private System.Windows.Forms.Button CheckIfThereButton;
+        private System.Windows.Forms.Timer ColdDownTimer;
     }
 }

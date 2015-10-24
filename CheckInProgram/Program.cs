@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Data.SqlClient;
-using System.Net;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Windows.Forms;
 
 namespace CheckInProgram
 {
@@ -16,7 +15,7 @@ namespace CheckInProgram
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -25,12 +24,47 @@ namespace CheckInProgram
                 Print.show("程序已经打开，请不要重复点击。");
                 return;
             }
-            Application.Run(new MainForm());
+            try
+            {
+                SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_Run", conn);
+                int result = Run(cmd);
+                switch (result)
+                {
+                    case 101:
+                        if (args.Count() != 0)
+                        {
+                            foreach (string arg in args)
+                            {
+                                if (arg == "fullscreen")
+                                    Application.Run();
+                            }
+                        }
+                        else
+                            Application.Run(new MainForm());
+                        break;
+                    case 103:
+                        Application.Run(new Normal(new Student(cmd.Parameters["@id"].Value, cmd.Parameters["@name"].Value, cmd.Parameters["@state"].Value, cmd.Parameters["@room"].Value)));
+                        break;
+                    default:
+                        Print.show(result);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Print.show(ex.Message);
+                return;
+            }
+            finally
+            {
+                Program.conn.Close();
+            }
+            //Application.Run(new Normal(new Student(0,"",0,"")));
         }
         static public string GetLocalIp()
         {
             string hostname = Dns.GetHostName();
-            IPHostEntry localhost = Dns.GetHostByName(hostname);
+            IPHostEntry localhost = Dns.GetHostEntry(hostname);
             IPAddress localaddr = localhost.AddressList[0];
             foreach (IPAddress ip in localhost.AddressList )
             {
@@ -42,6 +76,37 @@ namespace CheckInProgram
             Print.show("这不是签到机器！");
             Application.Exit();
             return "";
+        }
+        static public int Run(SqlCommand cmd)
+        {
+            try
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 15));
+                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar, 20));
+                cmd.Parameters.Add(new SqlParameter("@state", SqlDbType.TinyInt));
+                cmd.Parameters.Add(new SqlParameter("@room", SqlDbType.NVarChar, 10));
+                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.SmallInt));
+                cmd.Parameters["@id"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@name"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@state"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@room"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@result"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@ip"].Value = Program.GetLocalIp();
+                conn.Open();
+                cmd.ExecuteScalar();
+                conn.Close();
+                return int.Parse(cmd.Parameters["@result"].Value.ToString());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                Program.conn.Close();
+            }
         }
         static public string Version = ConfigurationManager.AppSettings["Version"];
         static public string Name = ConfigurationManager.AppSettings["Name"];
@@ -59,6 +124,5 @@ namespace CheckInProgram
         static public string KP = ConfigurationManager.AppSettings["KeepFrequency"];
         static public string Overtime = ConfigurationManager.AppSettings["OverTime"];
         static public SqlConnection conn = new SqlConnection(Program.ConnectString);
-        static public Student student;
     }
 }

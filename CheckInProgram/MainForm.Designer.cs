@@ -56,7 +56,7 @@
             this.enterIDBox.Margin = new System.Windows.Forms.Padding(6);
             this.enterIDBox.MaxLength = 9;
             this.enterIDBox.Name = "enterIDBox";
-            this.enterIDBox.Size = new System.Drawing.Size(295, 47);
+            this.enterIDBox.Size = new System.Drawing.Size(295, 39);
             this.enterIDBox.TabIndex = 1;
             this.enterIDBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -66,7 +66,7 @@
             this.poweredLabel.Font = new System.Drawing.Font("微软雅黑", 10.5F);
             this.poweredLabel.Location = new System.Drawing.Point(12, 121);
             this.poweredLabel.Name = "poweredLabel";
-            this.poweredLabel.Size = new System.Drawing.Size(85, 24);
+            this.poweredLabel.Size = new System.Drawing.Size(68, 20);
             this.poweredLabel.TabIndex = 2;
             this.poweredLabel.Text = "Powered";
             // 
@@ -76,7 +76,7 @@
             this.moreInfoLinkLabel.Font = new System.Drawing.Font("微软雅黑", 10.5F);
             this.moreInfoLinkLabel.Location = new System.Drawing.Point(12, 141);
             this.moreInfoLinkLabel.Name = "moreInfoLinkLabel";
-            this.moreInfoLinkLabel.Size = new System.Drawing.Size(88, 24);
+            this.moreInfoLinkLabel.Size = new System.Drawing.Size(71, 20);
             this.moreInfoLinkLabel.TabIndex = 3;
             this.moreInfoLinkLabel.TabStop = true;
             this.moreInfoLinkLabel.Text = "moreInfo";
@@ -92,7 +92,7 @@
             // MainForm
             // 
             this.AcceptButton = this.signInButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 31F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(325, 172);
             this.Controls.Add(this.moreInfoLinkLabel);
@@ -110,7 +110,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "签到程序";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

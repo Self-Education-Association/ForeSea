@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace CheckInProgram
 {
@@ -20,6 +16,7 @@ namespace CheckInProgram
                 case 600:
                 case 700:
                 case 800:
+                case 900:
                     errormsg("指定的操作未完成，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
                 case 102:
@@ -32,7 +29,7 @@ namespace CheckInProgram
                     break;
                 case 202:
                 case 302:
-                    errormsg("签到失败，现在不是签到时间，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
+                    errormsg("签到失败，现在已经不是签到时间，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
                 case 203:
                     errormsg("签到失败，本教室不在当前时间内允许签到的教室列表中，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
@@ -61,7 +58,7 @@ namespace CheckInProgram
                 case 602:
                     errormsg("无操作下线失败，无法找到你的在线记录，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
-                case 702:
+                case 712:
                     errormsg("换机失败，无法找到你的在线记录，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
                 case 802:
@@ -69,6 +66,9 @@ namespace CheckInProgram
                     break;
                 case 803:
                     errormsg("注销失败，无法找到你的在线记录，未能签退，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
+                    break;
+                case 902:
+                    errormsg("查询失败，没有你的历史签到记录（每学期第一次签到出现此情况为正常情况），操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
                 default:
                     errormsg("指定的操作失败，未能解析的错误，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);

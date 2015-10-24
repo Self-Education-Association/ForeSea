@@ -12,25 +12,53 @@ namespace StudentData
     {
         static void Main(string[] args)
         {
-            int ignoreLine;
-            string[] files;
-            int filesCount;
-            System.Data.DataTable dt = new System.Data.DataTable();
-            Console.WriteLine("请输入TXT文件内容中需要忽略的行数(一般默认值为5)\n");
-            ignoreLine = int.Parse(Console.ReadLine());
-            files = Directory.GetFiles(System.Environment.CurrentDirectory, "*.txt", SearchOption.AllDirectories);
-            filesCount = files.Count();
-            for (int i=0;i<filesCount;i++)
+            try
             {
-                dt = DataTableUnion(dt, txtToDataTable(files[i], ignoreLine));
+                int ignoreLine;
+                string[] files;
+                int filesCount;
+                System.Data.DataTable dt = new System.Data.DataTable();
+                System.Data.DataTable all = new System.Data.DataTable();
+                Console.WriteLine("请输入输出文件名（不包括扩展名）：\n");
+                string filename = Console.ReadLine();
+                ignoreLine = 5;
+                files = Directory.GetFiles(System.Environment.CurrentDirectory, "*.txt", SearchOption.AllDirectories);
+                filesCount = files.Count();
+                for (int i = 0; i < filesCount; i++)
+                {
+                    try
+                    {
+                        switch (files[i].Split('\\').Last())
+                        {
+                            case "ALL.txt":
+                                all = DataTableUnion(all, txtToDataTable(files[i], ignoreLine));
+                                break;
+                            default:
+                                dt = DataTableUnion(dt, txtToDataTable(files[i], ignoreLine));
+                                break;
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine("处理失败，{0}\n当前处理文件为：{1}，请排查此文件及其前后文件是否有问题！", e.Message, files[i]);
+                        Console.ReadKey();
+                        return;
+                    }
+                    
+                }
+                if (datatableToCSV(dt, filename + "-courses.csv") == true && datatableToCSV(all, filename + "-all.csv"))
+                {
+                    Console.WriteLine("Done!");
+                }
+                else
+                {
+                    Console.WriteLine("Failed!");
+                }
             }
-            if (datatableToCSV(dt,"output.csv")==true)
+            catch (Exception e)
             {
-                Console.WriteLine("Done!");
-            }
-            else
-            {
-                Console.WriteLine("Failed!");
+                Console.WriteLine("处理失败，{0}。",e.Message);
+                return;
             }
         }
 
@@ -54,7 +82,7 @@ namespace StudentData
                 }
                 dt = new System.Data.DataTable();
                 inputrow = sr.ReadLine().Split('\t');
-                inputrow[17] = "Course";
+                inputrow[inputrow.Count()-1] = "Course";
                 foreach (string columnsname in inputrow)
                 {
                     dt.Columns.Add(columnsname);
@@ -64,7 +92,7 @@ namespace StudentData
                     inputrow = sr.ReadLine().Split('\t');
                     if (inputrow[0] == "")
                         break;
-                    inputrow[17] = filename.Split('.').First();
+                    inputrow[inputrow.Count()-1] = filename.Split('.').First();
                     dt.Rows.Add(inputrow);
                 }
                 dt.Columns.Add("Class");
@@ -76,29 +104,36 @@ namespace StudentData
             }
             catch (NoNullAllowedException e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("处理失败，{0}。", e.Message);
                 return null;
             }
         }
 
         public static System.Data.DataTable DataTableUnion(System.Data.DataTable dataTable1, System.Data.DataTable dataTable2)
         {
-            if (dataTable2==null)
+            try
             {
-                Console.WriteLine("Input Data Error: DataTable2 Is Null!\n");
-                return null;
+                if (dataTable2 == null)
+                {
+                    Console.WriteLine("Input Data Error: DataTable2 Is Null!\n");
+                    return null;
+                }
+                if (dataTable1.Columns.Count == 0)
+                {
+                    dataTable1 = dataTable2.Clone();
+                }
+                object[] obj = new object[dataTable1.Columns.Count];
+                for (int i = 0; i < dataTable2.Rows.Count; i++)
+                {
+                    dataTable2.Rows[i].ItemArray.CopyTo(obj, 0);
+                    dataTable1.Rows.Add(obj);
+                }
+                return dataTable1;
             }
-            if (dataTable1.Columns.Count==0)
+            catch (Exception)
             {
-                dataTable1 = dataTable2.Clone();
+                throw;
             }
-            object[] obj = new object[dataTable1.Columns.Count];
-            for (int i=0;i<dataTable2.Rows.Count;i++)
-            {
-                dataTable2.Rows[i].ItemArray.CopyTo(obj, 0);
-                dataTable1.Rows.Add(obj);
-            }
-            return dataTable1;
         }
 
         public static bool datatableToCSV(DataTable dt, string fileName)
@@ -138,7 +173,7 @@ namespace StudentData
             }
             catch (Exception)
             {
-                return false;
+                throw;
             }
         }
     }

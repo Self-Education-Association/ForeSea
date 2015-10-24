@@ -1,29 +1,182 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace CheckInProgram
 {
     public class Student
     {
-        public Student(int id,string name,int state,string room)
+        int _ID;
+        string _Name;
+        int _State;
+        string _Room;
+        public int ID
         {
-            this.id = id;
-            this.name = name;
-            this.state = state;
-            this.room = room;
+            get { return _ID; }
+        }
+        public string Name
+        {
+            get { return _Name; }
+        }
+        public int State
+        {
+            get { return _State; }
+        }
+        public string Room
+        {
+            get { return _Room; }
         }
         public Student(object id,object name,object state,object room)
         {
-            this.id = int.Parse(id.ToString());
-            this.name = name.ToString();
-            this.state = int.Parse(state.ToString());
-            this.room = room.ToString();
+            _ID = int.Parse(id.ToString());
+            _Name = name.ToString();
+            _State = int.Parse(state.ToString());
+            _Room = room.ToString();
         }
-        public int id;
-        public string name;
-        public int state;
-        public string room;
+        public Student(int id)
+        {
+            SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_DoCheckIn", Program.conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+            cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 15));
+            cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar, 20));
+            cmd.Parameters.Add(new SqlParameter("@state", SqlDbType.TinyInt));
+            cmd.Parameters.Add(new SqlParameter("@room", SqlDbType.NVarChar, 10));
+            cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.SmallInt));
+            cmd.Parameters["@name"].Direction = ParameterDirection.Output;
+            cmd.Parameters["@state"].Direction = ParameterDirection.Output;
+            cmd.Parameters["@room"].Direction = ParameterDirection.Output;
+            cmd.Parameters["@result"].Direction = ParameterDirection.Output;
+            cmd.Parameters["@id"].Value = id;
+            cmd.Parameters["@ip"].Value = Program.GetLocalIp();
+            Program.conn.Open();
+            cmd.ExecuteScalar();
+            int result = int.Parse(cmd.Parameters["@result"].Value.ToString());
+            switch (result)
+            {
+                case 301:
+                case 311:
+                    _ID = int.Parse(cmd.Parameters["@id"].Value.ToString());
+                    _Name = cmd.Parameters["@name"].Value.ToString();
+                    _State = int.Parse(cmd.Parameters["@state"].Value.ToString());
+                    _Room = cmd.Parameters["@room"].Value.ToString();
+                    Print.infomsg("签到成功，你可以开始你的学习了！", "签到成功");
+                    break;
+                default:
+                    Print.show(result);
+                    Application.Exit();
+                    break;
+            }
+        }
+        public static string CheckIsOK(int id)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_Check", Program.conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 15));
+                cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar, 20));
+                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.SmallInt));
+                cmd.Parameters["@name"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@result"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@id"].Value = id;
+                cmd.Parameters["@ip"].Value = Program.GetLocalIp();
+                Program.conn.Open();
+                cmd.ExecuteScalar();
+                int result = int.Parse(cmd.Parameters["@result"].Value.ToString());
+                switch (result)
+                {
+                    case 201:
+                        return (string)cmd.Parameters["@name"].Value;
+                    default:
+                        Print.show(result);
+                        break;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Print.show(ex.Message);
+                return null;
+            }
+            finally
+            {
+                Program.conn.Close();
+            }
+        }
+        public bool DatabaseTransport(string sp)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand(sp, Program.conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@result", SqlDbType.SmallInt));
+                cmd.Parameters["@result"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@id"].Value = ID;
+                Program.conn.Open();
+                cmd.ExecuteNonQuery();
+                Program.conn.Close();
+                int result = int.Parse(cmd.Parameters["@result"].Value.ToString());
+                switch (result)
+                {
+                    case 401:
+                    case 601:
+                    case 701:
+                    case 801:
+                        return true;
+                    default:
+                        Print.show(result);
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Print.show(ex.Message);
+                return false;
+            }
+            finally
+            {
+                Program.conn.Close();
+            }
+        }
+        public void Query()
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = Program.conn;
+                cmd.CommandText = "dbo.SP_CheckIn_Query";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("id", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("normal", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("late", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("truency", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("result", SqlDbType.SmallInt));
+                cmd.Parameters["normal"].Direction = ParameterDirection.Output;
+                cmd.Parameters["late"].Direction = ParameterDirection.Output;
+                cmd.Parameters["truency"].Direction = ParameterDirection.Output;
+                cmd.Parameters["result"].Direction = ParameterDirection.Output;
+                cmd.Parameters["id"].Value = ID;
+                Program.conn.Open();
+                cmd.ExecuteNonQuery();
+                switch (int.Parse(cmd.Parameters["result"].Value.ToString()))
+                {
+                    case 900:
+                    case 902:
+                        Print.show(int.Parse(cmd.Parameters["result"].Value.ToString()));
+                        break;
+                    case 901:
+                        Print.infomsg(string.Format("除本次上课记录外，你还有{0}次正常记录,{1}次迟到记录,{2}次旷课记录，如有问题请联系值班员查询详细记录。", cmd.Parameters["normal"].Value, cmd.Parameters["late"].Value, cmd.Parameters["truency"].Value), "查询结果");
+                        break;
+                }
+            }
+            finally
+            {
+                Program.conn.Close();
+            }
+        }
     }
 }

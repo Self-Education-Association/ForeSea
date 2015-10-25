@@ -41,6 +41,9 @@ namespace CheckInProgram
                 case 303:
                     errormsg("签到失败，你已经有本节课的非正常签到记录，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
+                case 304:
+                    errormsg("签到失败，现在不是签到时间，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
+                    break;
                 case 305:
                     errormsg("签到失败，你不是这节课的学生，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
@@ -54,21 +57,25 @@ namespace CheckInProgram
                     break;
                 case 402:
                     errormsg("保持在线失败，无法找到你的在线记录，未能发送在线心跳，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
+                    Application.Exit();
                     break;
                 case 502:
                     errormsg("提前下线失败，无法找到你的在线记录，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
+                    Application.Exit();
                     break;
                 case 602:
                     errormsg("无操作下线失败，无法找到你的在线记录，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
                 case 712:
                     errormsg("换机失败，无法找到你的在线记录，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
+                    Application.Exit();
                     break;
                 case 802:
                     errormsg("注销失败，现在不是注销时间，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
                 case 803:
                     errormsg("注销失败，无法找到你的在线记录，未能签退，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
+                    Application.Exit();
                     break;
                 case 902:
                     errormsg("查询失败，没有你的历史签到记录（每学期第一次签到出现此情况为正常情况），操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);

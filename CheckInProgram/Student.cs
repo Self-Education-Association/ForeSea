@@ -81,6 +81,7 @@ namespace CheckInProgram
                         Print.show(result);
                         Application.Exit();
                     }
+                    Application.Exit();
                     break;
             }
         }
@@ -162,7 +163,7 @@ namespace CheckInProgram
                             if (int.Parse(cmd.Parameters["@wtime"].Value.ToString()) != -99)
                                 return 99;
                             else
-                                return int.Parse(cmd.Parameters["@wtime"].Value.ToString());
+                                return -99;
                         }
                     }
                     else
@@ -201,6 +202,7 @@ namespace CheckInProgram
                     case 401:
                     case 601:
                     case 701:
+                    case 711:
                     case 801:
                         return true;
                     default:

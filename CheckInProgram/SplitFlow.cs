@@ -46,7 +46,7 @@ namespace CheckInProgram
                     throw new Exception("请检查学号和姓名是否输入错误。");
                 if (result == 99)
                     throw new Exception("分流系统运行中，请自习的同学于上课15分钟后再尝试登陆！");
-                if (result>0)
+                if (result > 0)
                 {
                     Normal normal = new Normal(new Student(int.Parse(IDTextBox.Text), true));
                     normal.Show();

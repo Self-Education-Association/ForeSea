@@ -142,18 +142,6 @@ namespace CheckInProgram
             this.BackColor = Color.FromArgb(255, 255, 192);
             this.Location = new Point(0, 0);
             CheckTimer.Enabled = false;
-            try
-            {
-                Student.DatabaseTransport("dbo.SP_CheckIn_Keep");
-            }
-            catch (Exception ex)
-            {
-                Print.show(ex.Message);
-            }
-            finally
-            {
-                Program.conn.Close();
-            }
         }
 
         private void coldDownTimer_Tick(object sender, EventArgs e)

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using System.DirectoryServices; 
 
 namespace CheckInProgram
 {
@@ -19,11 +20,7 @@ namespace CheckInProgram
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
-            {
-                Print.show("程序已经打开，请不要重复点击。");
-                return;
-            }
+            KillOhterProcess();
             try
             {
                 SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_Run", conn);
@@ -36,7 +33,7 @@ namespace CheckInProgram
                             foreach (string arg in args)
                             {
                                 if (arg == "fullscreen")
-                                    Application.Run();
+                                    Application.Run(new SplitFlow());
                             }
                         }
                         else
@@ -57,7 +54,7 @@ namespace CheckInProgram
             }
             finally
             {
-                Program.conn.Close();
+                conn.Close();
             }
             //Application.Run(new Normal(new Student(0,"",0,"")));
         }
@@ -105,8 +102,42 @@ namespace CheckInProgram
             }
             finally
             {
-                Program.conn.Close();
+                conn.Close();
             }
+        }
+
+        static public void KillOhterProcess()
+        {
+            Process[] ps = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
+            if (ps.Length > 1)
+            {
+                foreach (Process item in ps)
+                {
+                    if (item.StartTime != Process.GetCurrentProcess().StartTime)
+                        item.Kill();
+                }
+            }
+        }
+
+        public static bool TryAuthenticate(string username, string userpwd)
+        {
+            bool isLogin = false;
+            string domain = "uibe.edu";
+            if (username == "duty")
+                return false;
+            if (username == @"uibe\duty")
+                return false;
+            try
+            {
+                DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://uibe.edu/OU=Users,OU=SEA团队,OU=2014外语自学中心用户,OU=过度,DC=uibe,DC=edu", domain), username, userpwd);
+                entry.RefreshCache();
+                isLogin = true;
+            }
+            catch (Exception)
+            {
+                isLogin = false;
+            }
+            return isLogin;
         }
         static public string Version = ConfigurationManager.AppSettings["Version"];
         static public string Name = ConfigurationManager.AppSettings["Name"];

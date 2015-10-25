@@ -29,7 +29,7 @@ namespace CheckInProgram
                     break;
                 case 202:
                 case 302:
-                    errormsg("签到失败，现在已经不是签到时间，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
+                    errormsg("签到失败，现在不是签到时间，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
                 case 203:
                     errormsg("签到失败，本教室不在当前时间内允许签到的教室列表中，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
@@ -40,6 +40,9 @@ namespace CheckInProgram
                     break;
                 case 303:
                     errormsg("签到失败，你已经有本节课的非正常签到记录，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
+                    break;
+                case 305:
+                    errormsg("签到失败，你不是这节课的学生，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);
                     break;
                 case 312:
                     errormsg("换机失败，换机所用时间超时，本节课将被记为旷课，操作代码" + errorid + "。\n如有问题，请联系值班员。", errorid);

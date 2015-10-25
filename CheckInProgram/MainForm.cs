@@ -37,7 +37,7 @@ namespace CheckInProgram
                 string name = Student.CheckIsOK(int.Parse(enterIDBox.Text));
                 if (name == null) return;
                 if (MessageBox.Show("你的姓名是：" + name + "\n你确认要签到么？", "确认签到", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-                Normal normal = new Normal(new Student(int.Parse(enterIDBox.Text)));
+                Normal normal = new Normal(new Student(int.Parse(enterIDBox.Text), false));
                 normal.Show();
                 Hide();
             }

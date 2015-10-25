@@ -34,7 +34,7 @@ namespace CheckInProgram
             _State = int.Parse(state.ToString());
             _Room = room.ToString();
         }
-        public Student(int id)
+        public Student(int id,bool isSplit)
         {
             SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_DoCheckIn", Program.conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -52,6 +52,7 @@ namespace CheckInProgram
             cmd.Parameters["@ip"].Value = Program.GetLocalIp();
             Program.conn.Open();
             cmd.ExecuteScalar();
+            Program.conn.Close();
             int result = int.Parse(cmd.Parameters["@result"].Value.ToString());
             switch (result)
             {
@@ -63,9 +64,23 @@ namespace CheckInProgram
                     _Room = cmd.Parameters["@room"].Value.ToString();
                     Print.infomsg("签到成功，你可以开始你的学习了！", "签到成功");
                     break;
+                case 305:
+                    if (isSplit)
+                    {
+                        Print.infomsg("分流系统登陆成功，你可以开始你的自习了！", "登陆成功");
+                        Application.Exit();
+                        break;
+                    }
+                    else
+                    {
+                        goto default;
+                    }
                 default:
-                    Print.show(result);
-                    Application.Exit();
+                    if (!isSplit)
+                    {
+                        Print.show(result);
+                        Application.Exit();
+                    }
                     break;
             }
         }
@@ -85,6 +100,7 @@ namespace CheckInProgram
                 cmd.Parameters["@ip"].Value = Program.GetLocalIp();
                 Program.conn.Open();
                 cmd.ExecuteScalar();
+                Program.conn.Close();
                 int result = int.Parse(cmd.Parameters["@result"].Value.ToString());
                 switch (result)
                 {
@@ -100,6 +116,66 @@ namespace CheckInProgram
             {
                 Print.show(ex.Message);
                 return null;
+            }
+            finally
+            {
+                Program.conn.Close();
+            }
+        }
+        public static int SplitIsOK(int id,string name)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_Split", Program.conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.VarChar, 15));
+                cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar, 20));
+                cmd.Parameters.Add(new SqlParameter("@wtime", SqlDbType.SmallInt));
+                cmd.Parameters.Add(new SqlParameter("@lstate", SqlDbType.Bit));
+                cmd.Parameters.Add(new SqlParameter("@sstate", SqlDbType.Bit));
+                cmd.Parameters["@wtime"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@lstate"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@sstate"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@id"].Value = id;
+                cmd.Parameters["@ip"].Value = Program.GetLocalIp();
+                cmd.Parameters["@name"].Value = name;
+                Program.conn.Open();
+                cmd.ExecuteScalar();
+                Program.conn.Close();
+                if (bool.Parse(cmd.Parameters["@lstate"].Value.ToString()) == false)
+                {
+                    Print.infomsg("分流系统登陆成功，你可以开始你的学习了！", "登陆成功");
+                    Application.Exit();
+                }
+                else
+                {
+                    if (bool.Parse(cmd.Parameters["@sstate"].Value.ToString()) == true)
+                    {
+                        if (int.Parse(cmd.Parameters["@wtime"].Value.ToString()) > 20)
+                        {
+                            Print.infomsg("分流系统登陆成功，你可以开始你的学习了！", "登陆成功");
+                            Application.Exit();
+                        }
+                        else
+                        {
+                            if (int.Parse(cmd.Parameters["@wtime"].Value.ToString()) != -99)
+                                return 99;
+                            else
+                                return int.Parse(cmd.Parameters["@wtime"].Value.ToString());
+                        }
+                    }
+                    else
+                    {
+                        return int.Parse(cmd.Parameters["@wtime"].Value.ToString());
+                    }
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Print.show(ex.Message);
+                return 0;
             }
             finally
             {
@@ -162,6 +238,7 @@ namespace CheckInProgram
                 cmd.Parameters["id"].Value = ID;
                 Program.conn.Open();
                 cmd.ExecuteNonQuery();
+                Program.conn.Close();
                 switch (int.Parse(cmd.Parameters["result"].Value.ToString()))
                 {
                     case 900:

@@ -14,6 +14,13 @@ namespace CheckInProgram
         public SplitFlow()
         {
             InitializeComponent();
+            Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            ChangeLocation(Title);
+            ChangeLocation(IDLabel);
+            ChangeLocation(IDTextBox);
+            ChangeLocation(NameLabel);
+            ChangeLocation(NameTextBox);
+            ChangeLocation(SignInButton);
         }
 
         private void SplitFlow_KeyDown(object sender, KeyEventArgs e)
@@ -29,7 +36,7 @@ namespace CheckInProgram
                 return;
             }
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void SignInButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -48,16 +55,18 @@ namespace CheckInProgram
                     throw new Exception("分流系统运行中，请自习的同学于上课15分钟后再尝试登陆！");
                 if (result > 0)
                 {
+                    Student.CheckIsOK(int.Parse(IDTextBox.Text));
                     Normal normal = new Normal(new Student(int.Parse(IDTextBox.Text), true));
                     normal.Show();
                     Hide();
                 }
                 if (--result<0)
                 {
-                    Print.infomsg("分流系统登陆成功，稍后将尝试为你自动签到，你可以开始你的学习了！\n若到上课时间仍没有自动签到，请使用桌面上的签到程序手动签到。", "登陆成功");
+                    Print.Infomsg("分流系统登陆成功，稍后将尝试为你自动签到，你可以开始你的学习了！\n若到上课时间仍没有自动签到，请使用桌面上的签到程序手动签到。", "登陆成功");
                     Hide();
                     CheckInTimer.Interval = -result * 60 * 1000;
                     CheckInTimer.Enabled = true;
+                    ExitTimer.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -67,7 +76,7 @@ namespace CheckInProgram
                 IDTextBox.PasswordChar = new char();
                 NameTextBox.PasswordChar = new char();
                 IDTextBox.Focus();
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
             }
             finally
             {
@@ -97,6 +106,16 @@ namespace CheckInProgram
                     IDTextBox.PasswordChar = '*';
                     NameTextBox.PasswordChar = '*';
                 }
+        }
+
+        private void ChangeLocation(Control control)
+        {
+            control.Location = new Point((Width - control.Width) / 2, (int)(control.Location.Y * (Height / 768.0)));
+        }
+
+        private void ExitTimer_Tick(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

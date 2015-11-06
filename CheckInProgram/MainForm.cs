@@ -43,7 +43,7 @@ namespace CheckInProgram
             }
             catch (Exception ex)
             {
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
             }
             finally
             {

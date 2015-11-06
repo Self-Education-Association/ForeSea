@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace StudentData
 {
@@ -17,8 +15,8 @@ namespace StudentData
                 int ignoreLine;
                 string[] files;
                 int filesCount;
-                System.Data.DataTable dt = new System.Data.DataTable();
-                System.Data.DataTable all = new System.Data.DataTable();
+                DataTable dt = new DataTable();
+                DataTable all = new DataTable();
                 Console.WriteLine("请输入输出文件名（不包括扩展名）：\n");
                 string filename = Console.ReadLine();
                 ignoreLine = 5;
@@ -31,10 +29,10 @@ namespace StudentData
                         switch (files[i].Split('\\').Last())
                         {
                             case "ALL.txt":
-                                all = DataTableUnion(all, txtToDataTable(files[i], ignoreLine));
+                                all = DataTableUnion(all, TxtToDataTable(files[i], ignoreLine));
                                 break;
                             default:
-                                dt = DataTableUnion(dt, txtToDataTable(files[i], ignoreLine));
+                                dt = DataTableUnion(dt, TxtToDataTable(files[i], ignoreLine));
                                 break;
                         }
                     }
@@ -46,7 +44,7 @@ namespace StudentData
                     }
                     
                 }
-                if (datatableToCSV(dt, filename + "-courses.csv") == true && datatableToCSV(all, filename + "-all.csv"))
+                if (DatatableToCSV(dt, filename + "-courses.csv") == true && DatatableToCSV(all, filename + "-all.csv"))
                 {
                     Console.WriteLine("Done!");
                 }
@@ -62,7 +60,7 @@ namespace StudentData
             }
         }
 
-        public static System.Data.DataTable txtToDataTable(string filepath,int ignoreLine)
+        public static System.Data.DataTable TxtToDataTable(string filepath,int ignoreLine)
         {
             try
             {
@@ -136,7 +134,7 @@ namespace StudentData
             }
         }
 
-        public static bool datatableToCSV(DataTable dt, string fileName)
+        public static bool DatatableToCSV(DataTable dt, string fileName)
         {
             try
             {

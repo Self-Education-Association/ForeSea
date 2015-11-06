@@ -12,7 +12,7 @@ namespace CheckInProgram
             InitializeComponent();
             IDLabel.Text = student.ID.ToString();
             NameLabel.Text = student.Name;
-            StateLabel.Text = Print.state(student.State);
+            StateLabel.Text = Print.State(student.State);
             RoomLabel.Text = student.Room;
             KeepTimer.Interval = int.Parse(Program.KP) * 60 * 1000;
             CheckTimer.Interval = int.Parse(Program.Overtime) * 60 * 1000;
@@ -55,7 +55,7 @@ namespace CheckInProgram
             }
             catch(Exception ex)
             {
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
             }
         }
 
@@ -73,7 +73,7 @@ namespace CheckInProgram
             }
             catch(Exception ex)
             {
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
             }
         }
 
@@ -93,7 +93,7 @@ namespace CheckInProgram
             }
             catch(Exception ex)
             {
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
             }
         }
 
@@ -105,14 +105,14 @@ namespace CheckInProgram
                 {
                     if (Student.DatabaseTransport("dbo.SP_CheckIn_Change"))
                     {
-                        Print.infomsg("换机成功，请在规定时间内在新的机器上线。", "换机成功");
+                        Print.Infomsg("换机成功，请在规定时间内在新的机器上线。", "换机成功");
                         Application.Exit();
                     }
                 }
             }
             catch(Exception ex)
             {
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
             }
             finally
             {

@@ -42,14 +42,16 @@ namespace CheckInProgram
                     case 103:
                         Application.Run(new Normal(new Student(cmd.Parameters["@id"].Value, cmd.Parameters["@name"].Value, cmd.Parameters["@state"].Value, cmd.Parameters["@room"].Value)));
                         break;
+                    case 105:
+                        return;
                     default:
-                        Print.show(result);
+                        Print.Show(result);
                         break;
                 }
             }
             catch (Exception ex)
             {
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
                 return;
             }
             finally
@@ -70,7 +72,7 @@ namespace CheckInProgram
                     return ip.ToString();
                 }
             }
-            Print.show("这不是签到机器！");
+            Print.Show("这不是签到机器！");
             Application.Exit();
             return "";
         }
@@ -90,7 +92,11 @@ namespace CheckInProgram
                 cmd.Parameters["@state"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@room"].Direction = ParameterDirection.Output;
                 cmd.Parameters["@result"].Direction = ParameterDirection.Output;
-                cmd.Parameters["@ip"].Value = Program.GetLocalIp();
+                cmd.Parameters["@ip"].Value = GetLocalIp();
+                string[] ip = cmd.Parameters["@ip"].Value.ToString().Split('.');
+                //区分考试区电脑
+                if (ip[2] == "12" && int.Parse(ip[3]) >= 109)
+                    return 105;
                 conn.Open();
                 cmd.ExecuteScalar();
                 conn.Close();

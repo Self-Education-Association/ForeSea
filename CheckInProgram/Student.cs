@@ -62,12 +62,12 @@ namespace CheckInProgram
                     _Name = cmd.Parameters["@name"].Value.ToString();
                     _State = int.Parse(cmd.Parameters["@state"].Value.ToString());
                     _Room = cmd.Parameters["@room"].Value.ToString();
-                    Print.infomsg("签到成功，你可以开始你的学习了！", "签到成功");
+                    Print.Infomsg("签到成功，你可以开始你的学习了！", "签到成功");
                     break;
                 case 305:
                     if (isSplit)
                     {
-                        Print.infomsg("分流系统登陆成功，你可以开始你的自习了！", "登陆成功");
+                        Print.Infomsg("分流系统登陆成功，你可以开始你的自习了！", "登陆成功");
                         Application.Exit();
                         break;
                     }
@@ -75,13 +75,16 @@ namespace CheckInProgram
                     {
                         goto default;
                     }
+                case 306:
+                    Print.Show(result);
+                    break;
                 default:
                     if (!isSplit)
                     {
-                        Print.show(result);
+                        Print.Show(result);
                         Application.Exit();
                     }
-                    Application.Exit();
+                    Print.Show(result);
                     break;
             }
         }
@@ -108,14 +111,14 @@ namespace CheckInProgram
                     case 201:
                         return (string)cmd.Parameters["@name"].Value;
                     default:
-                        Print.show(result);
+                        Print.Show(result);
                         break;
                 }
                 return null;
             }
             catch (Exception ex)
             {
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
                 return null;
             }
             finally
@@ -146,7 +149,7 @@ namespace CheckInProgram
                 Program.conn.Close();
                 if (bool.Parse(cmd.Parameters["@lstate"].Value.ToString()) == false)
                 {
-                    Print.infomsg("分流系统登陆成功，你可以开始你的学习了！", "登陆成功");
+                    Print.Infomsg("分流系统登陆成功，你可以开始你的学习了！", "登陆成功");
                     Application.Exit();
                 }
                 else
@@ -155,7 +158,7 @@ namespace CheckInProgram
                     {
                         if (int.Parse(cmd.Parameters["@wtime"].Value.ToString()) > 20)
                         {
-                            Print.infomsg("分流系统登陆成功，你可以开始你的学习了！", "登陆成功");
+                            Print.Infomsg("分流系统登陆成功，你可以开始你的学习了！", "登陆成功");
                             Application.Exit();
                         }
                         else
@@ -175,7 +178,7 @@ namespace CheckInProgram
             }
             catch (Exception ex)
             {
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
                 return 0;
             }
             finally
@@ -206,13 +209,13 @@ namespace CheckInProgram
                     case 801:
                         return true;
                     default:
-                        Print.show(result);
+                        Print.Show(result);
                         return false;
                 }
             }
             catch (Exception ex)
             {
-                Print.show(ex.Message);
+                Print.Show(ex.Message);
                 return false;
             }
             finally
@@ -245,10 +248,10 @@ namespace CheckInProgram
                 {
                     case 900:
                     case 902:
-                        Print.show(int.Parse(cmd.Parameters["result"].Value.ToString()));
+                        Print.Show(int.Parse(cmd.Parameters["result"].Value.ToString()));
                         break;
                     case 901:
-                        Print.infomsg(string.Format("除本次上课记录外，你还有{0}次正常记录,{1}次迟到记录,{2}次旷课记录，如有问题请联系值班员查询详细记录。", cmd.Parameters["normal"].Value, cmd.Parameters["late"].Value, cmd.Parameters["truency"].Value), "查询结果");
+                        Print.Infomsg(string.Format("除本次上课记录外，你还有{0}次正常记录,{1}次迟到记录,{2}次旷课记录，如有问题请联系值班员查询详细记录。", cmd.Parameters["normal"].Value, cmd.Parameters["late"].Value, cmd.Parameters["truency"].Value), "查询结果");
                         break;
                 }
             }

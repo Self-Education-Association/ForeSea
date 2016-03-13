@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace LST.Models
 {
@@ -70,6 +71,12 @@ namespace LST.Models
         public string Email { get; set; }
 
         [Required]
+        [RegularExpression(@"^\d{9}$")]
+        [Remote("StudentNumber","Home")]
+        [Display(Name ="学号")]
+        public string StudentNumber { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "密码")]
@@ -77,7 +84,7 @@ namespace LST.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "确认密码")]
-        [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -96,7 +103,7 @@ namespace LST.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "确认密码")]
-        [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

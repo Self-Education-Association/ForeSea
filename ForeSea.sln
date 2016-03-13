@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunForeSea", "RunForeSea\RunForeSea.csproj", "{63158BDB-7778-4E01-BE70-954FA022F7A5}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentData", "StudentData\StudentData.csproj", "{AFD56BE9-0412-4CF6-90B5-EC7B1C0D8633}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ForeSea", "ForeSea\ForeSea.sqlproj", "{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LST", "LST\LST.csproj", "{9189FFCE-2A2A-490E-BB6F-F28288B7EE3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}.Release|Any CPU.Build.0 = Release|Any CPU
 		{80BA8E87-EEFF-4D7A-80DC-AA09C82DB596}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9189FFCE-2A2A-490E-BB6F-F28288B7EE3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9189FFCE-2A2A-490E-BB6F-F28288B7EE3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9189FFCE-2A2A-490E-BB6F-F28288B7EE3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9189FFCE-2A2A-490E-BB6F-F28288B7EE3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

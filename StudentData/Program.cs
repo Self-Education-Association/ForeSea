@@ -20,7 +20,7 @@ namespace StudentData
                 Console.WriteLine("请输入输出文件名（不包括扩展名）：\n");
                 string filename = Console.ReadLine();
                 ignoreLine = 5;
-                files = Directory.GetFiles(System.Environment.CurrentDirectory, "*.txt", SearchOption.AllDirectories);
+                files = Directory.GetFiles(Environment.CurrentDirectory, "*.txt", SearchOption.AllDirectories);
                 filesCount = files.Count();
                 for (int i = 0; i < filesCount; i++)
                 {
@@ -60,11 +60,11 @@ namespace StudentData
             }
         }
 
-        public static System.Data.DataTable TxtToDataTable(string filepath,int ignoreLine)
+        public static DataTable TxtToDataTable(string filepath,int ignoreLine)
         {
             try
             {
-                System.Data.DataTable dt;
+                DataTable dt;
                 FileStream fs;
                 StreamReader sr;
                 string[] inputrow;
@@ -78,7 +78,7 @@ namespace StudentData
                 {
                     sr.ReadLine();
                 }
-                dt = new System.Data.DataTable();
+                dt = new DataTable();
                 inputrow = sr.ReadLine().Split('\t');
                 inputrow[inputrow.Count()-1] = "Course";
                 foreach (string columnsname in inputrow)
@@ -107,7 +107,7 @@ namespace StudentData
             }
         }
 
-        public static System.Data.DataTable DataTableUnion(System.Data.DataTable dataTable1, System.Data.DataTable dataTable2)
+        public static DataTable DataTableUnion(DataTable dataTable1, DataTable dataTable2)
         {
             try
             {
@@ -138,8 +138,8 @@ namespace StudentData
         {
             try
             {
-                FileStream fs = new FileStream(fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-                StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.Default);
+                FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs, Encoding.Default);
                 string data = "";
                 //写出列名称
                 for (int i = 0; i < dt.Columns.Count; i++)

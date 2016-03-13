@@ -16,8 +16,13 @@ namespace LST.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Administrator
-        public ActionResult Index(string message="")
+        public ActionResult Index(MessageType message)
         {
+            ViewBag.ErrorInfo =
+                message == MessageType.DbUpdateFailed ? "更新失败：并发控制生效，请核对该场次新记录后重新修改" :
+                message == MessageType.Failed ? "失败：操作未完成。" :
+                message == MessageType.Success ? "成功：已完成操作" : "";
+
             return View(db.TestMatches.ToList());
         }
 
@@ -93,7 +98,7 @@ namespace LST.Controllers
                 {
                     ex.Entries.Single().Reload();
 
-                    return RedirectToAction("Index", new { message="UpdateError"});
+                    return RedirectToAction("Index", new { message = MessageType.DbUpdateFailed });
                 }
                 return RedirectToAction("Index");
             }
@@ -140,7 +145,7 @@ namespace LST.Controllers
                 TestHelper helper = new TestHelper();
                 bool result = helper.GenerateMatches(model.Days.Split('|'), model.Lessons.Split('|'), model.Limit, model.StartTime, model.EndTime);
                 if (result)
-                    return RedirectToAction("Index", new { message = "success" });
+                    return RedirectToAction("Index", new { message = MessageType.Success});
                 else
                 {
                     ViewBag.Error = "创建失败";

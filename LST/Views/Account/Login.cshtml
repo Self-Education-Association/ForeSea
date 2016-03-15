@@ -44,16 +44,10 @@
                 <p>
                     @Html.ActionLink("注册为新用户", "Register")
                 </p>
-                @* 在为密码重置功能启用帐户确认后启用此项
-                    <p>
-                        @Html.ActionLink("忘记了密码?", "ForgotPassword")
-                    </p>*@
+                <p>
+                    @Html.ActionLink("忘记了密码?", "ForgotPassword")
+                </p>
             }
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
         </section>
     </div>
 </div>

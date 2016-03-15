@@ -72,8 +72,8 @@ namespace LST.Models
 
         [Required]
         [RegularExpression(@"^\d{9}$")]
-        [Remote("StudentNumber","Home")]
-        [Display(Name ="学号")]
+        [Remote("StudentNumber", "Home")]
+        [Display(Name = "学号")]
         public string StudentNumber { get; set; }
 
         [Required]
@@ -115,5 +115,9 @@ namespace LST.Models
         [EmailAddress]
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "学号")]
+        public string StudentNumber { get; set; }
     }
 }

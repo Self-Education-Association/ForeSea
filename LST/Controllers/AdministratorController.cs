@@ -16,14 +16,19 @@ namespace LST.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Administrator
-        public ActionResult Index(MessageType message)
+        public ActionResult Index(MessageType message = MessageType.None)
         {
             ViewBag.ErrorInfo =
                 message == MessageType.DbUpdateFailed ? "更新失败：并发控制生效，请核对该场次新记录后重新修改" :
                 message == MessageType.Failed ? "失败：操作未完成。" :
                 message == MessageType.Success ? "成功：已完成操作" : "";
 
-            return View(db.TestMatches.ToList());
+            return View(db.TestMatches.Where(t => t.EndTime > DateTime.Now).OrderBy(t => t.Name));
+        }
+
+        public ActionResult History()
+        {
+            return View(db.TestMatches.Where(t => t.EndTime < DateTime.Now).OrderBy(t => t.Name));
         }
 
         // GET: Administrator/Details/5
@@ -94,7 +99,7 @@ namespace LST.Controllers
                 {
                     db.SaveChanges();
                 }
-                catch(DbUpdateConcurrencyException ex)
+                catch (DbUpdateConcurrencyException ex)
                 {
                     ex.Entries.Single().Reload();
 
@@ -143,9 +148,14 @@ namespace LST.Controllers
             if (ModelState.IsValid)
             {
                 TestHelper helper = new TestHelper();
-                bool result = helper.GenerateMatches(model.Days.Split('|'), model.Lessons.Split('|'), model.Limit, model.StartTime, model.EndTime);
+                bool result = helper.GenerateMatches(
+                    model.Days.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries),
+                    model.Lessons.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries),
+                    model.Limit,
+                    model.StartTime,
+                    model.EndTime);
                 if (result)
-                    return RedirectToAction("Index", new { message = MessageType.Success});
+                    return RedirectToAction("Index", new { message = MessageType.Success });
                 else
                 {
                     ViewBag.Error = "创建失败";
@@ -169,7 +179,8 @@ namespace LST.Controllers
         {
             Success,
             Failed,
-            DbUpdateFailed
+            DbUpdateFailed,
+            None
         }
     }
 }

@@ -86,7 +86,11 @@ namespace LST.Models
             Score = "";
         }
 
-        public TestRecord() { }
+        public TestRecord()
+        {
+            Id = Guid.NewGuid();
+            Score = "";
+        }
     }
 
     public class TestHelper
@@ -98,7 +102,7 @@ namespace LST.Models
                 //获取实体对象
                 var contextmatch = db.TestMatches.Find(match.Id);
                 var contextuser = db.Users.Find(user.Id);
-                var record = new TestRecord(match, user);
+                var record = new TestRecord(contextmatch, contextuser);
                 if (contextmatch == null || contextuser == null)
                     return false;
 
@@ -106,9 +110,7 @@ namespace LST.Models
                 if (contextmatch.Count >= contextmatch.Limit || !contextmatch.Enabled || contextuser.Applied || !contextuser.Enabled)
                     return false;
 
-                db.TestRecords.Attach(record);
-                contextmatch.RecordsCollection.Add(record);
-                contextuser.Records.Add(record);
+                db.TestRecords.Add(record);
                 contextuser.Applied = true;
                 db.OperationRecords.Add(new OperationRecord(user.StudentNumber, "Apply", match.Name));
 
@@ -151,7 +153,8 @@ namespace LST.Models
                     return false;
 
                 contextmatch.RecordsCollection.Remove(record);
-                contextuser.Records.Remove(record);
+                contextuser.RecordsCollection.Remove(record);
+                db.TestRecords.Remove(record);
                 contextuser.Applied = false;
                 db.OperationRecords.Add(new OperationRecord(user.StudentNumber, "Quit", contextmatch.Name));
 
@@ -184,7 +187,14 @@ namespace LST.Models
                 foreach (string d in days)
                     foreach (string l in lessons)
                     {
-                        db.TestMatches.Add(new TestMatch { Name = d + l, Limit = limit, StartTime = startTime, EndTime = endTime });
+                        db.TestMatches.Add(new TestMatch
+                        {
+                            Name = d + " - " + l,
+                            Limit = limit,
+                            StartTime = startTime,
+                            EndTime = endTime,
+                            Visible = true
+                        });
                     }
                 try
                 {

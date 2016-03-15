@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LST.Models;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace LST.Controllers
 {
@@ -52,14 +54,35 @@ namespace LST.Controllers
                     }
                     else
                     {
-                        return Json(true, JsonRequestBehavior.AllowGet);
+                        var con = new SqlConnection(@"Server=10.1.1.68\seasqlserver;Database=ForeSea;User ID=checkin;Password=seacheckin;Trusted_Connection=false;");
+                        var cmd = new SqlCommand("", con);
+                        cmd.CommandText = @"SELECT * FROM Student WHERE ID=" + model.StudentNumber;
+                        con.Open();
+                        object result;
+                        try
+                        {
+                            result = cmd.ExecuteScalar();
+                        }
+                        finally
+                        {
+                            con.Close();
+                        }
+                        if (result != null)
+                        {
+                            return Json(true, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            message = "数据库无此学号记录。";
+                            return Json(message, JsonRequestBehavior.AllowGet);
+                        }
                     }
                 }
             }
             else
             {
                 message = "错误的数据。";
-                return Json(false, JsonRequestBehavior.AllowGet);
+                return Json(message, JsonRequestBehavior.AllowGet);
             }
         }
     }

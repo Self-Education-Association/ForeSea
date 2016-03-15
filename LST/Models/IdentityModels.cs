@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace LST.Models
 {
@@ -23,9 +25,9 @@ namespace LST.Models
         {
             get
             {
-                if (Records == null)
+                if (RecordsCollection == null)
                     return true;
-                if (Records.Count >= 3)
+                if (RecordsCollection.Count >= 3)
                     return false;
                 return EnabledStored;
             }
@@ -36,13 +38,13 @@ namespace LST.Models
         }
 
         [Required]
-        public bool EnabledStored { get; set; } = true;
+        public bool EnabledStored { get; private set; } = true;
 
-        [DisplayName("已报名")]
         [Required]
+        [DisplayName("已报名")]
         public bool Applied { get; set; } = false;
 
-        public virtual List<TestRecord> Records { get; set; }
+        public virtual List<TestRecord> RecordsCollection { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -73,12 +75,12 @@ namespace LST.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TestMatch>().HasMany(t => t.RecordsCollection).WithRequired(r => r.Match);
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<TestMatch>().Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<ApplicationUser>().HasMany(a => a.Records).WithRequired(r => r.User);
             modelBuilder.Entity<ApplicationUser>().Property(a => a.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<ApplicationUser>().Property(a => a.EnabledStored).HasColumnName("Enabled");
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<TestRecord>().HasRequired(t => t.Match).WithMany(m => m.RecordsCollection).Map(r => r.MapKey("Match_Id")).WillCascadeOnDelete();
+            modelBuilder.Entity<TestRecord>().HasRequired(t => t.User).WithMany(u => u.RecordsCollection).Map(r => r.MapKey("User_Id")).WillCascadeOnDelete();
         }
     }
 }

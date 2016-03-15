@@ -11,10 +11,6 @@
         @ViewBag.ErrorInfo
     }
 }
-<p>
-    @Html.ActionLink("新建场次", "Create", null, new { @class = "btn btn-default" })
-    @Html.ActionLink("批量新建", "GenerateMatches", null, new { @class = "btn btn-default" })
-</p>
 <table class="table">
     <tr>
         <th>
@@ -54,9 +50,7 @@
                 @Html.DisplayFor(modelItem => item.Visible)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("选择场次", "Apply", new { id=item.Id})
             </td>
         </tr>
     }

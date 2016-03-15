@@ -21,6 +21,7 @@ namespace LST.Controllers
             message == MessageType.QuitFailure ? "取消报名失败" : "";
 
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).Single();
+            List<TestViewModel> model;
 
             if (!user.Applied)
             {
@@ -28,8 +29,21 @@ namespace LST.Controllers
             }
             else
             {
-                return View("MatchInfo", user.RecordsCollection);
+                model = new List<TestViewModel>();
+                foreach (var item in user.RecordsCollection)
+                {
+                    model.Add(new TestViewModel
+                    {
+                        Id = item.Match.Id,
+                        Name = item.Match.Name,
+                        StartTime = item.Match.StartTime,
+                        EndTime = item.Match.EndTime,
+                        Enabled = item.Match.Enabled,
+                        Score = item.Score
+                    });
+                }
             }
+            return View("MatchInfo", model);
         }
 
         public ActionResult Apply(Guid? id)
@@ -72,11 +86,11 @@ namespace LST.Controllers
             var helper = new TestHelper();
             if (helper.QuitMatch(match, user))
             {
-                return RedirectToAction("Index", new { message = MessageType.ApplySuccess });
+                return RedirectToAction("Index", new { message = MessageType.QuitSuccess });
             }
             else
             {
-                return RedirectToAction("Index", new { message = MessageType.ApplyFailure });
+                return RedirectToAction("Index", new { message = MessageType.QuitFailure });
             }
         }
 

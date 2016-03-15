@@ -72,9 +72,9 @@ namespace LST.Models
     {
         public Guid Id { get; set; }
 
-        public TestMatch Match { get; set; }
+        public virtual TestMatch Match { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public string Score { get; set; }
 

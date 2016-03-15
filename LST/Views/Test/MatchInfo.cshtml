@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LST.Models.TestRecord>
+﻿@model IEnumerable<LST.Models.TestViewModel>
 
 @{
     ViewBag.Title = "View";
@@ -21,29 +21,31 @@
             结束报名时间
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Score)
+            成绩
         </th>
-        <th></th>
+        <th>
+            操作
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @item.Match.Name
+            @item.Name
         </td>
         <td>
-            @item.Match.StartTime
+            @item.StartTime
         </td>
         <td>
-            @item.Match.EndTime
+            @item.EndTime
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Score)
+            @item.Score
         </td>
         <td>
-            @if (item.Match.Enabled)
+            @if (item.Enabled)
             {
-                Html.ActionLink("取消报名", "Quit", new { id = item.Id });
+                @Html.ActionLink("取消报名", "Quit", new { id = item.Id }, new { @class = "btn btn-danger" })
             }
         </td>
     </tr>

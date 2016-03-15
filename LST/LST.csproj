@@ -218,6 +218,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RecordModels.cs" />
     <Compile Include="Models\TestModels.cs" />
+    <Compile Include="Models\TestViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

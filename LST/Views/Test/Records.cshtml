@@ -1,0 +1,57 @@
+﻿@model IEnumerable<LST.Models.TestRecordsViewModel>
+@{
+    Layout = "";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            场次
+        </th>
+        <th>
+            可取消
+        </th>
+        <th>
+            成绩
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+
+    @if (Model != null && Model.Count() != 0)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                    </td>
+                    <td>
+                        @item.Enabled
+                    </td>
+                    <td>
+                        @item.Score
+                    </td>
+                    <td>
+                        @if (item.Enabled)
+                    {
+                            @Html.ActionLink("取消报名", "Quit", new { id = item.Id }, new { @class = "btn btn-danger" })
+                        }
+                    </td>
+                </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td>
+                无记录
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    }
+
+</table>

@@ -141,12 +141,14 @@ namespace LST.Models
 
         public bool QuitMatch(TestMatch match, ApplicationUser user)
         {
+            if (user.Applied == false)
+                return false;
             using (var db = new ApplicationDbContext())
             {
                 var contextmatch = db.TestMatches.Find(match.Id);
                 var contextuser = db.Users.Find(user.Id);
-                var record = new TestRecord(contextmatch, contextuser);
-                if (contextmatch == null || contextuser == null)
+                var record = contextuser.RecordsCollection.Where(r => r.Match.StartTime <= DateTime.Now && r.Match.EndTime >= DateTime.Now).SingleOrDefault();
+                if (contextmatch == null || contextuser == null || record == null)
                     return false;
 
                 if (!contextmatch.RecordsCollection.Contains(record) || !contextmatch.Enabled)

@@ -280,7 +280,9 @@
     <Content Include="Views\Administrator\Index.cshtml" />
     <Content Include="Views\Administrator\History.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
-    <Content Include="Views\Test\MatchInfo.cshtml" />
+    <Content Include="Views\Test\Records.cshtml" />
+    <Content Include="Views\Test\Account.cshtml" />
+    <Content Include="Views\Test\Matches.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,58 +1,56 @@
-﻿@model IEnumerable<LST.Models.TestMatch>
-
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "报名页面";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
+
 @{
-    if (string.IsNullOrEmpty(ViewBag.ErrorInfo))
+    <div class="col-lg-9">
+        @Html.Action("Records")
+    </div>
+    <div class="col-lg-3">
+        @Html.Action("Account")
+    </div>
+}
+<p id="time"></p>
+<button id="button" type="button" onclick="EnableAjaxLoad()" class="btn btn-success">启用自动刷新</button>
+<div id="matches">
+    @Html.Action("Matches")
+</div>
+@{
+    if (!string.IsNullOrEmpty(ViewBag.ErrorInfo))
     {
-        @ViewBag.ErrorInfo
+        <script>
+            alert("@ViewBag.ErrorInfo");
+        </script>
     }
 }
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Limit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Visible)
-        </th>
-        <th></th>
-    </tr>
+<script>
+    function LoadAction() {
+        var time = new Date();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Matches", "Test")',
+            data: { },
+            datatype: "json",
+            success: function (data) {
+                $('#matches').html(data);
+                $('#time').html(new Date().toLocaleTimeString());
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @item.Count/@Html.DisplayFor(modelItem => item.Limit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Visible)
-            </td>
-            <td>
-                @Html.ActionLink("选择场次", "Apply", new { id=item.Id})
-            </td>
-        </tr>
+        });
     }
-
-</table>
+    function EnableAjaxLoad() {
+        setInterval(LoadAction, 1000);
+        document.getElementById("button").class = "btn btn-default";
+        document.getElementById("button").onclick="DisableAjaxLoad()"
+        }
+    function DisableAjaxLoad(){
+        clearInterval();
+        document.getElementById("button").class = "btn btn-success";
+        document.getElementById("button").onclick = "EnableAjaxLoad()"
+    }
+</script>

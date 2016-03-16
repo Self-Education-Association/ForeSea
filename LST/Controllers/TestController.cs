@@ -7,6 +7,7 @@ using LST.Models;
 
 namespace LST.Controllers
 {
+    [Authorize]
     public class TestController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -20,30 +21,68 @@ namespace LST.Controllers
             message == MessageType.QuitSuccess ? "取消报名成功" :
             message == MessageType.QuitFailure ? "取消报名失败" : "";
 
-            var user = db.Users.Where(u => u.UserName == User.Identity.Name).Single();
-            List<TestViewModel> model;
+            return View();
+        }
 
-            if (!user.Applied)
+        public ActionResult Records()
+        {
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).SingleOrDefault();
+
+            if (user == null)
+                return new HttpStatusCodeResult(403);
+
+            List<TestRecordsViewModel> model = new List<TestRecordsViewModel>();
+
+            foreach (var item in user.RecordsCollection)
             {
-                return View(db.TestMatches.Where(t => t.StartTime <= DateTime.Now && t.EndTime >= DateTime.Now));
-            }
-            else
-            {
-                model = new List<TestViewModel>();
-                foreach (var item in user.RecordsCollection)
+                model.Add(new TestRecordsViewModel
                 {
-                    model.Add(new TestViewModel
-                    {
-                        Id = item.Match.Id,
-                        Name = item.Match.Name,
-                        StartTime = item.Match.StartTime,
-                        EndTime = item.Match.EndTime,
-                        Enabled = item.Match.Enabled,
-                        Score = item.Score
-                    });
-                }
+                    Id = item.Match.Id,
+                    Name = item.Match.Name,
+                    Enabled=user.Enabled,
+                    Applied=user.Applied,
+                    Canceled = item.Match.Enabled,
+                    Score = item.Score
+                });
             }
-            return View("MatchInfo", model);
+            return View(model);
+        }
+
+        public ActionResult Account()
+        {
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).SingleOrDefault();
+            if (user == null)
+                return new HttpStatusCodeResult(403);
+
+            var model = new TestAccountViewModel { Enabled = user.Enabled, Applied = user.Applied };
+
+            return View(model);
+        }
+
+        public ActionResult Matches()
+        {
+            var matches = db.TestMatches
+                .Where(t => t.StartTime <= DateTime.Now && t.EndTime >= t.EndTime)
+                .OrderBy(r => r.Name)
+                .ToList();
+
+            List<TestIndexViewModel> model = new List<TestIndexViewModel>();
+            foreach (var item in matches)
+            {
+                model.Add(new TestIndexViewModel
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Count = item.Count,
+                    Limit = item.Limit,
+                    StartTime = item.StartTime,
+                    EndTime = item.EndTime,
+                    Enabled = item.Enabled
+                });
+            }
+            model.OrderBy(r => r.Name);
+
+            return View(model);
         }
 
         public ActionResult Apply(Guid? id)

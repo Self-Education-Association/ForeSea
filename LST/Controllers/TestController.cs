@@ -39,8 +39,8 @@ namespace LST.Controllers
                 {
                     Id = item.Match.Id,
                     Name = item.Match.Name,
-                    Enabled=user.Enabled,
-                    Applied=user.Applied,
+                    Enabled = user.Enabled,
+                    Applied = user.Applied,
                     Canceled = item.Match.Enabled,
                     Score = item.Score
                 });
@@ -63,6 +63,7 @@ namespace LST.Controllers
         {
             var matches = db.TestMatches
                 .Where(t => t.StartTime <= DateTime.Now && t.EndTime >= t.EndTime)
+                .Where(t => t.Visible == true)
                 .OrderBy(r => r.Name)
                 .ToList();
 

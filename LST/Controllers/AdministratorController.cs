@@ -23,7 +23,7 @@ namespace LST.Controllers
                 message == MessageType.Failed ? "失败：操作未完成。" :
                 message == MessageType.Success ? "成功：已完成操作" : "";
 
-            return View(db.TestMatches.Where(t => t.EndTime > DateTime.Now).OrderBy(t => t.Name));
+            return View(db.TestMatches.Where(t => t.EndTime > DateTime.Now).OrderBy(t => t.Name).ToList());
         }
 
         public ActionResult History()

@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using LST.Models;
+using System.Data.SqlClient;
+using System.Data.Entity.Infrastructure;
 
 namespace LST.Controllers
 {
@@ -108,10 +110,14 @@ namespace LST.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, StudentNumber = model.StudentNumber };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, StudentNumber = model.StudentNumber, StudentName = model.StudentName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //添加第一次听说考试的数据
+                    var helper = new TestHelper();
+                    helper.AddHistory(user);
+
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // 有关如何启用帐户确认和密码重置的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=320771

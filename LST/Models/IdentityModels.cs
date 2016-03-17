@@ -19,6 +19,9 @@ namespace LST.Models
         [DisplayName("学号")]
         public string StudentNumber { get; set; }
 
+        [DisplayName("姓名")]
+        public string StudentName { get; set; }
+
         [NotMapped]
         [DisplayName("已启用")]
         public bool Enabled

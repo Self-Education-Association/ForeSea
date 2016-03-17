@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -11,7 +12,7 @@ namespace LST.Models
 {
     public class TestMatch
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         [DisplayName("考试场次")]
         public string Name { get; set; }
@@ -44,10 +45,6 @@ namespace LST.Models
                 else
                     return RecordsCollection.Count();
             }
-            set
-            {
-                return;
-            }
         }
 
         [NotMapped]
@@ -60,10 +57,6 @@ namespace LST.Models
                     return true;
                 else
                     return false;
-            }
-            set
-            {
-                return;
             }
         }
     }
@@ -206,6 +199,69 @@ namespace LST.Models
                 catch
                 {
                     return false;
+                }
+            }
+        }
+
+        public void AddHistory(ApplicationUser user)
+        {
+            var con = new SqlConnection(@"Server=10.1.1.68\seasqlserver;Database=ForeSea;User ID=checkin;Password=seacheckin;Trusted_Connection=false;");
+            var cmd = new SqlCommand("", con);
+            object result;
+            cmd.CommandText = @"SELECT Score FROM dbo.LST_History WHERE Id=@Id";
+            cmd.Parameters.Add(new SqlParameter("@Id", System.Data.SqlDbType.VarChar));
+            cmd.Parameters["@Id"].Value = user.StudentNumber;
+            con.Open();
+            try
+            {
+                result = cmd.ExecuteScalar();
+            }
+            finally
+            {
+                con.Close();
+            }
+            if (result != null)
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var contextUser = db.Users.Find(user.Id);
+                    var contextMatch = db.TestMatches.Where(t => t.Name == "Listening and Speaking Test - 1st").SingleOrDefault();
+                    if (contextMatch == null)
+                        return;
+
+                    //处理数据
+                    var record = new TestRecord(contextMatch, contextUser);
+                    record.Score = result.ToString();
+                    if (record.Score == "2.7")
+                    {
+                        record.Score = "通过考试";
+                        contextUser.Enabled = false;
+                    }
+                    else if (record.Score == "-1")
+                    {
+                        record.Score = "旷考";
+                        contextUser.Enabled = false;
+                    }
+
+                    contextUser.RecordsCollection.Add(record);
+                    contextMatch.RecordsCollection.Add(record);
+                    db.TestRecords.Add(record);
+
+                    //保存，采取乐观并发
+                    bool succeed;
+                    do
+                    {
+                        succeed = true;
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (DbUpdateConcurrencyException ex)
+                        {
+                            succeed = false;
+                            ex.Entries.Single().Reload();
+                        }
+                    } while (!succeed);
                 }
             }
         }

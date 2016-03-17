@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201603131358238_2016-03-13添加Visible属性.Designer.cs">
       <DependentUpon>201603131358238_2016-03-13添加Visible属性.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603170724503_AddStudentNameColumn.cs" />
+    <Compile Include="Migrations\201603170724503_AddStudentNameColumn.Designer.cs">
+      <DependentUpon>201603170724503_AddStudentNameColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdministratorViewModel.cs" />
@@ -301,6 +305,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603131358238_2016-03-13添加Visible属性.resx">
       <DependentUpon>201603131358238_2016-03-13添加Visible属性.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603170724503_AddStudentNameColumn.resx">
+      <DependentUpon>201603170724503_AddStudentNameColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

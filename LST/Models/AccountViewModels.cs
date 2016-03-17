@@ -72,9 +72,13 @@ namespace LST.Models
 
         [Required]
         [RegularExpression(@"^\d{9}$")]
-        [Remote("StudentNumber", "Home")]
+        [Remote("StudentNumber", "Home", AdditionalFields = "StudentName")]
         [Display(Name = "学号")]
         public string StudentNumber { get; set; }
+
+        [Required]
+        [Display(Name = "姓名")]
+        public string StudentName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]

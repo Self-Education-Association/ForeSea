@@ -40,7 +40,7 @@ namespace LST.Controllers
             return View();
         }
 
-        public ActionResult StudentNumber([Bind(Include = "StudentNumber")]RegisterViewModel model)
+        public ActionResult StudentNumber([Bind(Include = "StudentNumber,StudentName")]RegisterViewModel model)
         {
             string message = null;
             if (!string.IsNullOrEmpty(model.StudentNumber))
@@ -56,7 +56,11 @@ namespace LST.Controllers
                     {
                         var con = new SqlConnection(@"Server=10.1.1.68\seasqlserver;Database=ForeSea;User ID=checkin;Password=seacheckin;Trusted_Connection=false;");
                         var cmd = new SqlCommand("", con);
-                        cmd.CommandText = @"SELECT * FROM Student WHERE ID=" + model.StudentNumber;
+                        cmd.CommandText = @"SELECT * FROM Student WHERE ID=@Id AND Name=@Name";
+                        cmd.Parameters.Add(new SqlParameter("@Id", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Name", SqlDbType.NVarChar));
+                        cmd.Parameters["@Id"].Value = model.StudentNumber;
+                        cmd.Parameters["@Name"].Value = model.StudentName;
                         con.Open();
                         object result;
                         try
@@ -73,7 +77,7 @@ namespace LST.Controllers
                         }
                         else
                         {
-                            message = "数据库无此学号记录。";
+                            message = "数据库无匹配记录。";
                             return Json(message, JsonRequestBehavior.AllowGet);
                         }
                     }

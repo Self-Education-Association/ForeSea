@@ -26,6 +26,10 @@ namespace LST
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/timepickerstyles").Include(
+                        "~/Content/jquery-ui-timepicker-addon.min.css",
+                        "~/Content/jquery-ui-1.8.17.custom.css"));
         }
     }
 }

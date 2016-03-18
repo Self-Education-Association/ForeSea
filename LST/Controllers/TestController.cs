@@ -62,7 +62,7 @@ namespace LST.Controllers
         public ActionResult Matches()
         {
             var matches = db.TestMatches
-                .Where(t => t.StartTime <= DateTime.Now && t.EndTime >= t.EndTime)
+                .Where(t => t.StartTime <= DateTime.Now && t.EndTime >= DateTime.Now)
                 .Where(t => t.Visible == true)
                 .OrderBy(r => r.Name)
                 .ToList();

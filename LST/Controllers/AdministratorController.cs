@@ -11,6 +11,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace LST.Controllers
 {
+    [Authorize(Users ="admin@uibesea.org")]
     public class AdministratorController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

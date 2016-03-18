@@ -28,13 +28,13 @@
                     @item.Name
                     </td>
                     <td>
-                        @item.Enabled
+                        @item.Canceled
                     </td>
                     <td>
                         @item.Score
                     </td>
                     <td>
-                        @if (item.Enabled)
+                        @if (item.Canceled)
                     {
                             @Html.ActionLink("取消报名", "Quit", new { id = item.Id }, new { @class = "btn btn-danger" })
                         }

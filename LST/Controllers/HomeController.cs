@@ -13,7 +13,7 @@ namespace LST.Controllers
     {
         public ActionResult Index()
         {
-            List<TestMatch> matches;
+            /*List<TestMatch> matches;
             using (var db = new ApplicationDbContext())
             {
                 if (!db.Database.Exists())
@@ -23,7 +23,8 @@ namespace LST.Controllers
                 DateTime time = DateTime.Now;
                 matches = db.TestMatches.Where(t => t.Visible == true).ToList();
             }
-            return View(matches);
+            return View(matches);*/
+            return Redirect("~/Test");
         }
 
         public ActionResult About()

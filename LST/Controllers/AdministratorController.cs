@@ -138,6 +138,11 @@ namespace LST.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             TestMatch testMatch = db.TestMatches.Find(id);
+            foreach(var item in testMatch.RecordsCollection)
+            {
+                db.TestRecords.Remove(item);
+            }
+            db.SaveChanges();
             db.TestMatches.Remove(testMatch);
             db.SaveChanges();
             return RedirectToAction("Index");

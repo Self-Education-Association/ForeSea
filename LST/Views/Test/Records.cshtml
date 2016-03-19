@@ -23,9 +23,11 @@
     {
         foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @item.Name
+            if (item.Score == "通过考试")
+            {
+                <tr class="success">
+                    <td>
+                        @item.Name
                     </td>
                     <td>
                         @item.Canceled
@@ -35,11 +37,52 @@
                     </td>
                     <td>
                         @if (item.Canceled)
-                    {
+                        {
                             @Html.ActionLink("取消报名", "Quit", new { id = item.Id }, new { @class = "btn btn-danger" })
                         }
                     </td>
                 </tr>
+            }
+            else if (item.Score == "旷考")
+            {
+                <tr class="danger">
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Canceled
+                    </td>
+                    <td>
+                        @item.Score
+                    </td>
+                    <td>
+                        @if (item.Canceled)
+                        {
+                            @Html.ActionLink("取消报名", "Quit", new { id = item.Id }, new { @class = "btn btn-danger" })
+                        }
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Canceled
+                    </td>
+                    <td>
+                        @item.Score
+                    </td>
+                    <td>
+                        @if (item.Canceled)
+                        {
+                            @Html.ActionLink("取消报名", "Quit", new { id = item.Id }, new { @class = "btn btn-danger" })
+                        }
+                    </td>
+                </tr>
+            }
         }
     }
     else

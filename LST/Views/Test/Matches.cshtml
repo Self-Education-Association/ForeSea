@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<LST.Models.TestIndexViewModel>
-    @{ 
-        Layout = "";
-        int rest;
-    }
+@{
+    Layout = "";
+    int rest;
+}
 
 <table class="table table-hover">
     <tr>
@@ -10,10 +10,10 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartTime)
+            开始报名时间
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndTime)
+            结束报名时间
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Enabled)
@@ -27,26 +27,75 @@
     @foreach (var item in Model)
     {
         rest = item.Limit - item.Count;
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @item.Enabled
-            </td>
-            <td>
-                @rest
-            </td>
-            <td>
-                @Html.ActionLink("选择场次", "Apply", new { id = item.Id })
-            </td>
-        </tr>
+        if (rest == 0)
+        {
+            <tr class="danger">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @item.Enabled
+                </td>
+                <td>
+                    @rest
+                </td>
+                <td>
+                    <a class="btn btn-default disabled">选择场次</a>
+                </td>
+            </tr>
+        }
+        else if (rest < item.Count)
+        {
+            <tr class="warning">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @item.Enabled
+                </td>
+                <td>
+                    @rest
+                </td>
+                <td>
+                    @Html.ActionLink("选择场次", "Apply", new { id = item.Id },new { @class="btn btn-success"})
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr class="success">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @item.Enabled
+                </td>
+                <td>
+                    @rest
+                </td>
+                <td>
+                    @Html.ActionLink("选择场次", "Apply", new { id = item.Id },new { @class="btn btn-success"})
+                </td>
+            </tr>
+        }
     }
 
 </table>

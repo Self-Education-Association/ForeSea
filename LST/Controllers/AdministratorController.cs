@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace LST.Controllers
 {
-    [Authorize(Users ="admin@uibesea.org")]
+    [Authorize(Users = "admin@uibesea.org")]
     public class AdministratorController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -138,7 +138,7 @@ namespace LST.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             TestMatch testMatch = db.TestMatches.Find(id);
-            foreach(var item in testMatch.RecordsCollection)
+            foreach (var item in testMatch.RecordsCollection)
             {
                 db.TestRecords.Remove(item);
             }
@@ -176,6 +176,31 @@ namespace LST.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult GetAllData()
+        {
+            System.IO.MemoryStream output = new System.IO.MemoryStream();
+            System.IO.StreamWriter writer = new System.IO.StreamWriter(output, System.Text.Encoding.UTF8);
+            var matches = db.TestMatches.ToList();
+            writer.Write("Match,MatchCount,StartTime,EndTime,User,UserCount");
+            writer.WriteLine();
+            foreach (var item in matches)
+            {
+                foreach (var record in item.RecordsCollection)
+                {
+                    writer.Write(item.Name + ",");
+                    writer.Write(item.Count + ",");
+                    writer.Write(item.StartTime + ",");
+                    writer.Write(item.EndTime + ",");
+                    writer.Write(record.User.StudentName + ",");
+                    writer.Write(record.User.RecordsCollection.Count + ",");
+                    writer.WriteLine();
+                }
+            }
+            writer.Flush();
+            output.Position = 0;
+            return File(output, "text/comma-separated-values", "demo1.csv");
         }
 
         protected override void Dispose(bool disposing)

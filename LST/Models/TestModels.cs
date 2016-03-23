@@ -225,9 +225,21 @@ namespace LST.Models
                 using (var db = new ApplicationDbContext())
                 {
                     var contextUser = db.Users.Find(user.Id);
-                    var contextMatch = db.TestMatches.Where(t => t.Name == "Listening and Speaking Test - 1st").SingleOrDefault();
+                    var contextMatch = db.TestMatches.Where(t => t.Name == "Listening and Speaking Test - 1st").FirstOrDefault();
                     if (contextMatch == null)
-                        return;
+                    {
+                        db.TestMatches.Add(new TestMatch
+                        {
+                            Id = Guid.Empty,
+                            Name = "Listening and Speaking Test - 1st",
+                            Limit = 900,
+                            Visible = false,
+                            StartTime = new DateTime(2015, 12, 31, 0, 0, 0),
+                            EndTime = new DateTime(2015, 12, 31, 23, 59, 59)
+                        });
+                        db.SaveChanges();
+                        contextMatch = db.TestMatches.Find(Guid.Empty);
+                    }
 
                     //处理数据
                     var record = new TestRecord(contextMatch, contextUser);
@@ -246,6 +258,7 @@ namespace LST.Models
                     contextUser.RecordsCollection.Add(record);
                     contextMatch.RecordsCollection.Add(record);
                     db.TestRecords.Add(record);
+                    db.OperationRecords.Add(new OperationRecord(user.StudentNumber, "AddHistory", contextMatch.Name));
 
                     //保存，采取乐观并发
                     bool succeed;

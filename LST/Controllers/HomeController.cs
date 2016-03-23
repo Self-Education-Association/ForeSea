@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using LST.Models;
 using System.Data.SqlClient;
 using System.Data;
+using System.Web.UI;
 
 namespace LST.Controllers
 {
@@ -39,6 +40,7 @@ namespace LST.Controllers
             return View();
         }
 
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult StudentNumber([Bind(Include = "StudentNumber,StudentName")]RegisterViewModel model)
         {
             string message = null;

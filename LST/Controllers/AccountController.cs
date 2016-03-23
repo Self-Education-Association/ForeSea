@@ -156,7 +156,8 @@ namespace LST.Controllers
                 if (user == null || user.StudentNumber != model.StudentNumber)
                 {
                     // 请不要显示该用户不存在或者未经确认
-                    return View("ForgotPasswordConfirmation");
+                    ViewBag.Alert = "验证失败！";
+                    return View();
                 }
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 string callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
@@ -198,7 +199,8 @@ namespace LST.Controllers
             if (user == null)
             {
                 // 请不要显示该用户不存在
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                ViewBag.Alert = "验证失败！";
+                return View();
             }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)

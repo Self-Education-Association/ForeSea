@@ -27,16 +27,6 @@
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-            context.TestMatches.AddOrUpdate(
-                new Models.TestMatch
-                {
-                    Id = Guid.Empty,
-                    Name = "Listening and Speaking Test - 1st",
-                    Limit = 900,
-                    Visible = false,
-                    StartTime = new DateTime(2015, 12, 31, 0, 0, 0),
-                    EndTime = new DateTime(2015, 12, 31, 23, 59, 59)
-                });
         }
     }
 }

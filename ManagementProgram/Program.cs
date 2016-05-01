@@ -21,26 +21,26 @@ namespace ManagementProgram
                 return;
             Application.Run(new MainForm());
         }
-            public static bool TryAuthenticate()  
+        public static bool TryAuthenticate()
+        {
+            bool isLogin = false;
+            CheckForm cf = new CheckForm();
+            if (cf.ShowDialog() != DialogResult.OK)
             {
-                bool isLogin = false;  
-                CheckForm cf = new CheckForm();
-                if (cf.ShowDialog() != DialogResult.OK)
-                {
-                    return false;
-                }
-                string domain = "uibe.edu";
-                try  
-                {
-                    DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://uibe.edu/OU=Users,OU=SEA团队,OU=2014外语自学中心用户,OU=过度,DC=uibe,DC=edu", domain), cf.username, cf.userpwd);
-                    entry.RefreshCache();  
-                    isLogin = true;  
-                }  
-                catch (Exception)  
-                {  
-                    isLogin = false; 
-                }  
-                return isLogin;  
+                return false;
+            }
+            string domain = "uibe.edu";
+            try
+            {
+                DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://uibe.edu/OU=Users,OU=SEA团队,OU=2014外语自学中心用户,OU=过度,DC=uibe,DC=edu", domain), cf.username, cf.userpwd);
+                entry.RefreshCache();
+                isLogin = true;
+            }
+            catch (Exception)
+            {
+                isLogin = false;
+            }
+            return isLogin;
         }
     }
 }

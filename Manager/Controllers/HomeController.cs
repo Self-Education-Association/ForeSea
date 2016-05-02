@@ -12,7 +12,13 @@ namespace Manager.Controllers
     {
         BaseDbContext db = new BaseDbContext();
 
-        public ActionResult Index(string id = "")
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(string id)
         {
             try
             {
@@ -48,7 +54,6 @@ namespace Manager.Controllers
                         if (manager.CheckIn(time))
                         {
                             TempData["Alert"] = "签到成功！";
-                            TempData["CloseTab"] = true;
                         }
                     }
                 }
@@ -62,6 +67,5 @@ namespace Manager.Controllers
 
             return View();
         }
-
     }
 }

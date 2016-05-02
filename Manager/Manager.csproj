@@ -137,6 +137,31 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605010541192_Initial.cs" />
+    <Compile Include="Migrations\201605010541192_Initial.Designer.cs">
+      <DependentUpon>201605010541192_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605020827183_UpdateModel.cs" />
+    <Compile Include="Migrations\201605020827183_UpdateModel.Designer.cs">
+      <DependentUpon>201605020827183_UpdateModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605020910124_UpdateModel1.cs" />
+    <Compile Include="Migrations\201605020910124_UpdateModel1.Designer.cs">
+      <DependentUpon>201605020910124_UpdateModel1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605020948579_DefineDefaultValue.cs" />
+    <Compile Include="Migrations\201605020948579_DefineDefaultValue.Designer.cs">
+      <DependentUpon>201605020948579_DefineDefaultValue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605021014127_AddTimeName.cs" />
+    <Compile Include="Migrations\201605021014127_AddTimeName.Designer.cs">
+      <DependentUpon>201605021014127_AddTimeName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605021041486_AlterStatus.cs" />
+    <Compile Include="Migrations\201605021041486_AlterStatus.Designer.cs">
+      <DependentUpon>201605021041486_AlterStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseDbContext.cs" />
     <Compile Include="Models\CheckLoginAttribute.cs" />
     <Compile Include="Models\Interface.cs" />
@@ -194,6 +219,26 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605010541192_Initial.resx">
+      <DependentUpon>201605010541192_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605020827183_UpdateModel.resx">
+      <DependentUpon>201605020827183_UpdateModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605020910124_UpdateModel1.resx">
+      <DependentUpon>201605020910124_UpdateModel1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605020948579_DefineDefaultValue.resx">
+      <DependentUpon>201605020948579_DefineDefaultValue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605021014127_AddTimeName.resx">
+      <DependentUpon>201605021014127_AddTimeName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605021041486_AlterStatus.resx">
+      <DependentUpon>201605021041486_AlterStatus.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

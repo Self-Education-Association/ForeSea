@@ -9,14 +9,14 @@ namespace Manager.Models
     {
         string Name { get; }
         string AccountName { get; }
-        List<IAvailableTime> AvailableTime { get; }
+        List<AvailableTime> AvailableTimes { get; }
         int MinCount { get; }
         int MaxCount { get; }
         int TotalCount { get; }
-        decimal TotalTime { get; }
-        decimal LateTime { get; }
-        bool SetAvailableTime(List<IAvailableTime> time);
-        bool CheckIn();
+        int TotalTime { get; }
+        int LateTime { get; }
+        bool SetAvailableTime(List<AvailableTime> time);
+        bool CheckIn(Manager.CheckInTime time);
         bool CheckOut();
     }
 

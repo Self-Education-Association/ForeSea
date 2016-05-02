@@ -29,7 +29,7 @@ namespace LST.Models
             get
             {
                 if (RecordsCollection == null)
-                    return true;
+                    return EnabledStored;
                 if (RecordsCollection.Count >= 3)
                     return false;
                 return EnabledStored;

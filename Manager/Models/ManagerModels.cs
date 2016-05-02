@@ -54,8 +54,8 @@ namespace Manager.Models
                     saveFailed = false;
                     manager.AddTime(time.TotalTime - lateTime, lateTime);
                     db.Status.Add(new Status { StatusId = Guid.Empty, Name = Name, TimeName = time.TimeName });
-                    db.Logs.Add(new Log { LogContent = string.Format("系统：添加{0}值班员{1}的在线纪录", time.TimeName, AccountName) });
-                    db.Logs.Add(new Log { LogContent = string.Format("【{3}】值班员【{0}】于{1}签到，迟到{2}分钟。", Name, datetime, lateTime, time.TimeName), LogTime = datetime });
+                    db.Logs.Add(new Log(string.Format("系统：添加{0}值班员{1}的在线纪录", time.TimeName, AccountName)));
+                    db.Logs.Add(new Log(string.Format("【{3}】值班员【{0}】于{1}签到，迟到{2}分钟。", Name, datetime, lateTime, time.TimeName)));
                     try
                     {
                         db.SaveChanges();
@@ -82,7 +82,7 @@ namespace Manager.Models
                     if (status != null)
                     {
                         db.Status.Remove(status);
-                        db.Logs.Add(new Log { LogContent = string.Format("系统：移除{0}值班员{1}的在线纪录", status.TimeName, status.Name) });
+                        db.Logs.Add(new Log(string.Format("系统：移除{0}值班员{1}的在线纪录", status.TimeName, status.Name)));
                     }
                     try
                     {
@@ -221,10 +221,17 @@ namespace Manager.Models
         {
             using (BaseDbContext db = new BaseDbContext())
             {
-                db.Logs.Add(new Log { LogContent = string.Format("异常：[{0}]，内部异常：[{1}]，发生在[{2}]，详细信息[{3}]", e.Message, e.InnerException == null ? "无" : e.InnerException.Message, e.TargetSite, e.ToString()), LogTime = DateTime.Now });
+                db.Logs.Add(new Log(string.Format("异常：[{0}]，内部异常：[{1}]，发生在[{2}]，详细信息[{3}]", e.Message, e.InnerException == null ? "无" : e.InnerException.Message, e.TargetSite, e.ToString())));
                 db.SaveChanges();
                 return;
             }
+        }
+
+        public Log(string logContent)
+        {
+            LogId = Guid.NewGuid();
+            LogContent = logContent;
+            LogTime = DateTime.Now;
         }
     }
 

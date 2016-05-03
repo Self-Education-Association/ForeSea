@@ -170,6 +170,10 @@
     <Compile Include="Migrations\201605030408500_UpdateModelsss.Designer.cs">
       <DependentUpon>201605030408500_UpdateModelsss.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605030931558_AddTimeId.cs" />
+    <Compile Include="Migrations\201605030931558_AddTimeId.Designer.cs">
+      <DependentUpon>201605030931558_AddTimeId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseDbContext.cs" />
     <Compile Include="Models\CheckLoginAttribute.cs" />
@@ -220,6 +224,7 @@
     <Content Include="Views\AvailableTimes\Edit.cshtml" />
     <Content Include="Views\AvailableTimes\Index.cshtml" />
     <Content Include="Views\Home\Data.cshtml" />
+    <Content Include="Views\AvailableTimes\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -257,6 +262,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605030408500_UpdateModelsss.resx">
       <DependentUpon>201605030408500_UpdateModelsss.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605030931558_AddTimeId.resx">
+      <DependentUpon>201605030931558_AddTimeId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

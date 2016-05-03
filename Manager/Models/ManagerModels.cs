@@ -125,27 +125,53 @@ namespace Manager.Models
             return default(CheckInTime);
         }
 
+        public static CheckInTime FindCheckInTime(int id)
+        {
+            List<CheckInTime> checkInTime = GetCheckInTimeList();
+            foreach (CheckInTime time in checkInTime)
+            {
+                if (time.TimeId == id)
+                {
+                    return time;
+                }
+            }
+            return default(CheckInTime);
+        }
+
+        public static CheckInTime FindCheckInTime(string name)
+        {
+            List<CheckInTime> checkInTime = GetCheckInTimeList();
+            foreach (CheckInTime time in checkInTime)
+            {
+                if (time.TimeName == name)
+                {
+                    return time;
+                }
+            }
+            return default(CheckInTime);
+        }
+
         public static List<CheckInTime> GetCheckInTimeList()
         {
             List<CheckInTime> result = new List<CheckInTime>();
             for (int i = 1; i <= 5; i++)
             {
-                result.Add(new CheckInTime((DayOfWeek)i, 110, string.Format("第{0}天第{1}节", i, 1), generateTime(7, 50, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 130, string.Format("第{0}天第{1}节", i, 2), generateTime(9, 40, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 80, string.Format("第{0}天第{1}节", i, 3), generateTime(11, 50, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), generateTime(13, 10, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 110, string.Format("第{0}天第{1}节", i, 5), generateTime(15, 10, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 6), generateTime(18, 00, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 7), generateTime(19, 30, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 110, string.Format("第{0}天第{1}节", i, 1), i * 10 + 1, generateTime(7, 50, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 130, string.Format("第{0}天第{1}节", i, 2), i * 10 + 2, generateTime(9, 40, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 80, string.Format("第{0}天第{1}节", i, 3), i * 10 + 3, generateTime(11, 50, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), i * 10 + 4, generateTime(13, 10, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 110, string.Format("第{0}天第{1}节", i, 5), i * 10 + 5, generateTime(15, 10, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 6), i * 10 + 6, generateTime(18, 00, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 7), i * 10 + 7, generateTime(19, 30, 00)));
             }
             for (int i = 6; i <= 7; i++)
             {
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 150, string.Format("第{0}天第{1}节", i, 1), generateTime(9, 30, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 2), generateTime(12, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 3), generateTime(14, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), generateTime(16, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 5), generateTime(18, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 6), generateTime(19, 30, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 150, string.Format("第{0}天第{1}节", i, 1), i * 10 + 1, generateTime(9, 30, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 2), i * 10 + 2, generateTime(12, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 3), i * 10 + 3, generateTime(14, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), i * 10 + 4, generateTime(16, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 5), i * 10 + 5, generateTime(18, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 6), i * 10 + 6, generateTime(19, 30, 00)));
             }
             return result;
         }
@@ -165,25 +191,28 @@ namespace Manager.Models
         public DayOfWeek Day { get; set; }
         public int TotalTime { get; set; }
         public string TimeName { get; set; }
+        public int TimeId { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan LateTime { get; set; }
         public TimeSpan EndTime { get; set; }
 
-        public CheckInTime(DayOfWeek day, int totalTime, string timeName, TimeSpan startTime, TimeSpan lateTime, TimeSpan endTime)
+        public CheckInTime(DayOfWeek day, int totalTime, string timeName, int timeId, TimeSpan startTime, TimeSpan lateTime, TimeSpan endTime)
         {
             Day = day;
             TotalTime = totalTime;
             TimeName = timeName;
+            TimeId = timeId;
             StartTime = startTime;
             LateTime = lateTime;
             EndTime = endTime;
         }
 
-        public CheckInTime(DayOfWeek day, int totalTime, string timeName, List<TimeSpan> time)
+        public CheckInTime(DayOfWeek day, int totalTime, string timeName, int timeId, List<TimeSpan> time)
         {
             Day = day;
             TotalTime = totalTime;
             TimeName = timeName + " - " + time[0].ToString(@"hh\:mm");
+            TimeId = timeId;
             if (time.Count != 3)
             {
                 throw new InvalidOperationException("错误的Time列表，请检查输入！");
@@ -199,6 +228,8 @@ namespace Manager.Models
         public Guid AvailableTimeId { get; set; }
 
         public string TimeName { get; set; }
+
+        public int TimeId { get; set; }
 
         public virtual Manager Manager { get; set; }
 

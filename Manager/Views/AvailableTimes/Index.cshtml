@@ -15,45 +15,121 @@ else
 
 <hr />
 
-<div class="col-md-7">
-    
+<div class="col-md-4" id="listPage">
+    @{
+        Html.RenderAction("List");
+    }
+</div>
+<div class="col-md-8" id="ajaxPage">
     <table class="table">
         <tr>
-            <th>
-                时间
-            </th>
-            <th>
-                优先级
-            </th>
-            <th></th>
+            <th>节次</th>
+            <th>值班时间</th>
+            <th>星期一</th>
+            <th>星期二</th>
+            <th>星期三</th>
+            <th>星期四</th>
+            <th>星期五</th>
+            <th>节次</th>
+            <th>值班时间</th>
+            <th>星期六</th>
+            <th>星期日</th>
         </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Demand)
-                </td>
-                <td>
-                    <a onclick="edit('@item.AvailableTimeId')" class="btn-sm btn-warning">编辑</a>
-                    @Html.ActionLink("删除", "Delete", new { id = item.AvailableTimeId }, new { onclick = "deleteConfirm()" ,@class="btn-sm btn-danger"})
-                </td>
-            </tr>
-        }
-
+        <tr>
+            <td>第一节</td>
+            <td>07:50-09:40</td>
+            <td id="time11"></td>
+            <td id="time21"></td>
+            <td id="time31"></td>
+            <td id="time41"></td>
+            <td id="time51"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>第二节</td>
+            <td>09:40-11:50</td>
+            <td id="time12"></td>
+            <td id="time22"></td>
+            <td id="time32"></td>
+            <td id="time42"></td>
+            <td id="time52"></td>
+            <td>第一节</td>
+            <td>9:30-12:00</td>
+            <td id="time61"></td>
+            <td id="time71"></td>
+        </tr>
+        <tr>
+            <td>午自习</td>
+            <td>11:50-13:10</td>
+            <td id="time13"></td>
+            <td id="time23"></td>
+            <td id="time33"></td>
+            <td id="time43"></td>
+            <td id="time53"></td>
+            <td>第二节</td>
+            <td>12:00-14:00</td>
+            <td id="time62"></td>
+            <td id="time72"></td>
+        </tr>
+        <tr>
+            <td>第三节</td>
+            <td>13:10-15:10</td>
+            <td id="time14"></td>
+            <td id="time24"></td>
+            <td id="time34"></td>
+            <td id="time44"></td>
+            <td id="time54"></td>
+            <td>第三节</td>
+            <td>14:00-16:00</td>
+            <td id="time63"></td>
+            <td id="time73"></td>
+        </tr>
+        <tr>
+            <td>第四节</td>
+            <td>15:10-17:00</td>
+            <td id="time15"></td>
+            <td id="time25"></td>
+            <td id="time35"></td>
+            <td id="time45"></td>
+            <td id="time55"></td>
+            <td>第四节</td>
+            <td>16:00-18:00</td>
+            <td id="time64"></td>
+            <td id="time74"></td>
+        </tr>
+        <tr>
+            <td>第五节</td>
+            <td>18:00-19:30</td>
+            <td id="time16"></td>
+            <td id="time26"></td>
+            <td id="time36"></td>
+            <td id="time46"></td>
+            <td id="time56"></td>
+            <td>第五节</td>
+            <td>18:00-19:30</td>
+            <td id="time65"></td>
+            <td id="time75"></td>
+        </tr>
+        <tr>
+            <td>晚自习</td>
+            <td>19:30-21:30</td>
+            <td id="time17"></td>
+            <td id="time27"></td>
+            <td id="time37"></td>
+            <td id="time47"></td>
+            <td id="time57"></td>
+            <td>第六节</td>
+            <td>19:30-21:30</td>
+            <td id="time66"></td>
+            <td id="time76"></td>
+        </tr>
     </table>
-</div>
-<div class="col-md-5" id="ajaxPage">
-    @{
-        Html.RenderAction("Create");
-    }
 </div>
 <script>
     function create() {
-        window.event.returnValue = false;
         jQuery.ajax({
             type: "GET",
             url: '@Url.Action("Create")',
@@ -69,7 +145,6 @@ else
     }
 
     function edit(id) {
-        window.event.returnValue = false;
         jQuery.ajax({
             type: "GET",
             url: '@Url.Action("Edit")' + '?id=' + id,
@@ -88,5 +163,77 @@ else
         if (!confirm("确认要删除这条记录吗？")) {
             window.event.returnValue = false;
         }
+    }
+
+    function easyCreate(id) {
+        jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("EasyCreate")' + '?id=' + id,
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                getList();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        })
+    }
+
+    function easyDelete(id) {
+        jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("EasyDelete")' + '?id=' + id,
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                getList();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        })
+    }
+</script>
+<script>
+    for (var i = 1; i <= 7; i++) {
+        for (var j = 1; j <= 7; j++) {
+            if (i >= 6 && j == 7) {
+                continue;
+            }
+            document.getElementById("time" + i + j).innerHTML = "<input type='checkbox' onclick='checkboxChange(this," + i.toString() + j.toString() + ")'>";
+        }
+    }
+</script>
+@foreach (var item in Model)
+{
+    <script>
+        document.getElementById("time" + @item.TimeId).innerHTML = "<input type='checkbox' onclick='checkboxChange(this," + @item.TimeId + ")' checked>";
+    </script>
+}
+<script>
+    function checkboxChange(obj, id) {
+        if (obj.checked == true) {
+            easyCreate(id);
+        }
+        else {
+            easyDelete(id);
+        }
+    }
+</script>
+<script>
+    function getList() {
+        jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("List")',
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                document.getElementById("listPage").innerHTML=data;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        })
     }
 </script>

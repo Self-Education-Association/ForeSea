@@ -15,6 +15,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.AvailableTimeId)
         @Html.HiddenFor(model => model.TimeName)
+        @Html.HiddenFor(model => model.TimeId)
 
         <div class="form-group">
             @Html.Label("优先级", htmlAttributes: new { @class = "control-label col-md-2" })

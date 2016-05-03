@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Manager.Models;
+using System.Text.RegularExpressions;
 
 namespace Manager.Controllers
 {
@@ -15,7 +16,6 @@ namespace Manager.Controllers
     {
         private BaseDbContext db = new BaseDbContext();
 
-        // GET: AvailableTimes
         public ActionResult Index()
         {
             var manager = GetManager();
@@ -26,7 +26,20 @@ namespace Manager.Controllers
             }
 
 
-            return View(manager.AvailableTimes);
+            return View(manager.AvailableTimes.ToList());
+        }
+        
+        // GET: AvailableTimes
+        public ActionResult List()
+        {
+            var manager = GetManager();
+            if (manager == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+
+            return View(manager.AvailableTimes.OrderBy(a => a.Demand).ThenBy(a => a.TimeId).ToList());
         }
 
         // GET: AvailableTimes/Create
@@ -52,6 +65,7 @@ namespace Manager.Controllers
                         TempData["Alert"] = "你已经添加了这个可值班时间了！";
                         return RedirectToAction("Index");
                     }
+                    availableTime.TimeId = Models.Manager.FindCheckInTime(availableTime.TimeName).TimeId;
                     availableTime.AvailableTimeId = Guid.NewGuid();
                     availableTime.Manager = GetManager();
                     db.AvailableTime.Add(availableTime);
@@ -122,6 +136,27 @@ namespace Manager.Controllers
                 Log.ReportException(e);
             }
             return RedirectToAction("Index");
+        }
+
+        public ActionResult EasyCreate(int id)
+        {
+            var time = Models.Manager.FindCheckInTime(id);
+            if (time.Equals(default(CheckInTime)))
+            {
+                return new HttpStatusCodeResult(404);
+            }
+            return Create(new AvailableTime { Demand = DemandType.Second, TimeName = time.TimeName });
+        }
+
+        public ActionResult EasyDelete(int id)
+        {
+            var manager = GetManager();
+            var time = manager.AvailableTimes.Where(a => a.TimeId == id).SingleOrDefault();
+            if (time.Equals(default(CheckInTime)))
+            {
+                return new HttpStatusCodeResult(404);
+            }
+            return Delete(time.AvailableTimeId);
         }
 
         private Models.Manager GetManager()

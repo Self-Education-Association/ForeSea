@@ -54,7 +54,7 @@ namespace Manager.Models
                     saveFailed = false;
                     manager.AddTime(time.TotalTime - lateTime, lateTime);
                     db.Status.Add(new Status { StatusId = Guid.Empty, Name = Name, TimeName = time.TimeName });
-                    db.Logs.Add(new Log(string.Format("系统：添加{0}值班员{1}的在线纪录", time.TimeName, AccountName)));
+                    db.Logs.Add(new Log(string.Format("系统：添加{0}值班员{1}的在线纪录", time.TimeName, Name)));
                     db.Logs.Add(new Log(string.Format("【{3}】值班员【{0}】于{1}签到，迟到{2}分钟。", Name, datetime, lateTime, time.TimeName)));
                     try
                     {

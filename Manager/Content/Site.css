@@ -26,3 +26,7 @@ textarea {
 .text-center{
     text-align:center;
 }
+
+.table th{
+    text-align:center !important;
+}

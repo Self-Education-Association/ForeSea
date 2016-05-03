@@ -8,11 +8,11 @@
 <div class="text-center">
     @if (ViewBag.Available == true)
     {
-        <h3>列表管理 <span class="label label-success">正常</span></h3>
+        <h3>列表管理 <span class="label label-success">正常 @Model.Count()/@ViewBag.MinAvailableTimeCount</span></h3>
     }
     else
     {
-        <h3>列表管理 <span class="label label-warning">@Model.Count()/@ViewBag.MinAvailableTimeCount</span></h3>
+        <h3>列表管理 <span class="label label-warning">错误 @Model.Count()/@ViewBag.MinAvailableTimeCount</span></h3>
     }
 </div>
 

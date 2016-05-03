@@ -99,11 +99,33 @@ namespace Manager.Models
 
         public bool CheckAvailableTime()
         {
+            //如果可以不用值班，始终返回true。
+            if (MinCount == 0)
+            {
+                return true;
+            }
+            //判断是否至少有指定节数的可值班时间，不符合则返回false。
             if (AvailableTimes.Count() < MinAvailableTimeCount())
             {
                 return false;
             }
-
+            else
+            {
+                //判断是否至少有指定节数的早班，不符合则返回false。
+                int count = 0;
+                foreach (var item in AvailableTimes)
+                {
+                    if (item.TimeId % 10 == 1)
+                    {
+                        count++;
+                    }
+                }
+                if (count < MinFirstClassCount())
+                {
+                    return false;
+                }
+            }
+            //符合所有条件，返回true。
             return true;
         }
 
@@ -111,6 +133,11 @@ namespace Manager.Models
         {
             int times = 6;
             return times * MinCount;
+        }
+
+        public int MinFirstClassCount()
+        {
+            return 1;
         }
 
 

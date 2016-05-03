@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Manager.Models.AvailableTime>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (ViewBag.Available == true)
+{
+    <h2>可值班时间管理 <span class="label label-success">正常</span></h2>
+}
+else
+{
+    <h2>可值班时间管理 <span class="label label-warning">不可用</span></h2>
+}
+
+<hr />
+
+<div class="col-md-7">
+    
+    <table class="table">
+        <tr>
+            <th>
+                时间
+            </th>
+            <th>
+                优先级
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Demand)
+                </td>
+                <td>
+                    <a onclick="edit('@item.AvailableTimeId')" class="btn-sm btn-warning">编辑</a>
+                    @Html.ActionLink("删除", "Delete", new { id = item.AvailableTimeId }, new { onclick = "deleteConfirm()" ,@class="btn-sm btn-danger"})
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<div class="col-md-5" id="ajaxPage">
+    @{
+        Html.RenderAction("Create");
+    }
+</div>
+<script>
+    function create() {
+        window.event.returnValue = false;
+        jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("Create")',
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                document.getElementById('ajaxPage').innerHTML = data;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        })
+    }
+
+    function edit(id) {
+        window.event.returnValue = false;
+        jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("Edit")' + '?id=' + id,
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                document.getElementById('ajaxPage').innerHTML = data;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        })
+    }
+
+    function deleteConfirm() {
+        if (!confirm("确认要删除这条记录吗？")) {
+            window.event.returnValue = false;
+        }
+    }
+</script>

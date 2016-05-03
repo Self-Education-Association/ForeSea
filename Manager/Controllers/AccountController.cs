@@ -37,7 +37,7 @@ namespace Manager.Controllers
                         return View(model);
                     }
                     Session["User"] = model.Account;
-                    return RedirectToAction("Index", "Account");
+                    return RedirectToAction("Index", "AvailableTimes");
                 }
                 TempData["Alert"] = "AD域验证失败，请检查用户名和密码是否输入正确！";
             }

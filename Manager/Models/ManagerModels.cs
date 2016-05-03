@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Manager.Models
 {
-    public class Manager : IManager
+    public class Manager
     {
         public Guid ManagerId { get; set; }
         public string Name { get; private set; }
@@ -20,16 +20,6 @@ namespace Manager.Models
         public int TotalCount { get; private set; }
         public int TotalTime { get; private set; }
         public int LateTime { get; private set; }
-
-        public bool SetAvailableTime(List<AvailableTime> time)
-        {
-            bool result = CheckAvailableTime(time);
-            if (result)
-            {
-                AvailableTimes = time;
-            }
-            return result;
-        }
 
         public void SetCount(int min, int max)
         {
@@ -54,7 +44,7 @@ namespace Manager.Models
                     saveFailed = false;
                     manager.AddTime(time.TotalTime - lateTime, lateTime);
                     db.Status.Add(new Status { StatusId = Guid.Empty, Name = Name, TimeName = time.TimeName });
-                    db.Logs.Add(new Log(string.Format("系统：添加{0}值班员{1}的在线纪录", time.TimeName, Name)));
+                    db.Logs.Add(new Log(string.Format("系统：添加[{0}]值班员[{1}]的在线纪录。", time.TimeName, Name)));
                     db.Logs.Add(new Log(string.Format("【{3}】值班员【{0}】于{1}签到，迟到{2}分钟。", Name, datetime, lateTime, time.TimeName)));
                     try
                     {
@@ -82,7 +72,7 @@ namespace Manager.Models
                     if (status != null)
                     {
                         db.Status.Remove(status);
-                        db.Logs.Add(new Log(string.Format("系统：移除{0}值班员{1}的在线纪录", status.TimeName, status.Name)));
+                        db.Logs.Add(new Log(string.Format("系统：移除[{0}]值班员[{1}]的在线纪录。", status.TimeName, status.Name)));
                     }
                     try
                     {
@@ -107,18 +97,23 @@ namespace Manager.Models
             return true;
         }
 
-        private static bool CheckAvailableTime(List<AvailableTime> time)
+        public bool CheckAvailableTime()
         {
+            if (AvailableTimes.Count() < MinCount)
+            {
+                return false;
+            }
+
             return true;
         }
 
 
-        public static CheckInTime findCheckInTime()
+        public static CheckInTime FindCheckInTime()
         {
             DateTime datetime = DateTime.Now;
             DayOfWeek day = datetime.DayOfWeek;
 
-            List<CheckInTime> checkInTime = getCheckInTime();
+            List<CheckInTime> checkInTime = GetCheckInTimeList();
             foreach (CheckInTime time in checkInTime)
             {
                 if (time.Day == day && datetime.TimeOfDay > time.StartTime && datetime.TimeOfDay < time.EndTime)
@@ -129,7 +124,7 @@ namespace Manager.Models
             return default(CheckInTime);
         }
 
-        private static List<CheckInTime> getCheckInTime()
+        public static List<CheckInTime> GetCheckInTimeList()
         {
             List<CheckInTime> result = new List<CheckInTime>();
             for (int i = 1; i <= 5; i++)
@@ -162,49 +157,49 @@ namespace Manager.Models
             result.Add(new TimeSpan(hour, min + 25, sec));
             return result;
         }
+    }
 
-        public struct CheckInTime
+    public struct CheckInTime
+    {
+        public DayOfWeek Day { get; set; }
+        public int TotalTime { get; set; }
+        public string TimeName { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan LateTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+
+        public CheckInTime(DayOfWeek day, int totalTime, string timeName, TimeSpan startTime, TimeSpan lateTime, TimeSpan endTime)
         {
-            public DayOfWeek Day;
-            public int TotalTime;
-            public string TimeName;
-            public TimeSpan StartTime;
-            public TimeSpan LateTime;
-            public TimeSpan EndTime;
+            Day = day;
+            TotalTime = totalTime;
+            TimeName = timeName;
+            StartTime = startTime;
+            LateTime = lateTime;
+            EndTime = endTime;
+        }
 
-            public CheckInTime(DayOfWeek day, int totalTime, string timeName, TimeSpan startTime, TimeSpan lateTime, TimeSpan endTime)
+        public CheckInTime(DayOfWeek day, int totalTime, string timeName, List<TimeSpan> time)
+        {
+            Day = day;
+            TotalTime = totalTime;
+            TimeName = timeName + " - " + time[0].ToString(@"hh\:mm");
+            if (time.Count != 3)
             {
-                Day = day;
-                TotalTime = totalTime;
-                TimeName = timeName;
-                StartTime = startTime;
-                LateTime = lateTime;
-                EndTime = endTime;
+                throw new InvalidOperationException("错误的Time列表，请检查输入！");
             }
-
-            public CheckInTime(DayOfWeek day, int totalTime, string timeName, List<TimeSpan> time)
-            {
-                Day = day;
-                TotalTime = totalTime;
-                TimeName = timeName;
-                if (time.Count != 3)
-                {
-                    throw new InvalidOperationException("错误的Time列表，请检查输入！");
-                }
-                StartTime = time[0];
-                LateTime = time[1];
-                EndTime = time[2];
-            }
+            StartTime = time[0];
+            LateTime = time[1];
+            EndTime = time[2];
         }
     }
 
-    public class AvailableTime : IAvailableTime
+    public class AvailableTime
     {
         public Guid AvailableTimeId { get; set; }
 
-        public int TimeId { get; }
+        public string TimeName { get; set; }
 
-        public virtual Manager Manager { get; }
+        public virtual Manager Manager { get; set; }
 
         public DemandType Demand { get; set; }
     }
@@ -221,7 +216,7 @@ namespace Manager.Models
         {
             using (BaseDbContext db = new BaseDbContext())
             {
-                db.Logs.Add(new Log(string.Format("异常：[{0}]，内部异常：[{1}]，发生在[{2}]，详细信息[{3}]", e.Message, e.InnerException == null ? "无" : e.InnerException.Message, e.TargetSite, e.ToString())));
+                db.Logs.Add(new Log(string.Format("异常：[{0}]，内部异常：[{1}]，发生在[{2}]，详细信息[{3}]。", e.Message, e.InnerException == null ? "无" : e.InnerException.Message, e.TargetSite, e.ToString())));
                 db.SaveChanges();
                 return;
             }
@@ -242,5 +237,12 @@ namespace Manager.Models
         public string Name { get; set; }
 
         public string TimeName { get; set; }
+    }
+
+    public enum DemandType
+    {
+        First,
+        Second,
+        Third
     }
 }

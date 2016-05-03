@@ -132,6 +132,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AvailableTimesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -165,10 +166,13 @@
     <Compile Include="Migrations\201605021241174_UpdateModel123.Designer.cs">
       <DependentUpon>201605021241174_UpdateModel123.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605030408500_UpdateModelsss.cs" />
+    <Compile Include="Migrations\201605030408500_UpdateModelsss.Designer.cs">
+      <DependentUpon>201605030408500_UpdateModelsss.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseDbContext.cs" />
     <Compile Include="Models\CheckLoginAttribute.cs" />
-    <Compile Include="Models\Interface.cs" />
     <Compile Include="Models\ManagerModels.cs" />
     <Compile Include="Models\ViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -212,6 +216,10 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\AvailableTimes\Create.cshtml" />
+    <Content Include="Views\AvailableTimes\Edit.cshtml" />
+    <Content Include="Views\AvailableTimes\Index.cshtml" />
+    <Content Include="Views\Home\Data.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -246,6 +254,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605021241174_UpdateModel123.resx">
       <DependentUpon>201605021241174_UpdateModel123.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605030408500_UpdateModelsss.resx">
+      <DependentUpon>201605030408500_UpdateModelsss.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

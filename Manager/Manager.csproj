@@ -225,6 +225,7 @@
     <Content Include="Views\AvailableTimes\Index.cshtml" />
     <Content Include="Views\Home\Data.cshtml" />
     <Content Include="Views\AvailableTimes\List.cshtml" />
+    <Content Include="Views\AvailableTimes\Table.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

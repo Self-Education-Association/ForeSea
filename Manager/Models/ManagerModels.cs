@@ -99,13 +99,18 @@ namespace Manager.Models
 
         public bool CheckAvailableTime()
         {
-            int times = 6;
-            if (AvailableTimes.Count() < MinCount * times)
+            if (AvailableTimes.Count() < MinAvailableTimeCount())
             {
                 return false;
             }
 
             return true;
+        }
+
+        public int MinAvailableTimeCount()
+        {
+            int times = 6;
+            return times * MinCount;
         }
 
 

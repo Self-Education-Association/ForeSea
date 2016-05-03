@@ -19,7 +19,6 @@ namespace Manager.Controllers
         public ActionResult Index()
         {
             var manager = GetManager();
-            ViewBag.Available = manager.CheckAvailableTime();
             if (manager == null)
             {
                 return RedirectToAction("Login", "Account");
@@ -33,6 +32,8 @@ namespace Manager.Controllers
         public ActionResult List()
         {
             var manager = GetManager();
+            ViewBag.Available = manager.CheckAvailableTime();
+            ViewBag.MinAvailableTimeCount = manager.MinAvailableTimeCount();
             if (manager == null)
             {
                 return RedirectToAction("Login", "Account");
@@ -69,7 +70,7 @@ namespace Manager.Controllers
                     availableTime.AvailableTimeId = Guid.NewGuid();
                     availableTime.Manager = GetManager();
                     db.AvailableTime.Add(availableTime);
-                    db.Logs.Add(new Log(string.Format("系统：添加值班员[{1}]于[{0}]的可值班时间纪录。", availableTime.TimeName, manager.Name)));
+                    db.Logs.Add(new Log(string.Format("系统：[添加]值班员[{1}]于[{0}]的可值班时间纪录。", availableTime.TimeName, manager.Name)));
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -110,7 +111,7 @@ namespace Manager.Controllers
                 if (ModelState.IsValid)
                 {
                     db.Entry(availableTime).State = EntityState.Modified;
-                    db.Logs.Add(new Log(string.Format("系统：修改值班员[{1}]于[{0}]的可值班时间纪录（修改后）。", availableTime.TimeName, GetManager().Name)));
+                    db.Logs.Add(new Log(string.Format("系统：[修改]值班员[{1}]于[{0}]的可值班时间纪录。", availableTime.TimeName, GetManager().Name)));
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -128,7 +129,7 @@ namespace Manager.Controllers
             {
                 AvailableTime availableTime = db.AvailableTime.Find(id);
                 db.AvailableTime.Remove(availableTime);
-                db.Logs.Add(new Log(string.Format("系统：移除值班员[{1}]于[{0}]的可值班时间纪录。", availableTime.TimeName, GetManager().Name)));
+                db.Logs.Add(new Log(string.Format("系统：[移除]值班员[{1}]于[{0}]的可值班时间纪录。", availableTime.TimeName, GetManager().Name)));
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -138,8 +139,17 @@ namespace Manager.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Ajax使用的添加Action，对于非Ajax请求会返回403错误。
+        /// </summary>
+        /// <param name="id">CheckInTime.TimeId</param>
+        /// <returns>200, 403, 404</returns>
         public ActionResult EasyCreate(int id)
         {
+            if (!Request.IsAjaxRequest())
+            {
+                return new HttpStatusCodeResult(403);
+            }
             var time = Models.Manager.FindCheckInTime(id);
             if (time.Equals(default(CheckInTime)))
             {
@@ -148,8 +158,17 @@ namespace Manager.Controllers
             return Create(new AvailableTime { Demand = DemandType.Second, TimeName = time.TimeName });
         }
 
+        /// <summary>
+        /// Ajax使用的删除Action，对于非Ajax请求会返回403错误。
+        /// </summary>
+        /// <param name="id">CheckInTime.TimeId</param>
+        /// <returns>200, 403, 404</returns>
         public ActionResult EasyDelete(int id)
         {
+            if (!Request.IsAjaxRequest())
+            {
+                return new HttpStatusCodeResult(403);
+            }
             var manager = GetManager();
             var time = manager.AvailableTimes.Where(a => a.TimeId == id).SingleOrDefault();
             if (time.Equals(default(CheckInTime)))

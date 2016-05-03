@@ -29,11 +29,11 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - 值班员管理系统</p>
-        </footer>
     </div>
+    <hr />
+    <footer class="navbar-fixed-bottom">
+        <p>&copy; @DateTime.Now.Year - 值班员管理系统</p>
+    </footer>
     @if (TempData["Alert"] != null && !string.IsNullOrWhiteSpace(TempData["Alert"].ToString()))
     {
         <script>

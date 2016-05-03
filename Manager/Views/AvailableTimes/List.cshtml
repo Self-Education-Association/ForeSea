@@ -1,11 +1,22 @@
 ﻿@model IEnumerable<Manager.Models.AvailableTime>
 
 @{
-    Layout = "";
-    ViewBag.Title = "Index";
+    Layout = null;
+    ViewBag.MinAvailableTimeCount = ViewBag.MinAvailableTimeCount ?? 0;
 }
 
-<table class="table">
+<div class="text-center">
+    @if (ViewBag.Available == true)
+    {
+        <h3>列表管理 <span class="label label-success">正常</span></h3>
+    }
+    else
+    {
+        <h3>列表管理 <span class="label label-warning">@Model.Count()/@ViewBag.MinAvailableTimeCount</span></h3>
+    }
+</div>
+
+<table class="table" align="center">
     <tr>
         <th>
             时间
@@ -17,18 +28,51 @@
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Demand)
-            </td>
-            <td>
-                <a onclick="edit('@item.AvailableTimeId')" class="btn-sm btn-warning">编辑</a>
-                @Html.ActionLink("删除", "Delete", new { id = item.AvailableTimeId }, new { onclick = "deleteConfirm()", @class = "btn-sm btn-danger" })
-            </td>
-        </tr>
+        if (item.Demand == Manager.Models.DemandType.First)
+        {
+            <tr class="success">
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Demand)
+                </td>
+                <td>
+                    <a onclick="edit('@item.AvailableTimeId')" class="btn-sm btn-warning">编辑</a>
+                    @Html.ActionLink("删除", "Delete", new { id = item.AvailableTimeId }, new { onclick = "deleteConfirm()", @class = "btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
+        else if (item.Demand == Manager.Models.DemandType.Second)
+        {
+            <tr class="active">
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Demand)
+                </td>
+                <td>
+                    <a onclick="edit('@item.AvailableTimeId')" class="btn-sm btn-warning">编辑</a>
+                    @Html.ActionLink("删除", "Delete", new { id = item.AvailableTimeId }, new { onclick = "deleteConfirm()", @class = "btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr class="warning">
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Demand)
+                </td>
+                <td>
+                    <a onclick="edit('@item.AvailableTimeId')" class="btn-sm btn-warning">编辑</a>
+                    @Html.ActionLink("删除", "Delete", new { id = item.AvailableTimeId }, new { onclick = "deleteConfirm()", @class = "btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
     }
     <tr>
         <td>

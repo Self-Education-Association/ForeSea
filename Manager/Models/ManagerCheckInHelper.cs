@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
 
 namespace Manager.Models
@@ -29,9 +31,6 @@ namespace Manager.Models
                 get
                 {
                     double happiness = 0;
-                    int firstHappiness = 100;
-                    int secondHappiness = 80;
-                    int thirdHappiness = 60;
                     int happinessDiscount = 5;
                     List<Manager> managerList = new List<Manager>();
                     foreach (var item in list)
@@ -41,8 +40,12 @@ namespace Manager.Models
                             managerList.Add(item.Manager);
                         }
                     }
+                    managerList.Remove(null);
                     foreach (var item in managerList)
                     {
+                        double firstHappiness = item.GetDemandMark()[0] * 30 + 70;
+                        double secondHappiness = item.GetDemandMark()[1] * 30 + 70;
+                        double thirdHappiness = item.GetDemandMark()[2] * 30 + 70;
                         double managerHappiness = 0;
                         var recordList = GetManagerManageTable(item);
                         foreach (var record in recordList)
@@ -84,22 +87,12 @@ namespace Manager.Models
             {
                 get
                 {
-                    foreach (var item in list)
-                    {
-                        if (item.Time.TimeId == index)
-                        {
-                            return item;
-                        }
-                    }
-                    return null;
+                    return this.Where(t => t.Time.TimeId == index).SingleOrDefault();
                 }
                 set
                 {
-                    if (this[index].Manager == null)
-                    {
-                        this[index].Manager = value.Manager;
-                        this[index].Demand = value.Demand;
-                    }
+                    this[index].Manager = value.Manager;
+                    this[index].Demand = value.Demand;
                 }
             }
 
@@ -111,7 +104,7 @@ namespace Manager.Models
                 }
             }
 
-            private List<ManageTableRecord> GetManagerManageTable(Manager manager)
+            public List<ManageTableRecord> GetManagerManageTable(Manager manager)
             {
                 return list.Where(m => m.Manager == manager).ToList();
             }
@@ -124,6 +117,16 @@ namespace Manager.Models
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return ((IEnumerable<ManageTableRecord>)list).GetEnumerator();
+            }
+
+            public ManageTable Clone()
+            {
+                ManageTable result = new ManageTable(CheckInTime.CheckInTimeList);
+                foreach (var item in this)
+                {
+                    result[item.Time.TimeId] = item;
+                }
+                return result;
             }
         }
 
@@ -149,8 +152,36 @@ namespace Manager.Models
 
         private void fillInManageTable(ManageTable table)
         {
+            var availableTimeTable = new AvailableTimeHelper.AvailableTimeTable(availableTimeList);
+            List<int> jumpList = new List<int>();
+            manageTableList = new List<ManageTable>();
+            manageTableList.Add(new ManageTable(CheckInTime.CheckInTimeList));
             for (int i = 11; ; i = getNextTimeId(i))
             {
+                if (availableTimeTable[i].ManagerList.Count == 0)
+                {
+                    return;
+                }
+                if (availableTimeTable[i].ManagerList.Count == 1)
+                {
+                    manageTableList.Single()[i].Manager = availableTimeTable[i].ManagerList.Single();
+                    jumpList.Add(i);
+                }
+                if (i == 76)
+                {
+                    break;
+                }
+            }
+            for (int i = 11; ; i = getNextTimeId(i))
+            {
+                if (i == 0)
+                {
+                    break;
+                }
+                if (jumpList.Contains(i))
+                {
+                    continue;
+                }
                 List<ManageTableRecord> recordList = new List<ManageTableRecord>();
                 foreach (var availableTime in availableTimeList)
                 {
@@ -172,16 +203,85 @@ namespace Manager.Models
                     {
                         foreach (var manageTable in manageTableList)
                         {
-                            manageTable[i] = record;
-                            newTableList.Add(manageTable);
+                            var newManageTable = manageTable.Clone();
+                            newManageTable[i] = record;
+                            newTableList.Add(newManageTable);
                         }
                     }
                 }
-                manageTableList = newTableList;
+                if (newTableList.Count == 0)
+                {
+                    manageTableList = new List<ManageTable>();
+                    return;
+                }
+                newTableList = newTableList.Distinct(new ManageTableComparer()).ToList();
+                manageTableList = checkManageTableList(newTableList);
                 if (i == 76)
                 {
                     break;
                 }
+            }
+        }
+
+        private List<ManageTable> checkManageTableList(List<ManageTable> list)
+        {
+            var result = new List<ManageTable>();
+            foreach (var table in list)
+            {
+                foreach (var item in table)
+                {
+                    if (item.Manager == null)
+                    {
+                        continue;
+                    }
+                    int count = table.GetManagerManageTable(item.Manager).Count;
+                    if (item.Manager.MinCount >= count || item.Manager.MaxCount <= count)
+                    {
+                        break;
+                    }
+                }
+                result.Add(table);
+            }
+            if (result.Count >= 100)
+            {
+                return result.OrderByDescending(r => r.Happiness).Take(100).ToList();
+            }
+            return result;
+        }
+
+        public class ManageTableComparer : IEqualityComparer<ManageTable>
+        {
+            public bool Equals(ManageTable x, ManageTable y)
+            {
+                foreach (var item in x)
+                {
+                    if (y[item.Time.TimeId].Manager == null)
+                    {
+                        if (item.Manager != null)
+                        {
+                            return false;
+                        }
+                        continue;
+                    }
+                    if (item.Manager == null)
+                    {
+                        if (y[item.Time.TimeId].Manager != null)
+                        {
+                            return false;
+                        }
+                        continue;
+                    }
+                    if (y[item.Time.TimeId].Manager.Name != item.Manager.Name)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            public int GetHashCode(ManageTable obj)
+            {
+                return obj.ToString().GetHashCode();
             }
         }
 
@@ -215,7 +315,7 @@ namespace Manager.Models
                 {
                     return index + 1;
                 }
-                return 11;
+                return 0;
             }
             return 0;
         }

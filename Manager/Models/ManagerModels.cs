@@ -140,6 +140,72 @@ namespace Manager.Models
             return 1;
         }
 
+        List<double> demandMark = new List<double>();
+
+        /// <summary>
+        /// 返回标准化后的需求分数
+        /// </summary>
+        /// <returns>降序排列的需求分数列表</returns>
+        public List<double> GetDemandMark()
+        {
+            if (demandMark.Count == 3)
+            {
+                return demandMark;
+            }
+            var data = new List<double>();
+            foreach (var item in AvailableTimes)
+            {
+                switch (item.Demand)
+                {
+                    case DemandType.First:
+                        data.Add(100);
+                        break;
+                    case DemandType.Second:
+                        data.Add(80);
+                        break;
+                    case DemandType.Third:
+                        data.Add(60);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            double std = 0;
+            double avg = 0;
+            foreach (var item in data)
+            {
+                avg += item;
+            }
+            avg /= data.Count;
+            foreach (var item in data)
+            {
+                std += Math.Pow(item - avg, 2);
+            }
+            std = Math.Sqrt(std);
+            var result = new List<double>();
+            if (std != 0)
+            {
+                var temp = new List<double>();
+                foreach (var item in data)
+                {
+                    temp.Add((item - avg) / std);
+                }
+                temp = temp.OrderBy(t => t).ToList();
+                result.Add(temp[0]);
+                result.Add(temp[temp.Count / 2]);
+                result.Add(temp[temp.Count - 1]);
+            }
+            else
+            {
+                for(int i = 0; i < 3; i++)
+                {
+                    result.Add(data[0] - avg);
+                }
+            }
+            result = result.OrderByDescending(t => t).ToList();
+            demandMark = result;
+            return result;
+        }
 
         public static CheckInTime FindCheckInTime()
         {

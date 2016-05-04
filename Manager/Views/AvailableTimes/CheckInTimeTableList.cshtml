@@ -1,0 +1,15 @@
+﻿@model List<Manager.Models.ManagerTableHelper.ManageTable>
+@{
+    ViewBag.Title = "CheckInTimeTable";
+}
+
+<h2>CheckInTimeTable</h2>
+
+@foreach (var item in Model)
+{
+    <div class="container">
+        @Html.Partial("FillInTable", item)
+    </div>
+}
+
+

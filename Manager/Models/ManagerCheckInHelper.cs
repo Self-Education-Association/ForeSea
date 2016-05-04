@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Manager.Models
 {
-    public class ManagerCheckInHelper
+    public class ManagerTableHelper
     {
         List<AvailableTime> availableTimeList;
         List<ManageTable> manageTableList = new List<ManageTable>();
@@ -16,11 +16,56 @@ namespace Manager.Models
             public CheckInTime Time { get; set; }
 
             public Manager Manager { get; set; }
+
+            public DemandType Demand { get; set; }
         }
 
         public class ManageTable : IEnumerable<ManageTableRecord>
         {
             private List<ManageTableRecord> list = new List<ManageTableRecord>();
+
+            public double Happiness
+            {
+                get
+                {
+                    double happiness = 0;
+                    int firstHappiness = 100;
+                    int secondHappiness = 80;
+                    int thirdHappiness = 60;
+                    int happinessDiscount = 5;
+                    List<Manager> managerList = new List<Manager>();
+                    foreach (var item in list)
+                    {
+                        if (!managerList.Contains(item.Manager))
+                        {
+                            managerList.Add(item.Manager);
+                        }
+                    }
+                    foreach (var item in managerList)
+                    {
+                        double managerHappiness = 0;
+                        var recordList = GetManagerManageTable(item);
+                        foreach (var record in recordList)
+                        {
+                            switch (record.Demand)
+                            {
+                                case DemandType.First:
+                                    managerHappiness += firstHappiness;
+                                    break;
+                                case DemandType.Second:
+                                    managerHappiness += secondHappiness;
+                                    break;
+                                case DemandType.Third:
+                                    managerHappiness += thirdHappiness;
+                                    break;
+                            }
+                            managerHappiness -= recordList.Count * happinessDiscount;
+                        }
+                        happiness += managerHappiness / recordList.Count;
+                    }
+                    return happiness / managerList.Count;
+                }
+            }
 
             public bool Usable
             {
@@ -35,18 +80,26 @@ namespace Manager.Models
                 }
             }
 
-            public ManageTableRecord this[int rowIndex]
+            public ManageTableRecord this[int index]
             {
                 get
                 {
                     foreach (var item in list)
                     {
-                        if (item.Time.TimeId == rowIndex)
+                        if (item.Time.TimeId == index)
                         {
                             return item;
                         }
                     }
                     return null;
+                }
+                set
+                {
+                    if (this[index].Manager == null)
+                    {
+                        this[index].Manager = value.Manager;
+                        this[index].Demand = value.Demand;
+                    }
                 }
             }
 
@@ -56,6 +109,11 @@ namespace Manager.Models
                 {
                     list.Add(new ManageTableRecord { Time = item });
                 }
+            }
+
+            private List<ManageTableRecord> GetManagerManageTable(Manager manager)
+            {
+                return list.Where(m => m.Manager == manager).ToList();
             }
 
             public IEnumerator<ManageTableRecord> GetEnumerator()
@@ -69,7 +127,7 @@ namespace Manager.Models
             }
         }
 
-        public ManagerCheckInHelper(List<AvailableTime> availableTimeList)
+        public ManagerTableHelper(List<AvailableTime> availableTimeList)
         {
             this.availableTimeList = availableTimeList;
         }
@@ -80,27 +138,49 @@ namespace Manager.Models
         /// <returns>Manager为空而包含值班时间的ManageTable</returns>
         public static ManageTable GetEmptyManageTable()
         {
-            return new ManageTable(Manager.GetCheckInTimeList());
+            return new ManageTable(CheckInTime.CheckInTimeList);
         }
 
         public List<ManageTable> GetManageTableList()
         {
-            fillInManageTable(11, GetEmptyManageTable());
+            fillInManageTable(GetEmptyManageTable());
             return manageTableList;
         }
 
-        private void fillInManageTable(int index, ManageTable table)
+        private void fillInManageTable(ManageTable table)
         {
-            foreach (var item in availableTimeList)
+            for (int i = 11;; i = getNextTimeId(i))
             {
-                if (item.TimeId == index)
+                List<ManageTableRecord> recordList = new List<ManageTableRecord>();
+                foreach (var availableTime in availableTimeList)
                 {
-                    table[index].Manager = item.Manager;
-                    if (table.Usable == true)
+                    if (availableTime.TimeId == i)
                     {
-                        manageTableList.Add(table);
+                        recordList.Add(new ManageTableRecord { Manager = availableTime.Manager, Demand = availableTime.Demand, Time = Manager.FindCheckInTime(availableTime.TimeId) });
                     }
-                    fillInManageTable(getNextTimeId(index), table);
+                }
+                List<ManageTable> newTableList = new List<ManageTable>();
+                foreach (var record in recordList)
+                {
+                    if (manageTableList.Count == 0)
+                    {
+                        var initialManageTable = GetEmptyManageTable();
+                        initialManageTable[i] = record;
+                        newTableList.Add(initialManageTable);
+                    }
+                    else
+                    {
+                        foreach (var manageTable in manageTableList)
+                        {
+                            manageTable[i] = record;
+                            newTableList.Add(manageTable);
+                        }
+                    }
+                }
+                manageTableList = newTableList;
+                if (i == 76)
+                {
+                    break;
                 }
             }
         }
@@ -138,6 +218,60 @@ namespace Manager.Models
                 return 11;
             }
             return 0;
+        }
+    }
+    public class AvailableTimeHelper
+    {
+        List<AvailableTime> availableTimeList;
+
+        public class AvailableTimeTableRecord
+        {
+            public CheckInTime Time { get; set; }
+
+            public List<Manager> ManagerList { get; set; }
+
+            public int Count { get { return ManagerList.Count; } }
+
+            public AvailableTimeTableRecord(CheckInTime time)
+            {
+                Time = time;
+                ManagerList = new List<Manager>();
+            }
+        }
+
+        public class AvailableTimeTable
+        {
+            List<AvailableTimeTableRecord> data = new List<AvailableTimeTableRecord>();
+
+            public AvailableTimeTableRecord this[int index]
+            {
+                get
+                {
+                    return data.Where(a => a.Time.TimeId == index).SingleOrDefault();
+                }
+            }
+
+            public AvailableTimeTable(List<AvailableTime> list)
+            {
+                foreach (var item in list)
+                {
+                    if (data.Where(t => t.Time.TimeId == item.TimeId).Count() == 0)
+                    {
+                        data.Add(new AvailableTimeTableRecord(Manager.FindCheckInTime(item.TimeId)));
+                        this[item.TimeId].ManagerList.Add(item.Manager);
+                    }
+                }
+            }
+        }
+
+        public AvailableTimeHelper(List<AvailableTime> list)
+        {
+            availableTimeList = list;
+        }
+
+        public AvailableTimeTable GetAvailableTimeTable()
+        {
+            return new AvailableTimeTable(availableTimeList);
         }
     }
 }

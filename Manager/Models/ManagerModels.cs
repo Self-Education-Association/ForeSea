@@ -146,7 +146,7 @@ namespace Manager.Models
             DateTime datetime = DateTime.Now;
             DayOfWeek day = datetime.DayOfWeek;
 
-            List<CheckInTime> checkInTime = GetCheckInTimeList();
+            List<CheckInTime> checkInTime = CheckInTime.CheckInTimeList;
             foreach (CheckInTime time in checkInTime)
             {
                 if (time.Day == day && datetime.TimeOfDay > time.StartTime && datetime.TimeOfDay < time.EndTime)
@@ -159,7 +159,7 @@ namespace Manager.Models
 
         public static CheckInTime FindCheckInTime(int id)
         {
-            List<CheckInTime> checkInTime = GetCheckInTimeList();
+            List<CheckInTime> checkInTime = CheckInTime.CheckInTimeList;
             foreach (CheckInTime time in checkInTime)
             {
                 if (time.TimeId == id)
@@ -172,7 +172,7 @@ namespace Manager.Models
 
         public static CheckInTime FindCheckInTime(string name)
         {
-            List<CheckInTime> checkInTime = GetCheckInTimeList();
+            List<CheckInTime> checkInTime = CheckInTime.CheckInTimeList;
             foreach (CheckInTime time in checkInTime)
             {
                 if (time.TimeName == name)
@@ -181,40 +181,6 @@ namespace Manager.Models
                 }
             }
             return default(CheckInTime);
-        }
-
-        public static List<CheckInTime> GetCheckInTimeList()
-        {
-            List<CheckInTime> result = new List<CheckInTime>();
-            for (int i = 1; i <= 5; i++)
-            {
-                result.Add(new CheckInTime((DayOfWeek)i, 110, string.Format("第{0}天第{1}节", i, 1), i * 10 + 1, generateTime(7, 50, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 130, string.Format("第{0}天第{1}节", i, 2), i * 10 + 2, generateTime(9, 40, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 80, string.Format("第{0}天第{1}节", i, 3), i * 10 + 3, generateTime(11, 50, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), i * 10 + 4, generateTime(13, 10, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 110, string.Format("第{0}天第{1}节", i, 5), i * 10 + 5, generateTime(15, 10, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 6), i * 10 + 6, generateTime(18, 00, 00)));
-                result.Add(new CheckInTime((DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 7), i * 10 + 7, generateTime(19, 30, 00)));
-            }
-            for (int i = 6; i <= 7; i++)
-            {
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 150, string.Format("第{0}天第{1}节", i, 1), i * 10 + 1, generateTime(9, 30, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 2), i * 10 + 2, generateTime(12, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 3), i * 10 + 3, generateTime(14, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), i * 10 + 4, generateTime(16, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 5), i * 10 + 5, generateTime(18, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 6), i * 10 + 6, generateTime(19, 30, 00)));
-            }
-            return result;
-        }
-
-        private static List<TimeSpan> generateTime(int hour, int min, int sec)
-        {
-            List<TimeSpan> result = new List<TimeSpan>();
-            result.Add(new TimeSpan(hour, min - 5, sec));
-            result.Add(new TimeSpan(hour, min + 5, sec));
-            result.Add(new TimeSpan(hour, min + 25, sec));
-            return result;
         }
     }
 
@@ -227,6 +193,8 @@ namespace Manager.Models
         public TimeSpan StartTime { get; set; }
         public TimeSpan LateTime { get; set; }
         public TimeSpan EndTime { get; set; }
+
+        public readonly static List<CheckInTime> CheckInTimeList = GetCheckInTimeList();
 
         public CheckInTime(DayOfWeek day, int totalTime, string timeName, int timeId, TimeSpan startTime, TimeSpan lateTime, TimeSpan endTime)
         {
@@ -252,6 +220,40 @@ namespace Manager.Models
             StartTime = time[0];
             LateTime = time[1];
             EndTime = time[2];
+        }
+
+        static List<CheckInTime> GetCheckInTimeList()
+        {
+            List<CheckInTime> result = new List<CheckInTime>();
+            for (int i = 1; i <= 5; i++)
+            {
+                result.Add(new CheckInTime((DayOfWeek)i, 110, string.Format("第{0}天第{1}节", i, 1), i * 10 + 1, generateTime(7, 50, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 130, string.Format("第{0}天第{1}节", i, 2), i * 10 + 2, generateTime(9, 40, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 80, string.Format("第{0}天第{1}节", i, 3), i * 10 + 3, generateTime(11, 50, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), i * 10 + 4, generateTime(13, 10, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 110, string.Format("第{0}天第{1}节", i, 5), i * 10 + 5, generateTime(15, 10, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 6), i * 10 + 6, generateTime(18, 00, 00)));
+                result.Add(new CheckInTime((DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 7), i * 10 + 7, generateTime(19, 30, 00)));
+            }
+            for (int i = 6; i <= 7; i++)
+            {
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 150, string.Format("第{0}天第{1}节", i, 1), i * 10 + 1, generateTime(9, 30, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 2), i * 10 + 2, generateTime(12, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 3), i * 10 + 3, generateTime(14, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), i * 10 + 4, generateTime(16, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 5), i * 10 + 5, generateTime(18, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 6), i * 10 + 6, generateTime(19, 30, 00)));
+            }
+            return result;
+        }
+
+        static List<TimeSpan> generateTime(int hour, int min, int sec)
+        {
+            List<TimeSpan> result = new List<TimeSpan>();
+            result.Add(new TimeSpan(hour, min - 5, sec));
+            result.Add(new TimeSpan(hour, min + 5, sec));
+            result.Add(new TimeSpan(hour, min + 25, sec));
+            return result;
         }
     }
 

@@ -189,6 +189,21 @@ namespace Manager.Controllers
             return db.Managers.Where(m => m.AccountName == managerName).SingleOrDefault();
         }
 
+
+        public ActionResult CheckInTimeTableList()
+        {
+            var manageCheckInHelper = new ManagerTableHelper(db.AvailableTime.ToList());
+            var tableList = manageCheckInHelper.GetManageTableList();
+            return View(tableList);
+        }
+
+        public ActionResult AvailableTimeTable()
+        {
+            var availableTimeHelper = new AvailableTimeHelper(db.AvailableTime.ToList());
+            var availableTimeTable = availableTimeHelper.GetAvailableTimeTable();
+            return View(availableTimeTable);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

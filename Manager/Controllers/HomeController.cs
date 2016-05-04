@@ -85,12 +85,5 @@ namespace Manager.Controllers
         {
             return View(db.Managers.ToList());
         }
-
-        public ActionResult CheckInTimeTable()
-        {
-            var manageCheckInHelper = new ManagerCheckInHelper(db.AvailableTime.ToList());
-            var tableList = manageCheckInHelper.GetManageTableList();
-            return View(tableList);
-        }
     }
 }

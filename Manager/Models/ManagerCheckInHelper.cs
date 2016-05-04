@@ -149,7 +149,7 @@ namespace Manager.Models
 
         private void fillInManageTable(ManageTable table)
         {
-            for (int i = 11;; i = getNextTimeId(i))
+            for (int i = 11; ; i = getNextTimeId(i))
             {
                 List<ManageTableRecord> recordList = new List<ManageTableRecord>();
                 foreach (var availableTime in availableTimeList)
@@ -253,13 +253,18 @@ namespace Manager.Models
 
             public AvailableTimeTable(List<AvailableTime> list)
             {
+                emptyData();
                 foreach (var item in list)
                 {
-                    if (data.Where(t => t.Time.TimeId == item.TimeId).Count() == 0)
-                    {
-                        data.Add(new AvailableTimeTableRecord(Manager.FindCheckInTime(item.TimeId)));
-                        this[item.TimeId].ManagerList.Add(item.Manager);
-                    }
+                    this[item.TimeId].ManagerList.Add(item.Manager);
+                }
+            }
+
+            void emptyData()
+            {
+                foreach (var item in CheckInTime.CheckInTimeList)
+                {
+                    data.Add(new AvailableTimeTableRecord(item));
                 }
             }
         }

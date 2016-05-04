@@ -228,8 +228,9 @@
     <Content Include="Views\AvailableTimes\List.cshtml" />
     <Content Include="Views\AvailableTimes\Table.cshtml" />
     <Content Include="Views\AvailableTimes\ManagerList.cshtml" />
-    <Content Include="Views\AvailableTimes\CheckInTimeTableList.cshtml" />
-    <Content Include="Views\AvailableTimes\FillInTable.cshtml" />
+    <Content Include="Views\AvailableTimes\ManageTableList.cshtml" />
+    <Content Include="Views\AvailableTimes\ManageTable.cshtml" />
+    <Content Include="Views\AvailableTimes\AvailableTimeTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

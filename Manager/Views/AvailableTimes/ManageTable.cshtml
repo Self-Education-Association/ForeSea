@@ -24,7 +24,7 @@
             <td>@Model[30 + i].Manager.Name</td>
             <td>@Model[40 + i].Manager.Name</td>
             <td>@Model[50 + i].Manager.Name</td>
-            <td>@if (i != 1) { @(string.Format("第{0}节", i - 1)); }</td>
+            <td>@if (i != 1) { @(string.Format("第 {0} 节", i - 1)); }</td>
             <td>@if (i != 1)
             { @Model[60 + i - 1].Manager.Name;
             }</td>

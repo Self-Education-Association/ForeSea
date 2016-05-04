@@ -190,10 +190,10 @@ namespace Manager.Controllers
         }
 
 
-        public ActionResult CheckInTimeTableList()
+        public ActionResult ManageTableList()
         {
             var manageCheckInHelper = new ManagerTableHelper(db.AvailableTime.ToList());
-            var tableList = manageCheckInHelper.GetManageTableList();
+            var tableList = manageCheckInHelper.GetManageTableList().OrderBy(t => t.Usable).Take(5).ToList();
             return View(tableList);
         }
 

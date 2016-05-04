@@ -1,0 +1,87 @@
+﻿@model Manager.Models.AvailableTimeHelper.AvailableTimeTable
+@{
+    ViewBag.Title = "可值班时间表";
+}
+
+<div class="text-center">
+    <h2>
+        @ViewBag.Title
+    </h2>
+</div>
+
+<div>
+    <table class="table table-bordered" align="center">
+        <tr>
+            <th align="center" style="min-width:80px">节次</th>
+            <th align="center">星期一</th>
+            <th align="center">星期二</th>
+            <th align="center">星期三</th>
+            <th align="center">星期四</th>
+            <th align="center">星期五</th>
+            <th align="center" style="min-width:80px">节次</th>
+            <th align="center">星期六</th>
+            <th align="center">星期日</th>
+        </tr>
+        @for (int i = 1; i <= 7; i++)
+        {
+            <tr>
+                <td>第 @i 节</td>
+                <td>
+                    @foreach (var item in Model[10 + i].ManagerList.OrderBy(m => m.Name))
+                    {
+                        @(item.Name + " ");
+                }
+                </td>
+                <td>
+                    @foreach (var item in Model[20 + i].ManagerList.OrderBy(m => m.Name))
+                {
+                        @(item.Name + " ");
+                }
+                </td>
+                <td>
+                    @foreach (var item in Model[30 + i].ManagerList.OrderBy(m => m.Name))
+                {
+                        @(item.Name + " ");
+                }
+                </td>
+                <td>
+                    @foreach (var item in Model[40 + i].ManagerList.OrderBy(m => m.Name))
+                {
+                        @(item.Name + " ");
+                }
+                </td>
+                <td>
+                    @foreach (var item in Model[50 + i].ManagerList.OrderBy(m => m.Name))
+                {
+                        @(item.Name + " ");
+                }
+                </td>
+                <td>
+                    @if (i != 1)
+                {
+                        @(string.Format("第 {0} 节", i - 1));
+                }
+                </td>
+                <td>
+                    @if (i != 1)
+                {
+                    foreach (var item in Model[60 + i - 1].ManagerList.OrderBy(m => m.Name))
+                    {
+                            @(item.Name + " ");
+                    }
+                }
+                </td>
+                <td>
+                    @if (i != 1)
+                {
+                    foreach (var item in Model[70 + i - 1].ManagerList.OrderBy(m => m.Name))
+                    {
+                            @(item.Name + " ");
+                    }
+                }
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>

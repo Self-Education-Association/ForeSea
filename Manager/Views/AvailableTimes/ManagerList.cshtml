@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Manager.Models.Manager>
+
+@{
+    ViewBag.Title = "时长统计";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            名称
+        </th>
+        <th>
+            值班次数
+        </th>
+        <th>
+            值班时长
+        </th>
+        <th>
+            迟到时长
+        </th>
+        <th>
+            可值班时间数
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    if (!item.CheckAvailableTime())
+    {
+        <tr class="warning">
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableTimes.Count)
+            </td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableTimes.Count)
+            </td>
+        </tr>
+    }
+}
+
+</table>

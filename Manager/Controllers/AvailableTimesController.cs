@@ -178,6 +178,11 @@ namespace Manager.Controllers
             return Delete(time.AvailableTimeId);
         }
 
+        public ActionResult ManagerList()
+        {
+            return View(db.Managers.ToList());
+        }
+
         private Models.Manager GetManager()
         {
             string managerName = Session["User"].ToString();

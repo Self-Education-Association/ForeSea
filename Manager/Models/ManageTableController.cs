@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Manager.Models
 {
+    [CheckLogin]
     public class ManageTableController : Controller
     {
         static BaseDbContext db = new BaseDbContext();

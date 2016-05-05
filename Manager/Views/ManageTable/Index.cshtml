@@ -57,7 +57,7 @@ else
             {
                 temp += string.Format("<option value='{0}'>{0}</option>", manager.Name);
             }
-            @(Html.Raw(string.Format("document.getElementById(\"time{0}\").innerHTML = \"<select onchange='fillInTable(this,{0})'>{1}</select>\";", item.Time.TimeId, temp)));
+            @(Html.Raw(string.Format("document.getElementById(\"time{0}\").innerHTML = \"<select onchange='fillInTable(this,{0})' onclick='changeTableData(this)'>{1}</select>\";", item.Time.TimeId, temp)));
         }
     }
 
@@ -89,5 +89,15 @@ else
                 alert(errorThrown);
             }
         })
+    }
+
+    function changeTableData(obj) {
+        for (var i = 0; i < obj.options.length; i++) {
+            var ele = document.getElementById(obj.options[i].text);
+            if (ele != null) {
+                ele.removeAttribute("class");
+                ele.classList += "danger";
+            }
+        }
     }
 </script>

@@ -9,7 +9,71 @@
 }
 else
 {
-    <div class="col-md-8">
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <th>值班员</th>
+                <th>最小</th>
+                <th>当前</th>
+                <th>最大</th>
+                <th>可安排</th>
+                <th>值班员</th>
+                <th>最小</th>
+                <th>当前</th>
+                <th>最大</th>
+                <th>可安排</th>
+                <th>值班员</th>
+                <th>最小</th>
+                <th>当前</th>
+                <th>最大</th>
+                <th>可安排</th>
+            </tr>
+            @{
+                var managerList = ViewBag.ManagerList as List<Manager.Models.Manager>;
+                bool usable = false;
+                int count = 0;
+                Manager.Models.Manager manager;
+                for (int i = 0; i <= managerList.Count / 3; i++)
+                {
+                    int index = i * 3;
+                    <tr>
+                        @for (int j = index; j < index + 3; j++)
+                    {
+                        if (j < managerList.Count)
+                        {
+                            manager = managerList[j];
+                            count = Model.GetManagerManageTable(manager).Count;
+                            usable = count >= manager.MinCount && count <= manager.MaxCount;
+                            if (usable)
+                            {
+                                    <td class="success">@manager.Name</td>
+                                    <td class="success">@manager.MinCount</td>
+                                    <td class="success">@count</td>
+                                    <td class="success">@manager.MaxCount</td>
+                                    <td class="success" id="@manager.Name">@(manager.MaxCount - count)</td>
+                                }
+                                else
+                                {
+                                    <td class="warning">@manager.Name</td>
+                                    <td class="warning">@manager.MinCount</td>
+                                    <td class="warning">@count</td>
+                                    <td class="warning">@manager.MaxCount</td>
+                                    <td class="warning" id="@manager.Name">@(manager.MaxCount - count)</td>
+                                }
+                            }
+                            
+                        }
+                    </tr>
+                }
+            }
+            <tfoot>
+                <tr>
+                    数据统计
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div>
         <table class="table table-bordered" align="center">
             <tr>
                 <th align="center">星期一</th>
@@ -49,58 +113,4 @@ else
             </tfoot>
         </table>
     </div>
-    <div class="col-md-4">
-        <table class="table table-bordered">
-            <tr>
-                <th>值班员</th>
-                <th>最小值班数</th>
-                <th>当前值班数</th>
-                <th>最大值班数</th>
-                <th>可安排值班数</th>
-            </tr>
-            @{
-                var managerList = new List<Manager.Models.Manager>();
-                foreach (var item in Model)
-                {
-                    if (!managerList.Contains(item.Manager))
-                    {
-                        managerList.Add(item.Manager);
-                    }
                 }
-                managerList.Remove(null);
-                bool usable = false;
-                int count = 0;
-                foreach (var item in managerList)
-                {
-                    count = Model.GetManagerManageTable(item).Count;
-                    usable = count >= item.MinCount && count <= item.MaxCount;
-                    if (usable)
-                    {
-                        <tr class="success">
-                            <td>@item.Name</td>
-                            <td>@item.MinCount</td>
-                            <td>@count</td>
-                            <td>@item.MaxCount</td>
-                            <td>@(item.MaxCount-count)</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr class="warning">
-                            <td>@item.Name</td>
-                            <td>@item.MinCount</td>
-                            <td>@count</td>
-                            <td>@item.MaxCount</td>
-                            <td>@(item.MaxCount - count)</td>
-                        </tr>
-                    }
-                }
-            }
-            <tfoot>
-                <tr>
-                    数据统计
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-}

@@ -44,6 +44,7 @@ namespace Manager.Models
             {
                 manageTable = ManagerTableHelper.GetEmptyManageTable(db.AvailableTime.ToList());
             }
+            ViewBag.ManagerList = db.Managers.ToList();
             return View(manageTable);
         }
     }

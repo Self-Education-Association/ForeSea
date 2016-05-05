@@ -5,7 +5,8 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<a href="~/ManageTable/Clean" class="btn btn-danger">清空值班表</a>
+<a href="~/ManageTable/Clean" class="btn btn-danger" onclick="clrcfm()">清空值班表</a>
+<a href="~/ManageTable/ShowTable" class="btn btn-success">生成值班表</a>
 
 @if (Model == null)
 {
@@ -98,6 +99,12 @@ else
                 ele.removeAttribute("class");
                 ele.classList += "danger";
             }
+        }
+    }
+
+    function clrcfm() {
+        if (!confirm("确定要清空值班表？此操作不可撤销！")) {
+            window.event.returnValue = false;
         }
     }
 </script>

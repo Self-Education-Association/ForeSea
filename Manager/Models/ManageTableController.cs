@@ -18,6 +18,11 @@ namespace Manager.Models
             return View(availableTimeTable);
         }
 
+        public ActionResult ShowTable()
+        {
+            return View(manageTable);
+        }
+
         public ActionResult FillIn(int id, string name)
         {
             if (!Request.IsAjaxRequest())

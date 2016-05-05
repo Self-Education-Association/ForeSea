@@ -1,0 +1,27 @@
+﻿@model Manager.Models.ManagerTableHelper.ManageTable
+@{
+    ViewBag.Title = "值班表";
+}
+
+<div class="text-center">
+    <h2>
+        @ViewBag.Title
+    </h2>
+</div>
+
+<div>
+    @Html.Partial("Table")
+</div>
+
+@if (Model != null)
+{
+    <script>
+        @foreach(var item in Model)
+        {
+            if (item.Manager != null)
+            {
+                @(Html.Raw(string.Format("document.getElementById(\"time{0}\").innerHTML = \"{1}\";", item.Time.TimeId, item.Manager.Name)));
+            }
+        }
+    </script>
+}

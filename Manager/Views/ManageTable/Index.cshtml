@@ -1,0 +1,93 @@
+﻿@model Manager.Models.AvailableTimeHelper.AvailableTimeTable
+@{
+    ViewBag.Title = "值班表试算";
+    string temp = "";
+}
+
+<h2>@ViewBag.Title</h2>
+<a href="~/ManageTable/Clean" class="btn btn-danger">清空值班表</a>
+
+@if (Model == null)
+{
+    <h3>无可用的值班表，请检查可值班时间表。</h3>
+}
+else
+{
+    <div id="availableTimeTable">
+        <table class="table table-bordered" align="center">
+            <tr>
+                <th align="center">星期一</th>
+                <th align="center">星期二</th>
+                <th align="center">星期三</th>
+                <th align="center">星期四</th>
+                <th align="center">星期五</th>
+                <th align="center">星期六</th>
+                <th align="center">星期日</th>
+            </tr>
+            @for (int i = 1; i <= 7; i++)
+            {
+                <tr>
+                    <td id="time@(10+i)"></td>
+                    <td id="time@(20+i)"></td>
+                    <td id="time@(30+i)"></td>
+                    <td id="time@(40+i)"></td>
+                    <td id="time@(50+i)"></td>
+                    <td id="@if (i != 1) {@("time"+(60+i-1).ToString());}"></td>
+                    <td id="@if (i != 1) {@("time"+(70+i-1).ToString());}"></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div id="manageTable">
+        @Html.Action("ManageTable")
+    </div>
+}
+
+<script>
+    @foreach(var item in Model)
+    {
+        if (item.ManagerList.Count==1)
+        {
+            @(Html.Raw(string.Format("document.getElementById(\"time{0}\").innerHTML = \"<a>{1}</a>\";", item.Time.TimeId, item.ManagerList.Single().Name)));
+        }
+        if (item.ManagerList.Count > 1)
+        {
+            temp = "<option value=''></option>";
+            foreach (var manager in item.ManagerList)
+            {
+                temp += string.Format("<option value='{0}'>{0}</option>", manager.Name);
+            }
+            @(Html.Raw(string.Format("document.getElementById(\"time{0}\").innerHTML = \"<select onchange='fillInTable(this,{0})'>{1}</select>\";", item.Time.TimeId, temp)));
+        }
+    }
+
+    function fillInTable(obj, id) {
+        jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("FillIn")' + '?id=' + id + '&name=' + obj.options[obj.selectedIndex].text,
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                getManageTable();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        })
+    }
+
+    function getManageTable() {
+        jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("ManageTable")',
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                document.getElementById("manageTable").innerHTML = data;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        })
+    }
+</script>

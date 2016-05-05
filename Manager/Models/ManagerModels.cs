@@ -288,6 +288,41 @@ namespace Manager.Models
             EndTime = time[2];
         }
 
+        public static int GetNextTimeId(int index)
+        {
+            int i = index / 10;
+            int j = index % 10;
+            if (i <= 0 || j <= 0 || i > 7 || j > 7)
+            {
+                return 0;
+            }
+            if (i <= 5)
+            {
+                if (j < 7)
+                {
+                    return index + 1;
+                }
+                return (i + 1) * 10 + 1;
+            }
+            if (i == 6)
+            {
+                if (j < 6)
+                {
+                    return index + 1;
+                }
+                return (i + 1) * 10 + 1;
+            }
+            if (i == 7)
+            {
+                if (j < 6)
+                {
+                    return index + 1;
+                }
+                return 0;
+            }
+            return 0;
+        }
+
         static List<CheckInTime> GetCheckInTimeList()
         {
             List<CheckInTime> result = new List<CheckInTime>();

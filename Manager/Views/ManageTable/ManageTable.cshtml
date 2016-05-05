@@ -1,0 +1,103 @@
+﻿@model Manager.Models.ManagerTableHelper.ManageTable
+@{
+    Layout = null;
+}
+
+@if (Model == null)
+{
+    <h3>无可用的值班表，请检查可值班时间表。</h3>
+}
+else
+{
+    <div class="col-md-8">
+        <table class="table table-bordered" align="center">
+            <tr>
+                <th align="center">星期一</th>
+                <th align="center">星期二</th>
+                <th align="center">星期三</th>
+                <th align="center">星期四</th>
+                <th align="center">星期五</th>
+                <th align="center">星期六</th>
+                <th align="center">星期日</th>
+            </tr>
+            @for (int i = 1; i <= 7; i++)
+            {
+                <tr>
+                    <td>@(Model[10 + i].Manager == null ? "" : Model[10 + i].Manager.Name + Model.GetManagerManageTable(Model[10 + i].Manager).Count)</td>
+                    <td>@(Model[20 + i].Manager == null ? "" : Model[20 + i].Manager.Name + Model.GetManagerManageTable(Model[20 + i].Manager).Count)</td>
+                    <td>@(Model[30 + i].Manager == null ? "" : Model[30 + i].Manager.Name + Model.GetManagerManageTable(Model[30 + i].Manager).Count)</td>
+                    <td>@(Model[40 + i].Manager == null ? "" : Model[40 + i].Manager.Name + Model.GetManagerManageTable(Model[40 + i].Manager).Count)</td>
+                    <td>@(Model[50 + i].Manager == null ? "" : Model[50 + i].Manager.Name + Model.GetManagerManageTable(Model[50 + i].Manager).Count)</td>
+                    <td>
+                        @if (i != 1)
+                    {
+                            @(Model[60 + i - 1].Manager == null ? "" : Model[60 + i - 1].Manager.Name + Model.GetManagerManageTable(Model[60 + i - 1].Manager).Count)
+                        }
+                    </td>
+                    <td>
+                        @if (i != 1)
+                    {
+                            @(Model[70 + i - 1].Manager == null ? "" : Model[70 + i - 1].Manager.Name + Model.GetManagerManageTable(Model[70 + i - 1].Manager).Count)
+                        }
+                    </td>
+                </tr>
+            }
+            <tfoot>
+                <tr>
+                    效用试算值： @Model.Happiness 可用性： @Model.Usable
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <table class="table table-bordered">
+            <tr>
+                <th>值班员</th>
+                <th>最小值班数</th>
+                <th>当前值班数</th>
+                <th>最大值班数</th>
+            </tr>
+            @{
+                var managerList = new List<Manager.Models.Manager>();
+                foreach (var item in Model)
+                {
+                    if (!managerList.Contains(item.Manager))
+                    {
+                        managerList.Add(item.Manager);
+                    }
+                }
+                managerList.Remove(null);
+                bool usable = false;
+                int count = 0;
+                foreach (var item in managerList)
+                {
+                    count = Model.GetManagerManageTable(item).Count;
+                    usable = count >= item.MinCount && count <= item.MaxCount;
+                    if (usable)
+                    {
+                        <tr class="success">
+                            <td>@item.Name</td>
+                            <td>@item.MinCount</td>
+                            <td>@count</td>
+                            <td>@item.MaxCount</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="warning">
+                            <td>@item.Name</td>
+                            <td>@item.MinCount</td>
+                            <td>@count</td>
+                            <td>@item.MaxCount</td>
+                        </tr>
+                    }
+                }
+            }
+            <tfoot>
+                <tr>
+                    数据统计
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}

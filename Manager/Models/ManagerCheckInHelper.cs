@@ -139,14 +139,27 @@ namespace Manager.Models
         /// 获取Manager为空的可用ManageTable（由ManageTableRecord组成的集合类型）。
         /// </summary>
         /// <returns>Manager为空而包含值班时间的ManageTable</returns>
-        public static ManageTable GetEmptyManageTable()
+        public static ManageTable GetEmptyManageTable(List<AvailableTime> availableTimeList)
         {
-            return new ManageTable(CheckInTime.CheckInTimeList);
+            var manageTable = new ManageTable(CheckInTime.CheckInTimeList);
+            var availableTimeTable = new AvailableTimeHelper.AvailableTimeTable(availableTimeList);
+            for (int i = 11; i != 0; i = CheckInTime.GetNextTimeId(i))
+            {
+                if (availableTimeTable[i].ManagerList.Count == 0)
+                {
+                    return null;
+                }
+                if (availableTimeTable[i].ManagerList.Count == 1)
+                {
+                    manageTable[i].Manager = availableTimeTable[i].ManagerList.SingleOrDefault();
+                }
+            }
+            return manageTable;
         }
 
         public List<ManageTable> GetManageTableList()
         {
-            fillInManageTable(GetEmptyManageTable());
+            fillInManageTable(GetEmptyManageTable(availableTimeList));
             return manageTableList;
         }
 
@@ -156,7 +169,7 @@ namespace Manager.Models
             List<int> jumpList = new List<int>();
             manageTableList = new List<ManageTable>();
             manageTableList.Add(new ManageTable(CheckInTime.CheckInTimeList));
-            for (int i = 11; ; i = getNextTimeId(i))
+            for (int i = 11; i != 0; i = CheckInTime.GetNextTimeId(i))
             {
                 if (availableTimeTable[i].ManagerList.Count == 0)
                 {
@@ -167,17 +180,9 @@ namespace Manager.Models
                     manageTableList.Single()[i].Manager = availableTimeTable[i].ManagerList.Single();
                     jumpList.Add(i);
                 }
-                if (i == 76)
-                {
-                    break;
-                }
             }
-            for (int i = 11; ; i = getNextTimeId(i))
+            for (int i = 11; i != 0; i = CheckInTime.GetNextTimeId(i))
             {
-                if (i == 0)
-                {
-                    break;
-                }
                 if (jumpList.Contains(i))
                 {
                     continue;
@@ -195,7 +200,7 @@ namespace Manager.Models
                 {
                     if (manageTableList.Count == 0)
                     {
-                        var initialManageTable = GetEmptyManageTable();
+                        var initialManageTable = GetEmptyManageTable(availableTimeList);
                         initialManageTable[i] = record;
                         newTableList.Add(initialManageTable);
                     }
@@ -284,41 +289,6 @@ namespace Manager.Models
                 return obj.ToString().GetHashCode();
             }
         }
-
-        private int getNextTimeId(int index)
-        {
-            int i = index / 10;
-            int j = index % 10;
-            if (i <= 0 || j <= 0 || i > 7 || j > 7)
-            {
-                return 0;
-            }
-            if (i <= 5)
-            {
-                if (j < 7)
-                {
-                    return index + 1;
-                }
-                return (i + 1) * 10 + 1;
-            }
-            if (i == 6)
-            {
-                if (j < 6)
-                {
-                    return index + 1;
-                }
-                return (i + 1) * 10 + 1;
-            }
-            if (i == 7)
-            {
-                if (j < 6)
-                {
-                    return index + 1;
-                }
-                return 0;
-            }
-            return 0;
-        }
     }
     public class AvailableTimeHelper
     {
@@ -339,7 +309,7 @@ namespace Manager.Models
             }
         }
 
-        public class AvailableTimeTable
+        public class AvailableTimeTable : IEnumerable<AvailableTimeTableRecord>
         {
             List<AvailableTimeTableRecord> data = new List<AvailableTimeTableRecord>();
 
@@ -366,6 +336,16 @@ namespace Manager.Models
                 {
                     data.Add(new AvailableTimeTableRecord(item));
                 }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return ((IEnumerable<AvailableTimeTableRecord>)data).GetEnumerator();
+            }
+
+            IEnumerator<AvailableTimeTableRecord> IEnumerable<AvailableTimeTableRecord>.GetEnumerator()
+            {
+                return ((IEnumerable<AvailableTimeTableRecord>)data).GetEnumerator();
             }
         }
 

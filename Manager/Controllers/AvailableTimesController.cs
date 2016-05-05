@@ -189,14 +189,6 @@ namespace Manager.Controllers
             return db.Managers.Where(m => m.AccountName == managerName).SingleOrDefault();
         }
 
-        [AllowAnonymous]
-        public ActionResult ManageTableList()
-        {
-            var manageCheckInHelper = new ManagerTableHelper(db.AvailableTime.ToList());
-            var tableList = manageCheckInHelper.GetManageTableList().OrderBy(t => t.Usable).Take(5).Distinct(new ManagerTableHelper.ManageTableComparer()).ToList();
-            return View(tableList);
-        }
-
         public ActionResult AvailableTimeTable()
         {
             var availableTimeHelper = new AvailableTimeHelper(db.AvailableTime.ToList());

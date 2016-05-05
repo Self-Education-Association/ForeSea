@@ -55,10 +55,9 @@ namespace Manager.Controllers
         public static bool TryAuthenticate(LoginViewModel model)
         {
             bool isLogin = false;
-            string domain = "uibe.edu";
             try
             {
-                DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://uibe.edu/OU=Users,OU=SEA团队,OU=2014外语自学中心用户,OU=过度,DC=uibe,DC=edu", domain), model.Account, model.Password);
+                DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://uibe.edu/OU=Users,OU=SEA团队,OU=2014外语自学中心用户,OU=过度,DC=uibe,DC=edu"), model.Account, model.Password);
                 entry.RefreshCache();
                 isLogin = true;
             }

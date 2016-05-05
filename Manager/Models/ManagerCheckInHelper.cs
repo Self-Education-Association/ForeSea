@@ -309,7 +309,7 @@ namespace Manager.Models
             }
         }
 
-        public class AvailableTimeTable : IEnumerable<AvailableTimeTableRecord>
+        public sealed class AvailableTimeTable : IEnumerable<AvailableTimeTableRecord>
         {
             List<AvailableTimeTableRecord> data = new List<AvailableTimeTableRecord>();
 

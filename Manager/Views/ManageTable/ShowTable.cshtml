@@ -20,7 +20,7 @@
         {
             if (item.Manager != null)
             {
-                @(Html.Raw(string.Format("document.getElementById(\"time{0}\").innerHTML = \"{1}\";", item.Time.TimeId, item.Manager.Name)));
+                @(Html.Raw(string.Format("document.getElementById(\"time{0}\").innerHTML = \"{1}({2})\";", item.Time.TimeId, item.Manager.Name,Model.GetManagerManageTable(item.Manager).Count)));
             }
         }
     </script>

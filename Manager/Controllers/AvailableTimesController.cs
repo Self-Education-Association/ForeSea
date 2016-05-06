@@ -181,7 +181,11 @@ namespace Manager.Controllers
         public ActionResult ManagerList()
         {
             var managerList = db.Managers.ToList();
-            managerList = managerList.OrderBy(m => m.CheckAvailableTime()).ThenByDescending(m => m.MinCount).ToList();
+            managerList = managerList
+                .OrderBy(m => m.CheckAvailableTime())
+                .ThenByDescending(m => m.MinCount)
+                .ThenByDescending(m => m.MaxCount)
+                .ToList();
             return View(managerList);
         }
 

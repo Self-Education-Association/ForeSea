@@ -180,7 +180,9 @@ namespace Manager.Controllers
 
         public ActionResult ManagerList()
         {
-            return View(db.Managers.ToList());
+            var managerList = db.Managers.ToList();
+            managerList = managerList.OrderBy(m => m.CheckAvailableTime()).ThenByDescending(m => m.MinCount).ToList();
+            return View(managerList);
         }
 
         private Models.Manager GetManager()

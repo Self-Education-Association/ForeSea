@@ -11,7 +11,7 @@ namespace Manager.Models
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             bool pass = false;
-            if (httpContext.Session["User"]==null)
+            if (httpContext.Session["User"] == null)
             {
                 httpContext.Response.StatusCode = 401;
             }
@@ -24,9 +24,9 @@ namespace Manager.Models
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            if (filterContext.HttpContext.Response.StatusCode==401)
+            if (filterContext.HttpContext.Response.StatusCode == 401)
             {
-                filterContext.Result = new RedirectResult("~/Account/Login");
+                filterContext.Result = new RedirectResult(string.Format("~/Account/Login?returnUrl={0}", filterContext.HttpContext.Request.RawUrl));
             }
         }
     }

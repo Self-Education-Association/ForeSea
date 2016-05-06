@@ -185,6 +185,7 @@ namespace Manager.Controllers
                 .OrderBy(m => m.CheckAvailableTime())
                 .ThenByDescending(m => m.MinCount)
                 .ThenByDescending(m => m.MaxCount)
+                .ThenByDescending(m=>m.AvailableTimes.Count)
                 .ToList();
             return View(managerList);
         }

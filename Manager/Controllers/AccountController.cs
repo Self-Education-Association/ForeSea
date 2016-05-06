@@ -14,16 +14,17 @@ namespace Manager.Controllers
         BaseDbContext db = new BaseDbContext();
 
         [AllowAnonymous]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
-
+            ViewBag.ReturnUrl = returnUrl;
+             
             return View();
         }
 
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -37,7 +38,7 @@ namespace Manager.Controllers
                         return View(model);
                     }
                     Session["User"] = model.Account;
-                    return RedirectToAction("Index", "AvailableTimes");
+                    return RedirectToLocal(returnUrl);
                 }
                 TempData["Alert"] = "AD域验证失败，请检查用户名和密码是否输入正确！";
             }
@@ -66,6 +67,15 @@ namespace Manager.Controllers
                 isLogin = false;
             }
             return isLogin;
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
         }
         #endregion
     }

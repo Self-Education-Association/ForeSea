@@ -25,6 +25,7 @@
                     <li>@Html.ActionLink("可值班时间管理", "Index", "AvailableTimes")</li>
                     <li>@Html.ActionLink("可值班时间表", "AvailableTimeTable", "AvailableTimes")</li>
                     <li>@Html.ActionLink("值班表试算", "Index", "ManageTable")</li>
+                    <li>@Html.ActionLink("退出系统", "LogOut", "Account", null, new { @onclick = "{ if (!confirm('确认要退出系统吗？')) { window.event.returnValue = false;}}" })</li>
                 </ul>
             </div>
         </div>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Manager.Models.AvailableTime>
+
+@{
+    ViewBag.Title = "可值班时间管理";
+}
+
+<div class="text-center">
+    <h3>日程管理</h3>
+</div>
+@Html.Partial("Table", null)
+<div class="container">
+    <p>只有显示为<span class="label-success">“正常”</span>的可值班时间才是可用的。</p>
+    <p>显示为<span class="label-warning">“错误”</span>的请按照以下要求检查：</p>
+    <p>1.已添加的可值班时间是否达到最少可值班时间的节数。</p>
+    <p>2.已添加的可值班时间是否达到最少需要的早班的节数。</p>
+    <p>另外已经申请不值班的同学，任何可值班时间都是“正常”的（包括不填写），但只要填写了可值班时间，都有可能会被安排值班。</p>
+</div>
+
+<script>
+    for (var i = 1; i <= 7; i++) {
+        for (var j = 1; j <= 7; j++) {
+            if (i >= 6 && j == 7) {
+                continue;
+            }
+            document.getElementById("time" + i + j).innerHTML = "<input type='checkbox' onclick='checkboxChange(this," + i.toString() + j.toString() + ")'>";
+            document.getElementById("time" + i + j).setAttribute("align", "center");
+        }
+    }
+    @foreach (var item in Model)
+    {
+        @Html.Raw(string.Format("document.getElementById(\"time\" + {0}).innerHTML = \"<input type='checkbox' disabled='true' onclick='checkboxChange(this,\" + {0} + \")' checked>\";\n", item.TimeId));
+        switch (item.Demand)
+        {
+            case Manager.Models.DemandType.First:
+                @Html.Raw(string.Format("document.getElementById(\"time\" + {0}).classList += \"success\";", item.TimeId));
+                break;
+            case Manager.Models.DemandType.Second:
+                @Html.Raw(string.Format("document.getElementById(\"time\" + {0}).classList += \"active\";", item.TimeId));
+                break;
+            case Manager.Models.DemandType.Third:
+                @Html.Raw(string.Format("document.getElementById(\"time\" + {0}).classList += \"warning\";", item.TimeId));
+                break;
+        }
+    }
+</script>

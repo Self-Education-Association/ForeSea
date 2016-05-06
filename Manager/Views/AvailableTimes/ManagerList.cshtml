@@ -31,6 +31,9 @@
         <th>
             最小工作日可值班时间数检查
         </th>
+        <th>
+            查看可值班时间表
+        </th>
     </tr>
 
 @foreach (var item in Model)
@@ -59,6 +62,9 @@
             <td>
                 @item.MinWorkDayCheck()
             </td>
+            <td>
+                @Html.ActionLink("查看", "Show", new { managerName = item.Name }, new { @class = "btn btn-info" })
+            </td>
         </tr>
     }
     else
@@ -84,6 +90,9 @@
             </td>
             <td>
                 @item.MinWorkDayCheck()
+            </td>
+            <td>
+                @Html.ActionLink("查看", "Show", new { managerName = item.Name }, new { @class = "btn btn-info" })
             </td>
         </tr>
     }

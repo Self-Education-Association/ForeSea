@@ -203,6 +203,16 @@ namespace Manager.Controllers
             return View(availableTimeTable);
         }
 
+        public ActionResult Show(string managerName)
+        {
+            var manager = db.Managers.Where(m => m.Name == managerName).SingleOrDefault();
+            if (manager == null)
+            {
+                return new HttpStatusCodeResult(404);
+            }
+            return View(manager.AvailableTimes);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

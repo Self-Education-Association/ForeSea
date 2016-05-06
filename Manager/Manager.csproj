@@ -233,6 +233,7 @@
     <Content Include="Views\ManageTable\Index.cshtml" />
     <Content Include="Views\ManageTable\ShowTable.cshtml" />
     <Content Include="Views\ManageTable\Table.cshtml" />
+    <Content Include="Views\AvailableTimes\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

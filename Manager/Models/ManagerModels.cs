@@ -104,40 +104,64 @@ namespace Manager.Models
             {
                 return true;
             }
-            //判断是否至少有指定节数的可值班时间，不符合则返回false。
-            if (AvailableTimes.Count() < MinAvailableTimeCount())
-            {
-                return false;
-            }
-            else
-            {
-                //判断是否至少有指定节数的早班，不符合则返回false。
-                int count = 0;
-                foreach (var item in AvailableTimes)
-                {
-                    if (item.TimeId % 10 == 1)
-                    {
-                        count++;
-                    }
-                }
-                if (count < MinFirstClassCount())
-                {
-                    return false;
-                }
-            }
-            //符合所有条件，返回true。
-            return true;
+
+            //三个检查全部返回true则为true，否则返回false。
+            return MinAvailableTimeCheck() && MinFirstClassCheck() && MinWorkDayCheck();
         }
 
+        /// <summary>
+        /// 返回至少有指定节数的可值班时间。
+        /// </summary>
+        /// <returns></returns>
         public int MinAvailableTimeCount()
         {
             int times = 6;
-            return times * MinCount;
+            return MinCount * times;
         }
 
-        public int MinFirstClassCount()
+        /// <summary>
+        /// 判断是否至少有指定节数的可值班时间，不符合则返回false。
+        /// </summary>
+        /// <returns></returns>
+        public bool MinAvailableTimeCheck()
         {
-            return 1;
+            return AvailableTimes.Count >= MinAvailableTimeCount();
+        }
+
+        /// <summary>
+        /// 判断是否至少有指定节数的早班，不符合则返回false。
+        /// </summary>
+        /// <returns></returns>
+        public bool MinFirstClassCheck()
+        {
+            int minFirstClass = 1;
+            int firstClassCount = 0;
+            foreach (var item in AvailableTimes)
+            {
+                if (item.TimeId % 10 == 1)
+                {
+                    firstClassCount++;
+                }
+            }
+            return firstClassCount >= minFirstClass;
+        }
+
+        /// <summary>
+        /// 判断是否至少有指定节数的早班，不符合则返回false。
+        /// </summary>
+        /// <returns></returns>
+        public bool MinWorkDayCheck()
+        {
+            int minWorkDay = 5;
+            int workDayCount = 0;
+            foreach (var item in AvailableTimes)
+            {
+                if (item.TimeId / 10 <= 5)
+                {
+                    workDayCount++;
+                }
+            }
+            return workDayCount >= minWorkDay;
         }
 
         List<double> demandMark = new List<double>();
@@ -197,7 +221,7 @@ namespace Manager.Models
             }
             else
             {
-                for(int i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     result.Add(data[0] - avg);
                 }

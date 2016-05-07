@@ -183,7 +183,7 @@ namespace LST.Controllers
             System.IO.MemoryStream output = new System.IO.MemoryStream();
             System.IO.StreamWriter writer = new System.IO.StreamWriter(output, System.Text.Encoding.UTF8);
             var matches = db.TestMatches.ToList();
-            writer.Write("Match,MatchCount,StartTime,EndTime,User,UserCount");
+            writer.Write("Match,MatchCount,StartTime,EndTime,User,StudentNumber,PhoneNumber,Email,UserCount");
             writer.WriteLine();
             foreach (var item in matches)
             {
@@ -194,6 +194,9 @@ namespace LST.Controllers
                     writer.Write(item.StartTime + ",");
                     writer.Write(item.EndTime + ",");
                     writer.Write(record.User.StudentName + ",");
+                    writer.Write(record.User.StudentNumber + ",");
+                    writer.Write(record.User.PhoneNumber + ",");
+                    writer.Write(record.User.Email + ",");
                     writer.Write(record.User.RecordsCollection.Count + ",");
                     writer.WriteLine();
                 }

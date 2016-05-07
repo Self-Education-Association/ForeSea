@@ -110,7 +110,7 @@ namespace LST.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, StudentNumber = model.StudentNumber, StudentName = model.StudentName };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, StudentNumber = model.StudentNumber, StudentName = model.StudentName, PhoneNumber = model.PhoneNumber };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -81,6 +81,11 @@ namespace LST.Models
         public string StudentName { get; set; }
 
         [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "手机号码")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "密码")]

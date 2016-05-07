@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using LST.Models;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace LST.Controllers
 {
@@ -74,6 +76,33 @@ namespace LST.Controllers
             return View(model);
         }
 
+        public ActionResult ChangeAccountProfile()
+        {
+            var user = GetUser();
+            var model = new ChangeAccountProfileViewModel { PhoneNumber = user.PhoneNumber, EmailAddress = user.Email };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeAccountProfile(ChangeAccountProfileViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    var user = db.Users.Find(User.Identity.GetUserId());
+                    user.Email = model.EmailAddress;
+                    user.PhoneNumber = model.PhoneNumber;
+                    db.SaveChanges();
+                    return Redirect("Index");
+                }
+
+            }
+            return View(model);
+        }
+
         //
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
@@ -134,6 +163,11 @@ namespace LST.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        private ApplicationUser GetUser()
+        {
+            return UserManager.FindById(User.Identity.GetUserId());
         }
 
         private bool HasPassword()

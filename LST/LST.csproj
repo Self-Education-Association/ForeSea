@@ -329,6 +329,7 @@
     <Content Include="Views\Test\Records.cshtml" />
     <Content Include="Views\Test\Account.cshtml" />
     <Content Include="Views\Test\Matches.cshtml" />
+    <Content Include="Views\Manage\ChangeAccountProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

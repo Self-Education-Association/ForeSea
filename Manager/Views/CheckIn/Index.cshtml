@@ -1,0 +1,19 @@
+﻿<input type="text" id="studentid" />
+<a href="" onclick="addCheckList()">检查在线</a>
+<script>
+    function addCheckList() {
+        var id = document.getElementById("studentid").value;
+        jQuery.ajax({
+            type: "GET",
+            url: '@Url.Action("AddCheckList")' + '?id=' + id,
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                location.reload();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        })
+    }
+</script>

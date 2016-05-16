@@ -186,7 +186,7 @@ namespace CheckInProgram
                 Program.conn.Close();
             }
         }
-        public bool DatabaseTransport(string sp)
+        public int DatabaseTransport(string sp)
         {
             try
             {
@@ -207,16 +207,17 @@ namespace CheckInProgram
                     case 701:
                     case 711:
                     case 801:
-                        return true;
+                    case 403:
+                        return result;
                     default:
                         Print.Show(result);
-                        return false;
+                        return result;
                 }
             }
             catch (Exception ex)
             {
                 Print.Show(ex.Message);
-                return false;
+                return 0;
             }
             finally
             {
@@ -251,7 +252,7 @@ namespace CheckInProgram
                         Print.Show(int.Parse(cmd.Parameters["result"].Value.ToString()));
                         break;
                     case 901:
-                        Print.Infomsg(string.Format("除本次上课记录外，你还有{0}次正常记录,{1}次迟到记录,{2}次旷课记录，如有问题请联系值班员查询详细记录。", cmd.Parameters["normal"].Value, cmd.Parameters["late"].Value, cmd.Parameters["truency"].Value), "查询结果");
+                        Print.Infomsg(string.Format("除本次上课记录外，你还有{0}次正常记录，{1}次迟到记录，{2}次旷课记录，如有问题请联系值班员查询详细记录。", cmd.Parameters["normal"].Value, cmd.Parameters["late"].Value, cmd.Parameters["truency"].Value), "查询结果");
                         break;
                 }
             }

@@ -28,7 +28,7 @@ namespace CheckInProgram
         {
             PoweredLabel.Text = Program.Powered;
             MoreInfoLinkLabel.Text = Program.LinkLabel;
-            if (int.Parse(Program.ShowPage) == 1 && MessageBox.Show(Program.PageLabel, "重要通知", MessageBoxButtons.OK, MessageBoxIcon.Information)==DialogResult.OK)
+            if (int.Parse(Program.ShowPage) == 1 && MessageBox.Show(Program.PageLabel, "重要通知", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK)
             {
                 System.Diagnostics.Process.Start(Program.PageUrl);
             }
@@ -51,9 +51,14 @@ namespace CheckInProgram
                     CheckIfThere();
                     return;
                 }
-                Student.DatabaseTransport("dbo.SP_CheckIn_Keep");
+                if (Student.DatabaseTransport("dbo.SP_CheckIn_Keep") == 403)
+                {
+                    CheckTimer.Enabled = true;
+                    CheckIfThere();
+                    return;
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Print.Show(ex.Message);
             }
@@ -71,7 +76,7 @@ namespace CheckInProgram
                 StateLabel.Text = "确认操作超时";
                 Student.DatabaseTransport("dbo.SP_CheckIn_NotHere");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Print.Show(ex.Message);
             }
@@ -84,14 +89,14 @@ namespace CheckInProgram
                 ColdDownTimer.Enabled = true;
                 SignOutButton.Enabled = false;
                 SignOutButton.Text = "两分钟后可以点击";
-                if (Student.DatabaseTransport("dbo.SP_CheckIn_DoCheckOut"))
+                if (Student.DatabaseTransport("dbo.SP_CheckIn_DoCheckOut") == 801)
                 {
                     KeepTimer.Enabled = false;
                     MessageBox.Show("注销成功，你已经完成了本堂课的学习！", "注销成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Application.Exit();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Print.Show(ex.Message);
             }
@@ -103,14 +108,14 @@ namespace CheckInProgram
             {
                 if (MessageBox.Show("更换机器将导致本机下线，且规定时间内若没有在新的机器上线，你将被视为旷课，确定要更换机器么？\n\r注意：不能在同一台机器上使用换机功能上下机！", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    if (Student.DatabaseTransport("dbo.SP_CheckIn_Change"))
+                    if (Student.DatabaseTransport("dbo.SP_CheckIn_Change") == 711)
                     {
                         Print.Infomsg("换机成功，请在规定时间内在新的机器上线。", "换机成功");
                         Application.Exit();
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Print.Show(ex.Message);
             }
@@ -122,7 +127,7 @@ namespace CheckInProgram
 
         private void Normal_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F4 && e.Alt )
+            if (e.KeyCode == Keys.F4 && e.Alt)
             {
                 e.Handled = true;
                 return;

@@ -105,4 +105,7 @@
     <Build Include="Security\checkin.sql" />
     <Build Include="Security\RoleMemberships.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE.txt" />
+  </ItemGroup>
 </Project>

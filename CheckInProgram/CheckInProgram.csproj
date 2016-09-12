@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="5.ico" />
+    <Content Include="LICENSE.txt" />
     <None Include="分流系统界面.jpg" />
   </ItemGroup>
   <ItemGroup>

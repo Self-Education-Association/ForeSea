@@ -179,7 +179,7 @@
     <Compile Include="Models\CheckLoginAttribute.cs" />
     <Compile Include="Models\ManagerCheckInHelper.cs" />
     <Compile Include="Models\ManagerModels.cs" />
-    <Compile Include="Models\ManageTableController.cs" />
+    <Compile Include="Controllers\ManageTableController.cs" />
     <Compile Include="Models\ViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

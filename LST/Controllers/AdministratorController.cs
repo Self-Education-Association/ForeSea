@@ -183,7 +183,10 @@ namespace LST.Controllers
                     model.StartTime,
                     model.EndTime);
                 if (result)
+                {
+                    helper.ResetAppliedState();
                     return RedirectToAction("Index", new { message = MessageType.Success });
+                }
                 else
                 {
                     ViewBag.Error = "创建失败";

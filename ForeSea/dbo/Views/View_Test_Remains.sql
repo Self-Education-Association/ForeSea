@@ -1,23 +1,13 @@
-﻿CREATE VIEW dbo.View_List_CheckIn
+﻿CREATE VIEW dbo.View_Test_Remains
 AS
-WITH CTE AS (SELECT   ID, State, COUNT(State) AS COUNT
-                       FROM      dbo.CheckIn_Details
-                       WHERE   (Term = dbo.F_Term())
-                       GROUP BY ID, State)
-    SELECT   ID, ISNULL
-                        ((SELECT   COUNT
-                          FROM      CTE AS CTE_3
-                          WHERE   (State = 1) AND (ID = CTEOR.ID)), 0) AS NORMAL, ISNULL
-                        ((SELECT   COUNT
-                          FROM      CTE AS CTE_2
-                          WHERE   (State = 2) AND (ID = CTEOR.ID)), 0) AS LATE, ISNULL
-                        ((SELECT   COUNT
-                          FROM      CTE AS CTE_1
-                          WHERE   (State = 3) AND (ID = CTEOR.ID)), 0) AS TRUENCY
-    FROM      CTE AS CTEOR
-
+WITH b AS (SELECT   COUNT(*) AS count, TestId
+                   FROM      dbo.Test_Relations
+                   GROUP BY TestId)
+    SELECT   a.TestId, a.Description, a.Limit, ISNULL(b_1.count, 0) AS Count
+    FROM      dbo.Test_Time AS a LEFT OUTER JOIN
+                    b AS b_1 ON a.TestId = b_1.TestId
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'View_List_CheckIn';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'View_Test_Remains';
 
 
 GO
@@ -88,16 +78,26 @@ Begin DesignProperties =
    End
    Begin DiagramPane = 
       Begin Origin = 
-         Top = -96
+         Top = 0
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "CTEOR"
+         Begin Table = "a"
             Begin Extent = 
-               Top = 102
+               Top = 6
                Left = 38
-               Bottom = 223
-               Right = 180
+               Bottom = 127
+               Right = 193
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "b_1"
+            Begin Extent = 
+               Top = 6
+               Left = 231
+               Bottom = 108
+               Right = 373
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -109,11 +109,22 @@ Begin DesignProperties =
    Begin DataPane = 
       Begin ParameterDefaults = ""
       End
+      Begin ColumnWidths = 9
+         Width = 284
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+      End
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
-         Column = 8130
-         Alias = 1515
+         Column = 1440
+         Alias = 900
          Table = 1170
          Output = 720
          Append = 1400
@@ -128,5 +139,5 @@ Begin DesignProperties =
       End
    End
 End
-', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'View_List_CheckIn';
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'View_Test_Remains';
 

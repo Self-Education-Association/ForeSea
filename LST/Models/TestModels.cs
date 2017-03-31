@@ -295,6 +295,33 @@ namespace LST.Models
             }
         }
 
+        public bool ResetAppliedState(bool state = false)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                foreach(var u in db.Users.ToList())
+                {
+                    u.Applied = state;
+                }
+
+                bool succeed;
+                do
+                {
+                    succeed = true;
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        succeed = false;
+                        ex.Entries.Single().Reload();
+                    }
+                } while (!succeed);
+                return true;
+            }
+        }
+
         IEnumerable<TestMatch> MatchCrossJoin(IEnumerable<string> days, IEnumerable<string> lessons, int limit, DateTime startTime, DateTime endTime)
         {
             foreach (string d in days)

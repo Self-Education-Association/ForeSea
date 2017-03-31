@@ -4,8 +4,9 @@
 	@name NVARCHAR(20)='' OUTPUT,
 	@state TINYINT=-1 OUTPUT,
 	@room NVARCHAR(10)='' OUTPUT,
-	@result SMALLINT=100 OUTPUT
+	@result SMALLINT OUTPUT
 AS
+	SET @result=100
 	DECLARE @time DATETIME2(0)=GETDATE()
 	IF (SELECT IP FROM CheckIn_Room WHERE IP=LEFT(@ip,7) AND Enable=1) IS NULL
 	BEGIN
@@ -27,6 +28,6 @@ AS
 		WHERE A.IP=@IP AND A.State =0
 		RETURN 1
 	END
-	UPDATE CheckIn_Details SET State=3,Note='换机超时' WHERE IP=@ip AND State=0
+	UPDATE CheckIn_Details SET State=3,Note='恢复在线状态超时' WHERE IP=@ip AND State=0
 	SET @result=101
 RETURN 0

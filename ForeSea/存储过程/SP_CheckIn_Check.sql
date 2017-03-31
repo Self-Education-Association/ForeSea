@@ -2,8 +2,9 @@
 	@id INT,
 	@ip VARCHAR(15),
 	@name VARCHAR(20)='' OUTPUT,
-	@result SMALLINT=200 OUTPUT
+	@result SMALLINT OUTPUT
 AS
+	SET @result=200
 	DECLARE @time DATETIME2(0)=GETDATE()
 	DECLARE @lesson TINYINT=(SELECT Lesson FROM CheckIn_Time WHERE @time BETWEEN StartIn AND EndOut)
 	IF @lesson IS NULL

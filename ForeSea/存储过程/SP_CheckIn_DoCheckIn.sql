@@ -5,8 +5,9 @@ CREATE PROCEDURE [dbo].[SP_CheckIn_DoCheckIn]
 	@name NVARCHAR(20)='' OUTPUT,
 	@state TINYINT=-1 OUTPUT,
 	@room NVARCHAR(10)='' OUTPUT,
-	@result SMALLINT=300 OUTPUT
+	@result SMALLINT OUTPUT
 AS
+	SET @result=300
 	DECLARE @datetime DATETIME2(0)=GETDATE()
 	DECLARE @time TIME(0)=CONVERT(TIME,@datetime)
 	DECLARE @date DATE=CONVERT(DATE,@datetime)
@@ -16,10 +17,16 @@ AS
 		SET @result=302
 		RETURN 1
 	END
+	IF (SELECT ID FROM DBO.Course_Details WHERE ID=@id AND Term=DBO.F_Term() AND Lesson=@lesson) IS NULL
+	BEGIN
+		SET @result=305
+		RETURN 1
+	END
 	IF (SELECT ID FROM CheckIn_Details WHERE ID=@id AND State=4) IS NOT NULL
 	BEGIN
 		IF DATEDIFF(MINUTE,(SELECT Change FROM CheckIn_Details WHERE ID=@id AND State=4),@time)>dbo.F_ChangeOvertime()
 		BEGIN
+			UPDATE CheckIn_Details SET State=3,Note='换机超时' WHERE ID=@id AND State=4
 			SET @result=312
 			RETURN 1
 		END
@@ -67,6 +74,11 @@ AS
 		SET @state=0
 		SELECT @name=Name FROM dbo.Student WHERE ID=@id
 		SELECT @room=Room FROM dbo.CheckIn_Room WHERE IP=LEFT(@ip,7)
+		RETURN 1
+	END
+	ELSE 
+	BEGIN 
+		SET @result=306
 		RETURN 1
 	END
 RETURN 0

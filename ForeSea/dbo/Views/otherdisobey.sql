@@ -1,23 +1,10 @@
-﻿CREATE VIEW dbo.View_List_CheckIn
+﻿CREATE VIEW dbo.otherdisobey
 AS
-WITH CTE AS (SELECT   ID, State, COUNT(State) AS COUNT
-                       FROM      dbo.CheckIn_Details
-                       WHERE   (Term = dbo.F_Term())
-                       GROUP BY ID, State)
-    SELECT   ID, ISNULL
-                        ((SELECT   COUNT
-                          FROM      CTE AS CTE_3
-                          WHERE   (State = 1) AND (ID = CTEOR.ID)), 0) AS NORMAL, ISNULL
-                        ((SELECT   COUNT
-                          FROM      CTE AS CTE_2
-                          WHERE   (State = 2) AND (ID = CTEOR.ID)), 0) AS LATE, ISNULL
-                        ((SELECT   COUNT
-                          FROM      CTE AS CTE_1
-                          WHERE   (State = 3) AND (ID = CTEOR.ID)), 0) AS TRUENCY
-    FROM      CTE AS CTEOR
-
+SELECT   GUID, Term, ID, IP, Lesson, Date, CheckIn, CheckOut, Change, Keep, LateState, CheckOutState, State, Note
+FROM      dbo.CheckIn_Details
+WHERE   (Note LIKE '%代%')
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'View_List_CheckIn';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'otherdisobey';
 
 
 GO
@@ -88,16 +75,16 @@ Begin DesignProperties =
    End
    Begin DiagramPane = 
       Begin Origin = 
-         Top = -96
+         Top = 0
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "CTEOR"
+         Begin Table = "CheckIn_Details"
             Begin Extent = 
-               Top = 102
+               Top = 6
                Left = 38
-               Bottom = 223
-               Right = 180
+               Bottom = 146
+               Right = 212
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -112,8 +99,8 @@ Begin DesignProperties =
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
-         Column = 8130
-         Alias = 1515
+         Column = 1440
+         Alias = 900
          Table = 1170
          Output = 720
          Append = 1400
@@ -128,5 +115,5 @@ Begin DesignProperties =
       End
    End
 End
-', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'View_List_CheckIn';
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'otherdisobey';
 

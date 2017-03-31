@@ -62,7 +62,10 @@
     <Folder Include="表" />
     <Folder Include="视图" />
     <Folder Include="函数" />
-    <Folder Include="Security\" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ForeSea.refactorlog" />
@@ -101,9 +104,16 @@
     <Build Include="表\CheckIn_Error.sql" />
     <Build Include="存储过程\SP_CheckIn_NotHere.sql" />
     <Build Include="存储过程\SP_CheckIn_Change.sql" />
-    <Build Include="Security\learning.sql" />
-    <Build Include="Security\checkin.sql" />
-    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Tables\Test_Time.sql" />
+    <Build Include="dbo\Tables\Test_Relations.sql" />
+    <Build Include="dbo\Tables\Test_Allow.sql" />
+    <Build Include="dbo\Tables\Statistics.sql" />
+    <Build Include="dbo\Tables\LST_History.sql" />
+    <Build Include="dbo\Tables\CheckIn_CheckList.sql" />
+    <Build Include="dbo\Views\View_Test_Remains.sql" />
+    <Build Include="dbo\Views\otherdisobey.sql" />
+    <Build Include="dbo\Stored Procedures\SP_CheckIn_Split.sql" />
+    <Build Include="dbo\Stored Procedures\SP_CheckIn_Query.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE.txt" />

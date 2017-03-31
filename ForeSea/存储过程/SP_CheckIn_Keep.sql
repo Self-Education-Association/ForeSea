@@ -2,9 +2,16 @@
 	@id INT,
 	@result SMALLINT=400 OUTPUT
 AS
+	SET @result=400
 	IF (SELECT ID FROM CheckIn_Details WHERE ID=@id AND State=0) IS NOT NULL
 	BEGIN
 		UPDATE CheckIn_Details SET Keep=CONVERT(TIME(0),GETDATE()) WHERE ID=@id AND State=0 AND DATEDIFF(MINUTE,Keep,CONVERT(TIME(0),GETDATE()))<=dbo.F_KeepOvertime()
+		IF (SELECT ID FROM CheckIn_CheckList WHERE ID=@id) IS NOT NULL
+		BEGIN
+			DELETE FROM CheckIn_CheckList WHERE ID=@id
+			SET @result=403
+			RETURN 1
+		END
 		SET @result=401
 		RETURN 1
 	END

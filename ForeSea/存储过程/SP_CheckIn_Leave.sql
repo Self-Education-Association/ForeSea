@@ -2,6 +2,7 @@
 	@id INT,
 	@result SMALLINT=500 OUTPUT
 AS
+	SET @result=500
 	IF (SELECT ID FROM CheckIn_Details WHERE ID=@id AND State=0) IS NOT NULL
 	BEGIN
 		UPDATE CheckIn_Details SET State=3,Note='早退',CheckOut=GETDATE() WHERE ID=@id AND State=0

@@ -28,6 +28,7 @@ namespace CheckInProgram
             InitializeComponent();
             IDLabel.Text = student.ID.ToString();
             NameLabel.Text = student.Name;
+            IPLabel.Text = "IP: "+ Program.GetLocalIp();
             StateLabel.Text = Print.State(student.State);
             RoomLabel.Text = student.Room;
             KeepTimer.Interval = int.Parse(Program.KP) * 60 * 1000;

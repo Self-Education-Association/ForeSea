@@ -42,6 +42,7 @@
             this.PoweredLabel = new System.Windows.Forms.Label();
             this.CheckIfThereButton = new System.Windows.Forms.Button();
             this.ColdDownTimer = new System.Windows.Forms.Timer(this.components);
+            this.IPLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // NameLabel
@@ -138,7 +139,7 @@
             // 
             this.MoreInfoLinkLabel.AutoSize = true;
             this.MoreInfoLinkLabel.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.MoreInfoLinkLabel.Location = new System.Drawing.Point(8, 208);
+            this.MoreInfoLinkLabel.Location = new System.Drawing.Point(8, 222);
             this.MoreInfoLinkLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.MoreInfoLinkLabel.Name = "MoreInfoLinkLabel";
             this.MoreInfoLinkLabel.Size = new System.Drawing.Size(56, 16);
@@ -152,7 +153,7 @@
             // 
             this.PoweredLabel.AutoSize = true;
             this.PoweredLabel.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.PoweredLabel.Location = new System.Drawing.Point(10, 192);
+            this.PoweredLabel.Location = new System.Drawing.Point(10, 206);
             this.PoweredLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.PoweredLabel.Name = "PoweredLabel";
             this.PoweredLabel.Size = new System.Drawing.Size(54, 16);
@@ -175,14 +176,26 @@
             this.ColdDownTimer.Interval = 120000;
             this.ColdDownTimer.Tick += new System.EventHandler(this.coldDownTimer_Tick);
             // 
+            // IPLabel
+            // 
+            this.IPLabel.AutoSize = true;
+            this.IPLabel.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.IPLabel.Location = new System.Drawing.Point(10, 191);
+            this.IPLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.IPLabel.Name = "IPLabel";
+            this.IPLabel.Size = new System.Drawing.Size(18, 16);
+            this.IPLabel.TabIndex = 7;
+            this.IPLabel.Text = "IP";
+            // 
             // Normal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(254, 233);
+            this.ClientSize = new System.Drawing.Size(254, 245);
             this.Controls.Add(this.CheckIfThereButton);
             this.Controls.Add(this.MoreInfoLinkLabel);
+            this.Controls.Add(this.IPLabel);
             this.Controls.Add(this.PoweredLabel);
             this.Controls.Add(this.RoomLabel);
             this.Controls.Add(this.ChangeButton);
@@ -226,5 +239,6 @@
         private System.Windows.Forms.Label PoweredLabel;
         private System.Windows.Forms.Button CheckIfThereButton;
         private System.Windows.Forms.Timer ColdDownTimer;
+        private System.Windows.Forms.Label IPLabel;
     }
 }

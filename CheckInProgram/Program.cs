@@ -48,7 +48,7 @@ namespace CheckInProgram
                         {
                             foreach (string arg in args)
                             {
-                                if (arg == "fullscreen")
+                                if (arg == "fullscreen" && GetSplitStatus() == true)
                                     Application.Run(new SplitFlow());
                             }
                         }
@@ -74,6 +74,14 @@ namespace CheckInProgram
             {
                 conn.Close();
             }
+            //if(GetSplitStatus()==false)
+            //{
+            //    MessageBox.Show("分流已关闭");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("分流已启动");
+            //}
             //Application.Run(new Normal(new Student(0,"",0,"")));
         }
         static public string GetLocalIp()
@@ -92,6 +100,35 @@ namespace CheckInProgram
             Application.Exit();
             return "";
         }
+
+        private static bool GetSplitStatus()
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("dbo.SP_CheckIn_GetSplitStatus",conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@result",SqlDbType.TinyInt));
+                cmd.Parameters["@result"].Direction = ParameterDirection.Output;
+                conn.Open();
+                cmd.ExecuteScalar();
+                conn.Close();
+                if (int.Parse(cmd.Parameters["@result"].Value.ToString()) == 0)
+                {
+                    return false;
+                }
+                else
+                    return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         static public int Run(SqlCommand cmd)
         {
             try

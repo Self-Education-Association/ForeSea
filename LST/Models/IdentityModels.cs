@@ -25,6 +25,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace LST.Models
 {
@@ -44,6 +45,8 @@ namespace LST.Models
         {
             get
             {
+                if (!Regex.IsMatch(PhoneNumber ?? "", @"\d{11}"))
+                    return false;
                 if (RecordsCollection == null)
                     return EnabledStored;
                 if (RecordsCollection.Count >= 3)

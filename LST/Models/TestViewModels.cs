@@ -70,5 +70,9 @@ namespace LST.Models
         public bool Enabled { get; set; }
 
         public bool Applied { get; set; }
+
+        public string Error { get; set; }
+
+        public string ErrorHref { get; set; }
     }
 }

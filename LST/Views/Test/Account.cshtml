@@ -1,7 +1,7 @@
 ﻿@model LST.Models.TestAccountViewModel
-    @{ 
-        Layout = "";
-    }
+@{
+    Layout = "";
+}
 
 <dl class="dl-horizontal">
     <dt>报名功能</dt>
@@ -13,7 +13,14 @@
         }
         else
         {
-            <a>无法使用</a>
+            if (!Model.Error.IsEmpty())
+            {
+                <a href="@Model.ErrorHref" class="tooltip-test" data-toggle="tooltip" title="@Model.Error">无法使用</a>
+            }
+            else
+            {
+                <a>无法使用</a>
+            }
         }
         ]
     </dd>
@@ -31,4 +38,7 @@
         ]
     </dd>
 </dl>
+<script>
+    $(function () { $("[data-toggle='tooltip']").tooltip(); });
+</script>
 

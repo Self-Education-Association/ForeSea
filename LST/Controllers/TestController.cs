@@ -71,6 +71,18 @@ namespace LST.Controllers
                 return new HttpStatusCodeResult(403);
 
             var model = new TestAccountViewModel { Enabled = user.Enabled, Applied = user.Applied };
+            if (!model.Enabled)
+            {
+                if (!System.Text.RegularExpressions.Regex.IsMatch(user.PhoneNumber ?? "", @"\d{11}"))
+                {
+                    model.Error = "需要在账号管理中添加有效的手机号码。";
+                    model.ErrorHref = "/Manage/ChangeAccountProfile";
+                }
+                else if (user.RecordsCollection.Count >= 3)
+                {
+                    model.Error = "超过报名限制次数。";
+                }
+            }
 
             return View(model);
         }

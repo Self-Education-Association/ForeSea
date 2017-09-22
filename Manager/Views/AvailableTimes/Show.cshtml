@@ -19,7 +19,7 @@
 <script>
     for (var i = 1; i <= 7; i++) {
         for (var j = 1; j <= 7; j++) {
-            if (i >= 6 && j == 7) {
+            if (i >= 6 && j >= 5) {
                 continue;
             }
             document.getElementById("time" + i + j).innerHTML = "<input type='checkbox' onclick='checkboxChange(this," + i.toString() + j.toString() + ")'>";

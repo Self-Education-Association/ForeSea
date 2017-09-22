@@ -380,10 +380,10 @@ namespace Manager.Models
             {
                 result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 150, string.Format("第{0}天第{1}节", i, 1), i * 10 + 1, generateTime(9, 30, 00)));
                 result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 2), i * 10 + 2, generateTime(12, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 3), i * 10 + 3, generateTime(14, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), i * 10 + 4, generateTime(16, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 5), i * 10 + 5, generateTime(18, 00, 00)));
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 6), i * 10 + 6, generateTime(19, 30, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 3), i * 10 + 3, generateTime(14, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 4), i * 10 + 4, generateTime(15, 30, 00)));
+                //result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 90, string.Format("第{0}天第{1}节", i, 5), i * 10 + 5, generateTime(18, 00, 00)));
+                //result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 6), i * 10 + 6, generateTime(19, 30, 00)));
             }
             return result;
         }

@@ -52,7 +52,6 @@ namespace Manager.Controllers
                     {
                         TempData["Alert"] = "AD域验证通过，但数据库无此值班员记录，请与数据库管理员联系！";
                         return RedirectToLocal(returnUrl);
-                        return View(model);
                     }
                     Session["User"] = model.Account;
                 }

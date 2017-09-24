@@ -120,7 +120,7 @@
 <script>
     for (var i = 1; i <= 7; i++) {
         for (var j = 1; j <= 7; j++) {
-            if (i >= 6 && j == 7) {
+            if (i >= 6 && j >= 5) {
                 continue;
             }
             document.getElementById("time" + i + j).innerHTML = "<input type='checkbox' onclick='checkboxChange(this," + i.toString() + j.toString() + ")'>";
@@ -129,6 +129,8 @@
     }
     @foreach (var item in Model)
     {
+        if ((item.TimeId <= 66 && item.TimeId >= 65) || (item.TimeId <= 76 && item.TimeId >= 75))
+        { continue; }
         @Html.Raw(string.Format("document.getElementById(\"time\" + {0}).innerHTML = \"<input type='checkbox' onclick='checkboxChange(this,\" + {0} + \")' checked>\";\n", item.TimeId));
         switch (item.Demand)
         {

@@ -34,8 +34,8 @@ else
                     <td id="time@(30+i)"></td>
                     <td id="time@(40+i)"></td>
                     <td id="time@(50+i)"></td>
-                    <td id="@if (i != 1) {@("time"+(60+i-1).ToString());}"></td>
-                    <td id="@if (i != 1) {@("time"+(70+i-1).ToString());}"></td>
+                    <td id="@if (i != 1 && i<=5) {@("time"+(60+i-1).ToString());}"></td>
+                    <td id="@if (i != 1 && i<=5) {@("time"+(70+i-1).ToString());}"></td>
                 </tr>
             }
         </table>
@@ -48,6 +48,10 @@ else
 <script>
     @foreach(var item in Model)
     {
+        if((item.Time.TimeId>=65 && item.Time.TimeId<=67) || (item.Time.TimeId>=75 && item.Time.TimeId<=77))
+        {
+            continue;
+        }
         if (item.ManagerList.Count==1)
         {
             @(Html.Raw(string.Format("document.getElementById(\"time{0}\").innerHTML = \"<a>{1}</a>\";", item.Time.TimeId, item.ManagerList.Single().Name)));

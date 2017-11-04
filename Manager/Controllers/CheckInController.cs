@@ -47,6 +47,7 @@ namespace Manager.Controllers
             conn.Close();
             TempData["Alert"] = "添加成功！";
             return RedirectToAction("Index");
+            //edit
         }
     }
 }

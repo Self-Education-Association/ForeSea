@@ -148,8 +148,10 @@ namespace CheckInProgram
                 cmd.Parameters["@ip"].Value = GetLocalIp();
                 string[] ip = cmd.Parameters["@ip"].Value.ToString().Split('.');
                 //区分考试区电脑
+                /*
                 if (ip[2] == "12" && int.Parse(ip[3]) >= 109)
                     return 105;
+                */
                 conn.Open();
                 cmd.ExecuteScalar();
                 conn.Close();

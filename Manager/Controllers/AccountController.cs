@@ -45,6 +45,7 @@ namespace Manager.Controllers
             if (ModelState.IsValid)
             {
                 bool result = TryAuthenticate(model);
+                //result = true;//测试用
                 if (result)
                 {
                     var manager = db.Managers.Where(m => m.AccountName == model.Account).FirstOrDefault();

@@ -26,7 +26,6 @@ namespace Manager.Models
         public BaseDbContext()
             : base("DefaultConnection")
         {
-
         }
 
         public virtual DbSet<Manager> Managers { get; set; }

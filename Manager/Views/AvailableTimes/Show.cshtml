@@ -22,13 +22,14 @@
             if (i >= 6 && j >= 5) {
                 continue;
             }
-            document.getElementById("time" + i + j).innerHTML = "<input type='checkbox' onclick='checkboxChange(this," + i.toString() + j.toString() + ")'>";
+            document.getElementById("time" + i + j).innerHTML = "<input type=\"checkbox\" onclick=\"checkboxChange(this," + i.toString() + j.toString() + ")\" >";
             document.getElementById("time" + i + j).setAttribute("align", "center");
         }
     }
     @foreach (var item in Model)
     {
-        @Html.Raw(string.Format("document.getElementById(\"time\" + {0}).innerHTML = \"<input type='checkbox' disabled='true' onclick='checkboxChange(this,\" + {0} + \")' checked>\";\n", item.TimeId));
+        @Html.Raw(string.Format("document.getElementById(\"time\" + {0}).innerHTML = \"<input type='checkbox' disabled='true' onclick='checkboxChange(this,\" + {0} + \")'>\";\n", item.TimeId));
+        @Html.Raw(string.Format("document.getElementById(\"time\" + {0}).classList += \"active\"",item.TimeId));
         switch (item.Demand)
         {
             case Manager.Models.DemandType.First:

@@ -378,7 +378,7 @@ namespace Manager.Models
             }
             for (int i = 6; i <= 7; i++)
             {
-                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 1), i * 10 + 1, generateTime(9, 00, 00)));
+                result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 1), i * 10 + 1, generateTime(8, 50, 00)));
                 result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 2), i * 10 + 2, generateTime(11, 00, 00)));
                 result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 3), i * 10 + 3, generateTime(13, 00, 00)));
                 result.Add(new CheckInTime(i == 7 ? 0 : (DayOfWeek)i, 120, string.Format("第{0}天第{1}节", i, 4), i * 10 + 4, generateTime(15, 00, 00)));
@@ -393,7 +393,7 @@ namespace Manager.Models
             List<TimeSpan> result = new List<TimeSpan>();
             result.Add(new TimeSpan(hour, min - 5, sec));
             result.Add(new TimeSpan(hour, min + 5, sec));
-            result.Add(new TimeSpan(hour, min + 25, sec));
+            result.Add(new TimeSpan(hour, min + 15, sec));//迟到15min算旷班
             return result;
         }
     }

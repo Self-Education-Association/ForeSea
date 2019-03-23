@@ -156,6 +156,7 @@ namespace CheckInProgram
             CheckIfThereButton.Visible = true;
             this.BackColor = Color.LightBlue;
             this.Location = new Point(556, 268);
+            this.TopMost = true;
         }
 
         private void checkIfThereButton_Click(object sender, EventArgs e)

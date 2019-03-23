@@ -22,12 +22,23 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
-using System.DirectoryServices; 
+using System.DirectoryServices;
+using System.Runtime.InteropServices;
 
 namespace CheckInProgram
 {
     static class Program
     {
+        /*
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+        */
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
@@ -84,6 +95,9 @@ namespace CheckInProgram
             //}
             //Application.Run(new Normal(new Student(0,"",0,"")));
         }
+
+
+
         static public string GetLocalIp()
         {
             string hostname = Dns.GetHostName();
